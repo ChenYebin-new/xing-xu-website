@@ -1,0 +1,93 @@
+---
+import ActionPanel from "../../components/ActionPanel.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Icon from "../../components/Icon.astro";
+import { audiencePaths, type AudiencePath } from "../../data/site";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return audiencePaths.map((audience) => ({
+    params: { audience: audience.slug },
+    props: { audience },
+  }));
+}
+
+interface Props {
+  audience: AudiencePath;
+}
+
+const { audience } = Astro.props;
+const pageTitle = `${audience.pageTitle} | XINGXU FAN`;
+const pageDescription = `${audience.promise} Review the information and boundaries for a structured industrial fan supply inquiry.`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main>
+    <section class="partner-hero" aria-labelledby="page-title">
+      <div>
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: audience.label }]} />
+        <h1 id="page-title">{audience.pageTitle}</h1>
+      </div>
+      <div class="partner-hero__brief">
+        <p>{audience.promise}</p>
+        <a class="button" href="/#request">{audience.inquiryLabel} <Icon name="arrow" size={21} /></a>
+      </div>
+    </section>
+
+    <section class="partner-needs" aria-labelledby="first-brief-title">
+      <header>
+        <h2 id="first-brief-title">Bring these three items into the first conversation</h2>
+      </header>
+      <ul>
+        {audience.needs.map((need) => <li>{need}</li>)}
+      </ul>
+    </section>
+
+    <section class="support-grid" aria-labelledby="support-title">
+      <header class="content-heading">
+        <h2 id="support-title">What this path is designed to coordinate</h2>
+      </header>
+      <div>
+        {
+          audience.supportAreas.map((area) => (
+            <article>
+              <h3>{area.title}</h3>
+              <p>{area.detail}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="workflow-section" aria-labelledby="workflow-title">
+      <div class="workflow-section__heading">
+        <h2 id="workflow-title">From requirement to quotation scope</h2>
+      </div>
+      <ol>
+        {
+          audience.workflow.map((step, index) => (
+            <li>
+              <span>0{index + 1}</span>
+              <p>{step}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="scope-boundary" aria-labelledby="scope-boundary-title">
+      <h2 id="scope-boundary-title">What is not implied by this overview</h2>
+      <p>{audience.boundary}</p>
+    </section>
+
+    <ActionPanel
+      eyebrow={`${audience.shortLabel} inquiry`}
+      title="Turn the requirement into a reviewable brief"
+      body="Use the homepage RFQ workspace to check the first required inputs. This phase sends and stores nothing; live submission is part of the next implementation stage."
+      primaryHref="/#request"
+      primaryLabel={audience.inquiryLabel}
+      secondaryHref="/products/"
+      secondaryLabel="Review product categories"
+    />
+  </main>
+</BaseLayout>

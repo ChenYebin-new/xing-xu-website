@@ -1,0 +1,37 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  body: string;
+  primaryHref: string;
+  primaryLabel: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
+}
+
+const {
+  title,
+  body,
+  primaryHref,
+  primaryLabel,
+  secondaryHref,
+  secondaryLabel,
+} = Astro.props;
+---
+
+<section class="action-panel" aria-labelledby="action-panel-title">
+  <div>
+    <h2 id="action-panel-title">{title}</h2>
+    <p>{body}</p>
+  </div>
+  <div class="action-panel__links">
+    <a class="button" href={primaryHref}>{primaryLabel} <Icon name="arrow" size={21} /></a>
+    {
+      secondaryHref && secondaryLabel && (
+        <a class="text-link text-link--light" href={secondaryHref}>{secondaryLabel} <Icon name="arrow" size={19} /></a>
+      )
+    }
+  </div>
+</section>

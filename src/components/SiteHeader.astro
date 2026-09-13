@@ -1,0 +1,45 @@
+---
+import Icon from "./Icon.astro";
+
+const pathname = Astro.url.pathname;
+
+const navItems = [
+  { href: "/products/", label: "Products", active: pathname.startsWith("/products/") },
+  {
+    href: "/partners/distributors/",
+    label: "For Distributors",
+    active: pathname.startsWith("/partners/"),
+  },
+  { href: "/about/", label: "About", active: pathname === "/about/" },
+  { href: "/contact/", label: "Contact", active: pathname === "/contact/" },
+] as const;
+---
+
+<header class="site-header" data-site-header>
+  <a class="brand" href="/" aria-label="XINGXU FAN home">
+    <strong>XINGXU FAN</strong>
+    <span>Industrial supply & sourcing</span>
+  </a>
+
+  <nav class="desktop-nav" aria-label="Primary navigation">
+    {
+      navItems.map((item) => (
+        <a href={item.href} aria-current={item.active ? "page" : undefined}>{item.label}</a>
+      ))
+    }
+  </nav>
+
+  <a class="button button--compact header-quote" href="/#request">Request a Quote</a>
+
+  <details class="mobile-nav">
+    <summary aria-label="Open navigation"><Icon name="menu" size={24} /></summary>
+    <nav aria-label="Mobile navigation">
+      {
+        navItems.map((item) => (
+          <a href={item.href} aria-current={item.active ? "page" : undefined}>{item.label}</a>
+        ))
+      }
+      <a href="/#request">Request a Quote</a>
+    </nav>
+  </details>
+</header>

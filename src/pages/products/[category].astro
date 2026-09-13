@@ -1,0 +1,119 @@
+---
+import { Image } from "astro:assets";
+
+import ActionPanel from "../../components/ActionPanel.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Icon from "../../components/Icon.astro";
+import { productCategories, productRecords, type ProductCategory } from "../../data/site";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return productCategories.map((category) => ({
+    params: { category: category.slug },
+    props: { category },
+  }));
+}
+
+interface Props {
+  category: ProductCategory;
+}
+
+const { category } = Astro.props;
+const records = productRecords.filter((record) => record.category === category.slug && record.published);
+const pageTitle = `${category.name} Selection Guide | XINGXU FAN`;
+const pageDescription = `${category.summary} Review the operating and installation information needed before discussing a candidate fan.`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main>
+    <section class="product-detail-hero" aria-labelledby="page-title">
+      <div class="product-detail-hero__copy">
+        <Breadcrumbs
+          items={[{ label: "Home", href: "/" }, { label: "Products", href: "/products/" }, { label: category.name }]}
+        />
+        <h1 id="page-title">{category.name}</h1>
+        <p class="product-detail-hero__lede">{category.definition}</p>
+        <a class="button" href="/#request">Prepare an inquiry <Icon name="arrow" size={21} /></a>
+      </div>
+      <figure class="product-detail-hero__visual">
+        <Image
+          src={category.conceptImage}
+          alt={category.conceptAlt}
+          widths={[520, 780, 1040]}
+          sizes="(max-width: 800px) 90vw, 48vw"
+          format="webp"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <span class="concept-stamp">Concept visual</span>
+        <figcaption>Category form reference only — replace with an approved product photograph before launch.</figcaption>
+      </figure>
+    </section>
+
+    <section class="use-case-band" aria-labelledby="starting-point-title">
+      <h2 id="starting-point-title">{category.useCase}</h2>
+    </section>
+
+    <section class="selection-section" aria-labelledby="selection-inputs-title">
+      <header class="content-heading">
+        <h2 id="selection-inputs-title">Information needed before a candidate fan is discussed</h2>
+      </header>
+      <div class="numbered-grid">
+        {
+          category.selectionDetails.map((item) => (
+            <article>
+              <h3>{item.label}</h3>
+              <p>{item.detail}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="fit-boundaries" aria-label={`${category.name} fit boundaries`}>
+      <article>
+        <h2>The requirement is defined enough to compare supply options</h2>
+        <ul class="check-list">
+          {category.suitableWhen.map((item) => <li>{item}</li>)}
+        </ul>
+      </article>
+      <article class="fit-boundaries__caution">
+        <h2>A performance promise or completed engineering selection</h2>
+        <ul class="boundary-list">
+          {category.notSuitableWhen.map((item) => <li>{item}</li>)}
+        </ul>
+      </article>
+    </section>
+
+    <section class="published-records" aria-labelledby="published-records-title">
+      <div>
+        <h2 id="published-records-title">Verified model records</h2>
+      </div>
+      {
+        records.length > 0 ? (
+          <ul>
+            {records.map((record) => <li>{record.productName} — {record.model}</li>)}
+          </ul>
+        ) : (
+          <div class="empty-record">
+            <strong>No public model records yet</strong>
+            <p>
+              A model page will be added only after its name, photographs, core specifications and publication approval
+              are verified. Send your known model or duty to start a sourcing discussion.
+            </p>
+          </div>
+        )
+      }
+    </section>
+
+    <ActionPanel
+      eyebrow="Selection request"
+      title={`Need help with ${category.name.toLowerCase()}?`}
+      body="Prepare the operating duty, installation constraints, electrical supply, quantity and destination. No information is transmitted from the current preview."
+      primaryHref={`/#request`}
+      primaryLabel="Prepare an RFQ"
+      secondaryHref="/products/"
+      secondaryLabel="Compare all categories"
+    />
+  </main>
+</BaseLayout>

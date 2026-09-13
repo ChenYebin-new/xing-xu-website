@@ -6,7 +6,7 @@ Quanzhou Xingxu Fan & Ventilation Supply 的独立英文 B2B 网站项目，第�
 
 ## 当前状态
 
-阶段 0～2 已完成并通过本地验收：
+阶段 0～2 已完成并通过本地验收；阶段 3 已完成并由用户验收：
 
 - Astro + TypeScript 静态项目骨架。
 - Cloudflare Workers Static Assets 本地配置。
@@ -15,6 +15,10 @@ Quanzhou Xingxu Fan & Ventilation Supply 的独立英文 B2B 网站项目，第�
 - Distributors、Engineering Contractors、Equipment Manufacturers 三类买家路径。
 - RFQ 界面预览和本地必填校验。
 - 明确标记的产品概念图与 Storefront、Warehouse、Product、Nameplate 证据占位图。
+- 产品分类总览与三个分类选型说明页；没有真实资料时不生成 SKU 页面。
+- Distributors、Contractors、Equipment Manufacturers 三个合作对象详情页。
+- About、Contact、Privacy、Thank You 占位状态和自定义 404 页面。
+- 全站共享导航、页脚、面包屑和下一步行动组件。
 
 当前 RFQ 不发送、不保存任何信息。真实联系方式、产品资料、企业实拍、后端邮件、Turnstile、隐私同意和正式部署尚未加入。
 
@@ -48,7 +52,8 @@ npm run cf:dry-run
 
 ## 项目结构
 
-- `src/pages/index.astro`：首页与本地交互。
+- `src/pages/`：首页、产品、合作对象和说明型静态页面。
+- `src/components/`：共享导航、页脚、面包屑和行动区。
 - `src/data/site.ts`：产品、买家、证据和联系方式的数据模型。
 - `src/styles/global.css`：全局视觉系统和响应式样式。
 - `src/assets/`：概念产品图、证据占位图及提示词溯源。

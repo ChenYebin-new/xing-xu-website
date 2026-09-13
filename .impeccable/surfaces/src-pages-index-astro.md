@@ -7,7 +7,7 @@ related_targets: ["src/layouts/BaseLayout.astro"]
 
 # Home surface brief
 
-- **Status:** Finish review disposition is `ship`. Final references: `.impeccable/review/desktop.png` and `.impeccable/review/mobile.png`.
+- **Status:** The homepage finish review disposition remains `ship`, but the current `.impeccable/review/desktop.png` and `.impeccable/review/mobile.png` files are Phase 3 `/products/` captures and are not homepage evidence. `.impeccable/review/hero-repro.png` has been visually verified as homepage composition evidence only; it contains the earlier navigation and is not a current final homepage screenshot.
 - **Scope and mode:** English homepage for Malaysia and the Philippines; Persuade mode. It must make an unfamiliar B2B buyer understand the supplier, believe the business is real, and know how to start an RFQ.
 - **Audience, job and action:** Distributors first, engineering contractors second, equipment manufacturers third. The primary action is `Request a Quote`; product exploration and WhatsApp are supporting paths.
 - **Proof and content:** Nearly thirty years of hands-on storefront operation, real storefront and warehouse photography, real product and nameplate photography, selection advice, cross-brand sourcing, export packaging coordination, and logistics coordination. The current generated images are placeholders only and require approved real source replacement before launch.

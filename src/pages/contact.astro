@@ -1,0 +1,77 @@
+---
+import ActionPanel from "../components/ActionPanel.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { contactChannels } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "Contact | XINGXU FAN";
+const pageDescription =
+  "Review the planned XINGXU FAN contact channels and the information to prepare for an industrial fan supply inquiry.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main>
+    <section class="contact-hero" aria-labelledby="page-title">
+      <div>
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact" }]} />
+        <h1 id="page-title">Prepare the Requirement Now. Use a Public Channel After Approval.</h1>
+      </div>
+      <div class="contact-hero__notice" role="note">
+        <strong>Preview boundary</strong>
+        <p>
+          No phone number, email address, social profile, messaging ID or street address has been approved for public
+          display in this build. The entries below are status records, not active links.
+        </p>
+      </div>
+    </section>
+
+    <section class="channel-status" aria-labelledby="channels-title">
+      <header class="content-heading">
+        <h2 id="channels-title">Four channels awaiting release details</h2>
+      </header>
+      <ul>
+        {
+          contactChannels.map((channel) => (
+            <li>
+              <strong>{channel.name}</strong>
+              <span>Details pending approval</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="inquiry-prep" aria-labelledby="prepare-title">
+      <div>
+        <h2 id="prepare-title">A useful first message is specific enough to review</h2>
+        <p>Bringing these inputs together reduces follow-up questions and makes the supply discussion easier to scope.</p>
+      </div>
+      <ol>
+        <li><strong>Buying context</strong><span>Customer type, company and country or region</span></li>
+        <li><strong>Product direction</strong><span>Category, known model or a request for selection help</span></li>
+        <li><strong>Operating duty</strong><span>Application, airflow, pressure and environment when known</span></li>
+        <li><strong>Installation</strong><span>Dimensions, electrical supply and interface constraints</span></li>
+        <li><strong>Commercial scope</strong><span>Quantity, destination city or port and required timing</span></li>
+      </ol>
+    </section>
+
+    <section class="contact-release" aria-labelledby="release-title">
+      <h2 id="release-title">A channel becomes active only after three checks</h2>
+      <div>
+        <article><h3>Authorized</h3><p>The business approves the exact public detail and how it may be used.</p></article>
+        <article><h3>Reachable</h3><p>The link, account or address is tested from the public website experience.</p></article>
+        <article><h3>Owned</h3><p>The destination is controlled by the business and has a clear response owner.</p></article>
+      </div>
+    </section>
+
+    <ActionPanel
+      eyebrow="Current next step"
+      title="Use the RFQ preview to review required information"
+      body="The preview validates the visible fields in your browser but sends and stores nothing. Live contact and submission are not active in this stage."
+      primaryHref="/#request"
+      primaryLabel="Open RFQ preview"
+      secondaryHref="/products/"
+      secondaryLabel="View product categories"
+    />
+  </main>
+</BaseLayout>

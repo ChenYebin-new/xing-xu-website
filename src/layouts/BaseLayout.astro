@@ -4,12 +4,16 @@ import "@fontsource/barlow-condensed/700.css";
 import "@fontsource/barlow-condensed/800.css";
 import "../styles/global.css";
 
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+
 interface Props {
   title: string;
   description: string;
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -18,6 +22,7 @@ const { title, description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content="#f8fbfc" />
     <meta name="color-scheme" content="light" />
     <title>{title}</title>
@@ -31,6 +36,8 @@ const { title, description } = Astro.props;
       FORM: User-approved Evidence-led Showroom (B), approved composition seed dd7f1911, supported below-fold by Buyer Path + RFQ Rail (C).
       FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
     -->
+    <SiteHeader />
     <slot />
+    <SiteFooter />
   </body>
 </html>

@@ -1,0 +1,62 @@
+---
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "Privacy Preview | XINGXU FAN";
+const pageDescription =
+  "Understand the current no-submission privacy boundary and the requirements that must be completed before the XINGXU FAN RFQ workflow is activated.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main>
+    <article class="policy-page">
+      <header>
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Privacy" }]} />
+        <h1>What This Local Preview Does With Inquiry Information</h1>
+        <p class="policy-page__lede">Current implementation status: the RFQ interface sends and stores nothing.</p>
+      </header>
+
+      <section>
+        <h2>Current preview behavior</h2>
+        <p>
+          The homepage contains a front-end form preview. Its review button checks whether the visible required fields
+          are complete and displays a message in the browser. There is no submission endpoint, email delivery,
+          database, analytics integration or file upload in this stage.
+        </p>
+      </section>
+
+      <section>
+        <h2>Information shown in the preview form</h2>
+        <p>
+          The current fields cover customer type, product category, quantity, destination, operating requirements and
+          preferred contact channel. Do not enter confidential or sensitive personal information into a local preview.
+        </p>
+      </section>
+
+      <section>
+        <h2>Requirements before live submission</h2>
+        <ul>
+          <li>Identify the business responsible for inquiry data and publish an authorized contact method.</li>
+          <li>Explain the purpose, required fields, retention approach and who can access submitted inquiries.</li>
+          <li>Add privacy acknowledgement and server-side validation to the live form.</li>
+          <li>Prevent complete contact details and inquiry messages from being copied into application logs.</li>
+          <li>Test delivery, failure handling and deletion or correction requests before public launch.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Contact and rights requests</h2>
+        <p>
+          No public privacy contact has been approved for this preview. A working contact route must be published
+          before the inquiry form is activated. Until then, this page records an implementation boundary rather than a
+          complete production privacy notice.
+        </p>
+      </section>
+
+      <footer class="policy-page__footer">
+        <p>Last reviewed for the local preview: 13 September 2026.</p>
+        <a class="text-link" href="/contact/">Review contact status</a>
+      </footer>
+    </article>
+  </main>
+</BaseLayout>

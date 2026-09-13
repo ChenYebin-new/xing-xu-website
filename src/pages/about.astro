@@ -1,0 +1,124 @@
+---
+import { Image } from "astro:assets";
+
+import nameplatePlaceholder from "../assets/evidence-placeholders/nameplate-placeholder.png";
+import productPlaceholder from "../assets/evidence-placeholders/product-placeholder.png";
+import storefrontPlaceholder from "../assets/evidence-placeholders/storefront-placeholder.png";
+import warehousePlaceholder from "../assets/evidence-placeholders/warehouse-placeholder.png";
+import ActionPanel from "../components/ActionPanel.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { capabilities, evidenceSlots, publicationChecklist } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "About XINGXU FAN | Industrial Fan Supply & Sourcing";
+const pageDescription =
+  "Learn how the Quanzhou-based XINGXU FAN preview presents industrial fan supply, selection advice and sourcing with explicit evidence boundaries.";
+
+const evidenceImages = {
+  storefront: {
+    src: storefrontPlaceholder,
+    alt: "Generated generic storefront photo placeholder, not the Xingxu business location",
+  },
+  warehouse: {
+    src: warehousePlaceholder,
+    alt: "Generated generic warehouse photo placeholder, not the Xingxu warehouse",
+  },
+  product: {
+    src: productPlaceholder,
+    alt: "Generated generic industrial fan photo placeholder, not a stocked Xingxu product",
+  },
+  nameplate: {
+    src: nameplatePlaceholder,
+    alt: "Generated blank equipment nameplate placeholder, not a real product nameplate",
+  },
+};
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main>
+    <section class="about-hero" aria-labelledby="page-title">
+      <div>
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "About" }]} />
+        <h1 id="page-title">Nearly 30 Years of Hands-On Fan Supply</h1>
+      </div>
+      <div class="about-hero__statement">
+        <p>
+          XINGXU FAN is presented as a Quanzhou-based industrial fan supplier and sourcing partner serving
+          distributors, engineering contractors and equipment manufacturers.
+        </p>
+        <p>
+          This site does not describe the business as a manufacturer and does not publish certifications, customer
+          names, output figures or export counts without evidence and approval.
+        </p>
+      </div>
+    </section>
+
+    <section class="about-capabilities" aria-labelledby="capabilities-title">
+      <header class="content-heading">
+        <h2 id="capabilities-title">Three ways the supply conversation can be supported</h2>
+      </header>
+      <div>
+        {
+          capabilities.map((capability) => (
+            <article>
+              <h3>{capability.title}</h3>
+              <p>{capability.detail}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="about-evidence" aria-labelledby="evidence-title">
+      <header class="content-heading content-heading--light">
+        <h2 id="evidence-title">The launch version requires traceable business photographs</h2>
+        <p>
+          Every frame below is visibly a generated placeholder. None is evidence of the business location, stock or
+          a specific product.
+        </p>
+      </header>
+      <div class="about-evidence__grid">
+        {
+          evidenceSlots.map((slot) => (
+            <figure>
+              <div>
+                <Image
+                  src={evidenceImages[slot.id].src}
+                  alt={evidenceImages[slot.id].alt}
+                  widths={[360, 560]}
+                  sizes="(max-width: 720px) 45vw, 23vw"
+                  format="webp"
+                  loading="lazy"
+                />
+                <span>Photo placeholder</span>
+              </div>
+              <figcaption>
+                <strong>{slot.label}</strong>
+                <small>{slot.replacementNote}</small>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="replacement-checklist" aria-labelledby="replacement-title">
+      <div>
+        <h2 id="replacement-title">Evidence and approvals still required</h2>
+      </div>
+      <ul>
+        {publicationChecklist.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+
+    <ActionPanel
+      eyebrow="Discuss a requirement"
+      title="Start with the product duty and buying context"
+      body="Choose a fan category, then share the application, operating requirements, quantity and destination in the RFQ preview."
+      primaryHref="/products/"
+      primaryLabel="View product categories"
+      secondaryHref="/contact/"
+      secondaryLabel="Review contact status"
+    />
+  </main>
+</BaseLayout>

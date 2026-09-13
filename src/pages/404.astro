@@ -1,0 +1,27 @@
+---
+import Icon from "../components/Icon.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "Page Not Found | XINGXU FAN";
+const pageDescription = "The requested XINGXU FAN page could not be found.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} noindex>
+  <main>
+    <section class="not-found" aria-labelledby="page-title">
+      <p class="not-found__code" aria-hidden="true">404</p>
+      <div>
+        <h1 id="page-title">This Route Does Not Match a Published Page</h1>
+        <p>
+          The link may be incomplete, or the product or resource record may not be approved for publication. Use a
+          route below to continue.
+        </p>
+        <div class="not-found__actions">
+          <a class="button" href="/products/">View product categories <Icon name="arrow" size={21} /></a>
+          <a class="text-link" href="/">Return home</a>
+          <a class="text-link" href="/#request">Prepare an RFQ</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

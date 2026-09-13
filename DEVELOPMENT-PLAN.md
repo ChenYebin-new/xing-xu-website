@@ -1,6 +1,6 @@
 # XINGXU FAN 网站开发计划
 
-状态：阶段 0～2 已由用户验收；Git 发布按“命令一”执行，Cloudflare 部署仍待后续单独确认
+状态：阶段 0～2 已由用户验收并完成 Git 发布；阶段 3 已完成并由用户验收；Cloudflare 部署仍待后续单独确认
 项目：Quanzhou Xingxu Fan & Ventilation Supply
 目标仓库：`https://github.com/ChenYebin-new/xing-xu-website`
 目标市场：Malaysia and the Philippines
@@ -103,6 +103,8 @@
 - 所有概念图都带有不会误认成真实照片的标识。
 
 ### 阶段 3：核心页面与真实内容边界
+
+本地实现状态（2026-09-13）：已完成并由用户验收。当前版本已生成产品分类、三类合作对象、About、Contact、Privacy、Thank You 和 404 页面；完整 RFQ 后端仍严格保留到阶段 4。
 
 任务：
 
