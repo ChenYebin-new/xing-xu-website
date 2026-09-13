@@ -1,0 +1,36 @@
+---
+import "@fontsource/barlow-condensed/600.css";
+import "@fontsource/barlow-condensed/700.css";
+import "@fontsource/barlow-condensed/800.css";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f8fbfc" />
+    <meta name="color-scheme" content="light" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <!--
+      THESIS: Real operating evidence shares the first viewport with the product; this is not a claim-first machinery hero.
+      OWN-WORLD: Warm white, deep ink, muted blue-green rules, safety orange action, condensed technical display type, and precise evidence bays.
+      STORY: A buyer identifies the supplier, checks real-business proof, finds a fan category, then prepares a structured RFQ.
+      FIRST VIEWPORT: Identity and nearly-thirty-year statement left, one decisive fan image centre, four evidence slots right, with the quote action visible in the header and copy column.
+      FORM: User-approved Evidence-led Showroom (B), approved composition seed dd7f1911, supported below-fold by Buyer Path + RFQ Rail (C).
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+    -->
+    <slot />
+  </body>
+</html>

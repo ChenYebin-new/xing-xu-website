@@ -1,0 +1,43 @@
+{
+  "title": "Choose the visual world for XINGXU FAN",
+  "question": "哪一个方向最像一家经营近三十年、懂选型、值得海外买家联系的真实风机供应方？",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "The Nameplate Registry",
+      "kicker": "THE ROLL",
+      "lineage": "machine nameplates, calibration seals and serialized service tags",
+      "thesis": "把每个产品与经营证据呈现为可核验记录，让可信度先于销售话术。",
+      "palette": ["#D8D2C4", "#171B1E", "#D89A2B", "#873A32"],
+      "materials": ["etched aluminum", "inspection ink", "ribbed steel", "tracing film"],
+      "viewport": "非对称的工业登记台：左侧是供应记录与经营信息，右侧是带铭牌标签的风机视觉占位，询价入口像一枚清晰的核验章。",
+      "risk": "如果后续缺少真实门店与人物照片，整体可能显得偏冷、像精致产品目录。",
+      "comp": ".impeccable/mocks/decision/nameplate-registry.png"
+    },
+    {
+      "id": "model-pick",
+      "label": "The Working Ledger",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "long-running industrial trade-counter ledgers and dispatch slips",
+      "thesis": "把近三十年的门店经营变成持续发生的供应记录，而不是一句空泛口号。",
+      "palette": ["#EEE5D2", "#21312B", "#C86536", "#AFA99C"],
+      "materials": ["carbon-copy paper", "rubber stamp", "blackened steel", "graphite notes"],
+      "viewport": "一张横向展开的现代供应台账：品牌与可信证据在左，产品占位在中，右侧询价单直接承接数量、参数与目的地。",
+      "risk": "纸张与台账语言若控制不好会显得怀旧或过于本地，需要现代排版与真实产品图保持国际感。",
+      "comp": ".impeccable/mocks/decision/working-ledger.png"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "comp", "toggle": true},
+  "canon": true,
+  "canonCard": {
+    "label": "Modern Industrial Showcase",
+    "thesis": "用高质量产品摄影、清晰参数和标准企业结构，把常见工业网站做到可靠完整。",
+    "palette": ["#F7F9FA", "#172333", "#2E6F88", "#E58A2B"],
+    "materials": ["clean grid", "product photography", "precise data tables"],
+    "viewport": "清晰导航、英文主张、主产品大图、三项能力证明与醒目的 Request a Quote。",
+    "risk": "容易理解，但即使完成度很高，也可能与其他工业设备供应网站相似。",
+    "comp": ".impeccable/mocks/decision/canon.png"
+  },
+  "steer": true
+}

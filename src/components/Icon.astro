@@ -1,0 +1,82 @@
+---
+type IconName =
+  | "arrow"
+  | "chevron"
+  | "storefront"
+  | "warehouse"
+  | "product"
+  | "nameplate"
+  | "menu";
+
+interface Props {
+  name: IconName;
+  size?: number;
+}
+
+const { name, size = 24 } = Astro.props;
+---
+
+{
+  name === "arrow" && (
+    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
+      <path d="M4 12h15M14 6l6 6-6 6" />
+    </svg>
+  )
+}
+{
+  name === "chevron" && (
+    <svg viewBox="0 0 16 16" width={size} height={size} aria-hidden="true">
+      <path d="m4 6 4 4 4-4" />
+    </svg>
+  )
+}
+{
+  name === "storefront" && (
+    <svg viewBox="0 0 32 32" width={size} height={size} aria-hidden="true">
+      <path d="M5 14h22M7 14v13h18V14M4 14l3-8h18l3 8M11 27v-7h10v7M9 14v2a3 3 0 0 0 6 0v-2m0 0v2a3 3 0 0 0 6 0v-2" />
+    </svg>
+  )
+}
+{
+  name === "warehouse" && (
+    <svg viewBox="0 0 32 32" width={size} height={size} aria-hidden="true">
+      <path d="m4 13 12-7 12 7v14H4ZM9 27V14h14v13M9 19h14M9 23h14" />
+    </svg>
+  )
+}
+{
+  name === "product" && (
+    <svg viewBox="0 0 32 32" width={size} height={size} aria-hidden="true">
+      <circle cx="16" cy="16" r="12" />
+      <circle cx="16" cy="16" r="3" />
+      <path d="M16 13c1-7 6-7 8-5 2 3-2 7-6 8m1 1c7 1 7 6 5 8-3 2-7-2-8-6m-1 0c-1 7-6 7-8 5-2-3 2-7 6-8m0-1c-7-1-7-6-5-8 3-2 7 2 8 6" />
+    </svg>
+  )
+}
+{
+  name === "nameplate" && (
+    <svg viewBox="0 0 32 32" width={size} height={size} aria-hidden="true">
+      <rect x="4" y="7" width="24" height="18" rx="2" />
+      <path d="M9 12h9M9 17h14M9 21h8" />
+      <circle cx="24" cy="11" r="1" />
+    </svg>
+  )
+}
+{
+  name === "menu" && (
+    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
+      <path d="M4 7h16M4 12h16M4 17h16" />
+    </svg>
+  )
+}
+
+<style>
+  svg {
+    display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.65;
+  }
+</style>

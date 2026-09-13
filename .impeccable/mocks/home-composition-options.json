@@ -1,0 +1,45 @@
+{
+  "title": "Choose the homepage composition",
+  "question": "在同一个 Modern Industrial Showcase 视觉方向下，哪一种首页构图最适合 XINGXU FAN 的海外客户？",
+  "options": [
+    {
+      "id": "balanced-showcase",
+      "label": "A. Balanced Product Showcase",
+      "kicker": "均衡展示",
+      "lineage": "trust statement, hero product and capability rail",
+      "thesis": "公司可信度、主产品和三项能力在首屏保持均衡，结构最熟悉、理解成本最低。",
+      "palette": ["#F7F9FA", "#172333", "#2E6F88", "#E86F0C"],
+      "materials": ["clean grid", "product photography", "technical rules"],
+      "viewport": "左侧经营主张，右侧主产品大图，下方依次进入能力证明与产品分类。",
+      "risk": "稳妥清晰，但与优秀工业供应网站的常见结构较接近。",
+      "comp": ".impeccable/mocks/decision/canon.png"
+    },
+    {
+      "id": "evidence-showroom",
+      "label": "B. Evidence-led Showroom",
+      "kicker": "经营证据优先",
+      "lineage": "editorial proof column, product plinth and evidence contact sheet",
+      "thesis": "把近三十年经营与四类真实照片证据放在首屏同等重要的位置，优先解决陌生海外买家的信任问题。",
+      "palette": ["#F7F9FA", "#172333", "#2E6F88", "#E86F0C"],
+      "materials": ["evidence contact sheet", "matte steel", "technical dividers"],
+      "viewport": "左侧经营信息、中间产品、右侧门店仓库产品铭牌证据，形成明确三栏。",
+      "risk": "真实照片质量将直接影响最终效果，素材准备要求最高。",
+      "comp": ".impeccable/mocks/home-evidence-showroom.png"
+    },
+    {
+      "id": "buyer-path-rfq",
+      "label": "C. Buyer Path + RFQ Rail",
+      "kicker": "询价效率优先",
+      "lineage": "buyer-path tabs, category canvas and persistent RFQ rail",
+      "thesis": "将三类客户路径、三类产品和询价字段放进一个工作界面，最直接地推动海外客户提交需求。",
+      "palette": ["#F7F9FA", "#172333", "#2E6F88", "#E86F0C"],
+      "materials": ["category canvas", "technical form rail", "product photography"],
+      "viewport": "顶部建立经营可信度，左侧选择客户与产品分类，右侧立即填写数量、参数和目的地。",
+      "risk": "首屏信息密度最高，需要在正式开发时仔细处理移动端顺序和表单长度。",
+      "comp": ".impeccable/mocks/home-buyer-path-rail.png"
+    }
+  ],
+  "buildPath": {"value": "comp", "toggle": false},
+  "steer": true,
+  "followup": true
+}
