@@ -1,0 +1,4 @@
+# Wrangler generates this file verbatim. Its upstream runtime declarations contain
+# a few intentional trailing spaces, so ignore only end-of-line blanks for this
+# generated file and keep `wrangler types --check` reproducible.
+worker-configuration.d.ts whitespace=-blank-at-eol

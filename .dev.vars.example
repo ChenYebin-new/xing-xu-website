@@ -1,0 +1,4 @@
+# Cloudflare's public, always-pass Turnstile test secret for the default local environment.
+# Never put a production secret in Git or this example file.
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+RFQ_TO_EMAIL=sales@local.test

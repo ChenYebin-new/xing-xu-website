@@ -3,8 +3,8 @@ import Breadcrumbs from "../components/Breadcrumbs.astro";
 import Icon from "../components/Icon.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const pageTitle = "Submission Status | XINGXU FAN";
-const pageDescription = "A placeholder submission-status page for the future XINGXU FAN RFQ workflow.";
+const pageTitle = "Inquiry Delivery Status | XINGXU FAN";
+const pageDescription = "Confirm whether the XINGXU FAN RFQ service accepted and delivered an inquiry.";
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} noindex>
@@ -12,20 +12,39 @@ const pageDescription = "A placeholder submission-status page for the future XIN
     <section class="status-page" aria-labelledby="page-title">
       <div>
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Submission status" }]} />
-        <h1 id="page-title">No Inquiry Was Sent From This Preview</h1>
-        <p>
-          This page reserves the success-state route for the future RFQ workflow. The current homepage form only
-          reviews required fields in your browser; it does not transmit or store them.
+        <h1 id="page-title" data-status-title>Check the Inquiry Delivery Status</h1>
+        <p data-status-copy>
+          This confirmation page is valid only after the RFQ server accepts an inquiry in this browser tab.
         </p>
       </div>
       <aside>
-        <strong>When live submission is implemented</strong>
-        <p>A visitor will reach this page only after the server validates the request and confirms delivery.</p>
+        <strong data-status-aside-title>No confirmed delivery in this tab</strong>
+        <p data-status-aside-copy>Return to the form to prepare or retry the inquiry. Direct access to this page does not prove that an email was sent.</p>
       </aside>
       <div class="status-page__actions">
-        <a class="button" href="/#request">Return to RFQ preview <Icon name="arrow" size={21} /></a>
+        <a class="button" href="/request-a-quote/">Return to RFQ workspace <Icon name="arrow" size={21} /></a>
         <a class="text-link" href="/products/">Continue browsing products</a>
       </div>
     </section>
   </main>
+
+  <script>
+    const title = document.querySelector<HTMLElement>("[data-status-title]");
+    const copy = document.querySelector<HTMLElement>("[data-status-copy]");
+    const asideTitle = document.querySelector<HTMLElement>("[data-status-aside-title]");
+    const asideCopy = document.querySelector<HTMLElement>("[data-status-aside-copy]");
+
+    try {
+      const stored = sessionStorage.getItem("rfq-delivered");
+      const result = stored ? (JSON.parse(stored) as { requestId?: string }) : null;
+      if (result?.requestId && title && copy && asideTitle && asideCopy) {
+        title.textContent = "Inquiry Delivery Confirmed";
+        copy.textContent = "The server validated the request and the configured email service accepted it for delivery.";
+        asideTitle.textContent = "Keep this reference";
+        asideCopy.textContent = `Request reference: ${result.requestId}. It identifies the delivery event without exposing the inquiry contents in application logs.`;
+      }
+    } catch {
+      sessionStorage.removeItem("rfq-delivered");
+    }
+  </script>
 </BaseLayout>

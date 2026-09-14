@@ -190,7 +190,7 @@ Request a Quote
 
 ### 选填与待定
 
-- Drawing or specification upload，是否进入首版待决定。
+- Drawing or specification upload，首版不加入；后续需单独设计安全与保留策略。
 - Preferred contact channel。
 - Existing supplier or replacement model。
 - Additional message。
@@ -201,14 +201,14 @@ Request a Quote
 - 验证状态：字段旁显示具体问题，不清空已填内容。
 - 防垃圾验证：Turnstile 由服务器端验证，不能只嵌入前端控件。
 - 提交中：防止重复提交。
-- 成功：显示已收到、下一步和备用联系方式。
-- 失败：说明信息未发送，保留内容并提供 WhatsApp / Email 备用渠道。
+- 成功：只有邮件服务接受投递后才显示确认与请求参考编号；直接访问 Thank You 页面不证明已提交。
+- 失败：说明信息未发送并保留当前页面内容；备用联系方式只在其公开信息获批后提供。
 
 ### 数据边界
 
 - 第一版只收集报价所需信息。
 - 不收集证件号码、银行卡等无关敏感数据。
-- 询盘保存期限、访问权限和是否进入数据库在开发前确认。
+- 首版不建立询盘数据库；完整询盘只进入获批邮箱，保留期限与邮箱访问权限须在上线前确认。
 - Gmail 是公开联系邮箱；表单通知可发送至已验证 Gmail 目的地址，但必须在上线前进行真实投递测试。
 
 ## 10. 关键访问路径

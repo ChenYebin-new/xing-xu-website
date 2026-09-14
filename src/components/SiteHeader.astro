@@ -29,7 +29,7 @@ const navItems = [
     }
   </nav>
 
-  <a class="button button--compact header-quote" href="/#request">Request a Quote</a>
+  <a class="button button--compact header-quote" href="/request-a-quote/" aria-current={pathname === "/request-a-quote/" ? "page" : undefined}>Request a Quote</a>
 
   <details class="mobile-nav">
     <summary aria-label="Open navigation"><Icon name="menu" size={24} /></summary>
@@ -39,7 +39,7 @@ const navItems = [
           <a href={item.href} aria-current={item.active ? "page" : undefined}>{item.label}</a>
         ))
       }
-      <a href="/#request">Request a Quote</a>
+      <a href="/request-a-quote/" aria-current={pathname === "/request-a-quote/" ? "page" : undefined}>Request a Quote</a>
     </nav>
   </details>
 </header>

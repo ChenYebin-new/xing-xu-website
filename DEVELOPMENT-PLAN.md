@@ -1,11 +1,11 @@
 # XINGXU FAN 网站开发计划
 
-状态：阶段 0～2 已由用户验收并完成 Git 发布；阶段 3 已完成并由用户验收；Cloudflare 部署仍待后续单独确认
+状态：阶段 0～2 已由用户验收并完成 Git 发布；阶段 3 已完成并由用户验收；阶段 4 本地实现与模拟投递已完成，真实 Gmail 验收等待获批公开部署；GitHub／Workers Builds CI 本地适配已完成但尚未提交、连接或部署
 项目：Quanzhou Xingxu Fan & Ventilation Supply
 目标仓库：`https://github.com/ChenYebin-new/xing-xu-website`
 目标市场：Malaysia and the Philippines
 首版语言：English
-更新时间：2026-09-13
+更新时间：2026-09-14
 
 ## 1. 已锁定的开发依据
 
@@ -121,6 +121,8 @@
 
 ### 阶段 4：RFQ 完整流程
 
+实现状态（2026-09-14）：代码、本地模拟流程、独立生产配置和隐藏 Worker 账户写入均已完成。前后端校验、条件字段、同源限制、32 KB 请求上限、Turnstile Siteverify、重复点击锁定、错误关联、邮件分组格式、安全日志、成功页会话确认和 Wrangler 模拟邮件均已实现。`xingxufan.com`、生产 Turnstile widget、Email Routing 与已验证目的地址已由账户所有者准备；两个 Worker Secret 已安全写入，且 Cloudflare API 已确认没有公开路由。剩余验收项为公开 Preview／正式域名部署和一次真实收件测试。
+
 任务：
 
 - 表单包含客户类型、姓名、公司、国家或地区、Email／WhatsApp、产品类别或型号、数量、目的地、需求说明和隐私确认。
@@ -128,10 +130,11 @@
 - 实现前端与服务器双重校验、提交中防重复、成功和失败状态，以及填写内容保留。
 - 在服务器端验证 Turnstile，再发送到已验证 Gmail。
 - 邮件正文按字段分组，明确来源页面和提交时间；不在日志中复制完整询盘正文。
+- `local-test` 只接受 localhost hostname 列表与 Cloudflare 测试响应；`live` 模式拒绝 localhost、`.test` 和 `.invalid` 配置。
 
 验收：
 
-- 正常询盘能够真实到达指定 Gmail。
+- 正常询盘能够真实到达指定 Gmail。（待获批公开部署与真实收件验收）
 - 无效字段、过期或重复 Turnstile token、邮件发送失败都有可理解的页面反馈。
 - 键盘可以完成整张表单，错误信息与字段正确关联。
 
@@ -167,6 +170,8 @@
 - 首页在慢速网络与常见手机宽度下仍能完成产品浏览和询价。
 
 ### 阶段 7：预览、仓库与 Cloudflare 交付
+
+实现状态（2026-09-14）：GitHub／Cloudflare Workers Builds 的跨平台 CI 入口、安全配置生成、秘密分层、失败关闭、输出脱敏和清理测试已在本地完成。根配置与 production 环境均关闭 `workers.dev` 和 Preview URL，仓库不声明 Route；当前 Cloudflare API 快照也没有 Dashboard Route 或 Custom Domain，但首次部署前仍须复核外部状态。尚未执行 Git 提交／推送、GitHub App 授权、仓库连接、Cloudflare 自动构建或域名绑定。
 
 任务：
 
@@ -206,6 +211,6 @@
 - 首批真实型号、参数、包装、MOQ、交期和质保政策。
 - 拟使用的正式域名，以及是否将 DNS 托管到 Cloudflare。
 
-## 7. 本次确认范围
+## 7. 已确认与当前停止边界
 
-确认本计划后，下一步只执行阶段 0 至阶段 2：接入新仓库、建立项目骨架、完成首页桌面和移动端预览。完成首页视觉对照后再次请用户验收，再进入其余页面与 RFQ 后端。
+阶段 0～3 已按前序确认完成。用户已授权并完成阶段 4 的本地部分、隐藏 Worker 账户写入及 GitHub／Workers Builds CI 本地适配；正式域名、Turnstile widget、Email Routing、目标邮箱验证和两个 Worker Runtime Secrets 均已准备好。当前停止边界是 Git 提交／推送、GitHub App 连接、Cloudflare 自动构建、公开 Preview、正式域名／DNS 绑定和真实投递验收。不得在未获公开部署授权前启用 Worker 公网入口或修改正式 DNS；不得要求用户在聊天中粘贴 Turnstile secret。

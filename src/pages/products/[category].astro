@@ -33,7 +33,7 @@ const pageDescription = `${category.summary} Review the operating and installati
         />
         <h1 id="page-title">{category.name}</h1>
         <p class="product-detail-hero__lede">{category.definition}</p>
-        <a class="button" href="/#request">Prepare an inquiry <Icon name="arrow" size={21} /></a>
+        <a class="button" href={`/request-a-quote/?category=${category.slug}`}>Prepare an inquiry <Icon name="arrow" size={21} /></a>
       </div>
       <figure class="product-detail-hero__visual">
         <Image
@@ -109,8 +109,8 @@ const pageDescription = `${category.summary} Review the operating and installati
     <ActionPanel
       eyebrow="Selection request"
       title={`Need help with ${category.name.toLowerCase()}?`}
-      body="Prepare the operating duty, installation constraints, electrical supply, quantity and destination. No information is transmitted from the current preview."
-      primaryHref={`/#request`}
+      body="Prepare the operating duty, installation constraints, electrical supply, quantity and destination in the structured RFQ workspace."
+      primaryHref={`/request-a-quote/?category=${category.slug}`}
       primaryLabel="Prepare an RFQ"
       secondaryHref="/products/"
       secondaryLabel="Compare all categories"

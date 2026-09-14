@@ -1,0 +1,453 @@
+---
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Icon from "../components/Icon.astro";
+import { audiencePaths, productCategories } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "Request an Industrial Fan Quotation | XINGXU FAN";
+const pageDescription =
+  "Send a structured industrial fan requirement through server-side validation, Turnstile verification and configured email delivery.";
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main>
+    <section class="rfq-hero" aria-labelledby="page-title">
+      <div>
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Request a quote" }]} />
+        <h1 id="page-title">Send the Details Needed for a Useful Fan Quotation</h1>
+        <p>
+          Start with buying context, a product direction and the delivery requirement. If the fan has not been
+          selected, add the operating conditions you already know.
+        </p>
+      </div>
+      <aside class="rfq-hero__brief" role="note">
+        <strong>Delivery boundary</strong>
+        <p>
+          Local development uses Cloudflare's public test keys and Wrangler's email simulator, so it sends no real
+          email. Production delivery is accepted only when the live Turnstile and email configuration is deployed and
+          verified on the public domain.
+        </p>
+      </aside>
+    </section>
+
+    <section class="rfq-workspace" aria-labelledby="rfq-form-title">
+      <form class="rfq-form" id="rfq-form" novalidate>
+        <header class="rfq-form__heading">
+          <h2 id="rfq-form-title">Industrial fan inquiry</h2>
+          <p>Fields marked “Required” must be complete. Provide either email or WhatsApp so the inquiry can be answered.</p>
+        </header>
+
+        <fieldset class="rfq-group">
+          <legend>Buyer and contact</legend>
+          <div class="rfq-grid rfq-grid--two">
+            <div class="rfq-field">
+              <label for="customer-type">Customer type <span>Required</span></label>
+              <select id="customer-type" name="customerType" required aria-describedby="customer-type-error">
+                <option value="">Please select</option>
+                {audiencePaths.map((path) => <option value={path.id}>{path.shortLabel}</option>)}
+                <option value="other">Other</option>
+              </select>
+              <small class="field-error" id="customer-type-error" data-error-for="customerType"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="full-name">Full name <span>Required</span></label>
+              <input id="full-name" name="fullName" type="text" autocomplete="name" minlength="2" maxlength="100" required aria-describedby="full-name-error" />
+              <small class="field-error" id="full-name-error" data-error-for="fullName"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="company-name">Company <span>Required</span></label>
+              <input id="company-name" name="companyName" type="text" autocomplete="organization" minlength="2" maxlength="140" required aria-describedby="company-name-error" />
+              <small class="field-error" id="company-name-error" data-error-for="companyName"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="country-region">Country or region <span>Required</span></label>
+              <input id="country-region" name="countryRegion" type="text" autocomplete="country-name" minlength="2" maxlength="100" required aria-describedby="country-region-error" />
+              <small class="field-error" id="country-region-error" data-error-for="countryRegion"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="email">Email <span>One contact required</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" maxlength="254" inputmode="email" aria-describedby="email-help email-error" />
+              <small class="field-help" id="email-help">Business email preferred.</small>
+              <small class="field-error" id="email-error" data-error-for="email"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="whatsapp">WhatsApp number <span>One contact required</span></label>
+              <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" maxlength="40" inputmode="tel" placeholder="Include country code" aria-describedby="whatsapp-help whatsapp-error" />
+              <small class="field-help" id="whatsapp-help">Use digits and the international country code when possible.</small>
+              <small class="field-error" id="whatsapp-error" data-error-for="whatsapp"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="preferred-contact">Preferred contact channel <span>Optional</span></label>
+              <select id="preferred-contact" name="preferredContact" aria-describedby="preferred-contact-error">
+                <option value="">No preference</option>
+                <option value="email">Email</option>
+                <option value="whatsapp">WhatsApp</option>
+                <option value="either">Either</option>
+              </select>
+              <small class="field-error" id="preferred-contact-error" data-error-for="preferredContact"></small>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="rfq-group">
+          <legend>Product and delivery</legend>
+          <div class="rfq-grid rfq-grid--two">
+            <div class="rfq-field rfq-field--wide">
+              <label for="product-category">Product category <span>Required</span></label>
+              <select id="product-category" name="productCategory" required aria-describedby="product-category-help product-category-error">
+                <option value="">Please select</option>
+                {productCategories.map((category) => <option value={category.slug}>{category.name}</option>)}
+                <option value="selection-help">Need selection help</option>
+              </select>
+              <small class="field-help" id="product-category-help">Choose selection help if the operating duty is known but the fan type is not.</small>
+              <small class="field-error" id="product-category-error" data-error-for="productCategory"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="product-model">Product or reference model <span>Optional</span></label>
+              <input id="product-model" name="productModel" type="text" maxlength="120" aria-describedby="product-model-error" />
+              <small class="field-error" id="product-model-error" data-error-for="productModel"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="replacement-model">Model being replaced <span>Optional</span></label>
+              <input id="replacement-model" name="replacementModel" type="text" maxlength="120" aria-describedby="replacement-model-error" />
+              <small class="field-error" id="replacement-model-error" data-error-for="replacementModel"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="quantity">Quantity <span>Required</span></label>
+              <input id="quantity" name="quantity" type="number" min="1" max="1000000" step="1" inputmode="numeric" required aria-describedby="quantity-error" />
+              <small class="field-error" id="quantity-error" data-error-for="quantity"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="destination">Destination city or port <span>Required</span></label>
+              <input id="destination" name="destination" type="text" autocomplete="address-level2" minlength="2" maxlength="160" required aria-describedby="destination-error" />
+              <small class="field-error" id="destination-error" data-error-for="destination"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="delivery-date">Required delivery date <span>Optional</span></label>
+              <input id="delivery-date" name="deliveryDate" type="text" maxlength="80" placeholder="Date or timing window" aria-describedby="delivery-date-error" />
+              <small class="field-error" id="delivery-date-error" data-error-for="deliveryDate"></small>
+            </div>
+            <div class="rfq-field">
+              <label for="trade-term">Trade term <span>Optional</span></label>
+              <input id="trade-term" name="tradeTerm" type="text" maxlength="80" placeholder="For example, FOB or CIF" aria-describedby="trade-term-error" />
+              <small class="field-error" id="trade-term-error" data-error-for="tradeTerm"></small>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="rfq-group">
+          <legend>Requirement summary</legend>
+          <div class="rfq-field">
+            <label for="requirement-summary">What the fan needs to do <span>Required</span></label>
+            <textarea id="requirement-summary" name="requirementSummary" rows="6" minlength="20" maxlength="4000" required aria-describedby="requirement-summary-help requirement-summary-error"></textarea>
+            <small class="field-help" id="requirement-summary-help">Describe the application, installation, known duty and any constraint that affects selection or quotation.</small>
+            <small class="field-error" id="requirement-summary-error" data-error-for="requirementSummary"></small>
+          </div>
+        </fieldset>
+
+        <fieldset class="rfq-group rfq-group--conditional" id="selection-details" hidden disabled>
+          <legend>Selection-help details</legend>
+          <p class="rfq-group__intro">Share what is known. Only the application is required; units may be included in each answer.</p>
+          <div class="rfq-grid rfq-grid--two">
+            <div class="rfq-field rfq-field--wide">
+              <label for="application">Application <span>Required for selection help</span></label>
+              <input id="application" name="application" type="text" minlength="2" maxlength="240" aria-describedby="application-error" />
+              <small class="field-error" id="application-error" data-error-for="application"></small>
+            </div>
+            <div class="rfq-field"><label for="airflow">Airflow <span>Optional</span></label><input id="airflow" name="airflow" type="text" maxlength="160" placeholder="Value and unit" aria-describedby="airflow-error" /><small class="field-error" id="airflow-error" data-error-for="airflow"></small></div>
+            <div class="rfq-field"><label for="pressure">Pressure <span>Optional</span></label><input id="pressure" name="pressure" type="text" maxlength="160" placeholder="Static or total, with unit" aria-describedby="pressure-error" /><small class="field-error" id="pressure-error" data-error-for="pressure"></small></div>
+            <div class="rfq-field"><label for="electrical-supply">Voltage, phase and frequency <span>Optional</span></label><input id="electrical-supply" name="electricalSupply" type="text" maxlength="160" aria-describedby="electrical-supply-error" /><small class="field-error" id="electrical-supply-error" data-error-for="electricalSupply"></small></div>
+            <div class="rfq-field"><label for="motor-power">Motor power <span>Optional</span></label><input id="motor-power" name="motorPower" type="text" maxlength="120" aria-describedby="motor-power-error" /><small class="field-error" id="motor-power-error" data-error-for="motorPower"></small></div>
+            <div class="rfq-field"><label for="dimensions">Dimensions or opening <span>Optional</span></label><input id="dimensions" name="dimensions" type="text" maxlength="200" aria-describedby="dimensions-error" /><small class="field-error" id="dimensions-error" data-error-for="dimensions"></small></div>
+            <div class="rfq-field"><label for="material">Material requirement <span>Optional</span></label><input id="material" name="material" type="text" maxlength="160" aria-describedby="material-error" /><small class="field-error" id="material-error" data-error-for="material"></small></div>
+            <div class="rfq-field rfq-field--wide"><label for="operating-medium">Temperature or operating medium <span>Optional</span></label><input id="operating-medium" name="operatingMedium" type="text" maxlength="240" aria-describedby="operating-medium-error" /><small class="field-error" id="operating-medium-error" data-error-for="operatingMedium"></small></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="rfq-group">
+          <legend>Review and submit</legend>
+          <div class="rfq-field">
+            <label for="message">Additional message <span>Optional</span></label>
+            <textarea id="message" name="message" rows="4" maxlength="2000" aria-describedby="message-error"></textarea>
+            <small class="field-error" id="message-error" data-error-for="message"></small>
+          </div>
+
+          <label class="privacy-check" for="privacy-accepted">
+            <input id="privacy-accepted" name="privacyAccepted" type="checkbox" required aria-describedby="privacy-accepted-error" />
+            <span>I understand how this inquiry will be validated and delivered, as described in the <a href="/privacy/">privacy notice</a>. <strong>Required</strong></span>
+          </label>
+          <small class="field-error" id="privacy-accepted-error" data-error-for="privacyAccepted"></small>
+
+          <input type="hidden" name="turnstileToken" id="turnstile-token" />
+          <div
+            class="turnstile-field"
+            data-turnstile-control
+            role="group"
+            tabindex="-1"
+            aria-labelledby="turnstile-label"
+            aria-describedby="turnstile-token-error"
+          >
+            <strong class="turnstile-label" id="turnstile-label">Bot protection</strong>
+            <p class="turnstile-loading" data-turnstile-loading>Loading bot protection…</p>
+            <div
+              class="cf-turnstile"
+              data-sitekey={turnstileSiteKey}
+              data-action="rfq"
+              data-theme="light"
+              data-callback="onTurnstileSuccess"
+              data-expired-callback="onTurnstileExpired"
+              data-error-callback="onTurnstileError"
+            ></div>
+            <small class="field-error" id="turnstile-token-error" data-error-for="turnstileToken"></small>
+          </div>
+
+          <div class="rfq-submit-row">
+            <button class="button" type="submit" data-rfq-submit>
+              <span data-submit-label>Send inquiry</span> <Icon name="arrow" size={21} />
+            </button>
+            <p>Duplicate clicks are blocked while the server validates and delivers the inquiry.</p>
+          </div>
+          <output class="rfq-status" data-rfq-status aria-live="polite"></output>
+        </fieldset>
+      </form>
+
+      <aside class="rfq-guidance" aria-labelledby="rfq-guidance-title">
+        <div>
+          <h2 id="rfq-guidance-title">What happens after “Send inquiry”</h2>
+          <ol>
+            <li><strong>Fields are checked</strong><span>Missing or invalid entries return beside the relevant control.</span></li>
+            <li><strong>Turnstile is verified</strong><span>The server validates the token, action and approved hostname.</span></li>
+            <li><strong>Email delivery is attempted</strong><span>A successful response is shown only after the email service accepts the message.</span></li>
+          </ol>
+        </div>
+        <div class="rfq-guidance__boundary">
+          <strong>No database or file upload</strong>
+          <p>This stage sends one grouped email and does not add an inquiry database or attachment storage.</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script is:inline>
+    window.onTurnstileSuccess = function (token) {
+      const field = document.getElementById("turnstile-token");
+      if (field) field.value = token;
+      const control = document.querySelector("[data-turnstile-control]");
+      if (control) control.removeAttribute("aria-invalid");
+      const error = document.querySelector('[data-error-for="turnstileToken"]');
+      if (error) error.textContent = "";
+      const loading = document.querySelector("[data-turnstile-loading]");
+      if (loading) loading.hidden = true;
+    };
+    window.onTurnstileExpired = function () {
+      const field = document.getElementById("turnstile-token");
+      if (field) field.value = "";
+      const control = document.querySelector("[data-turnstile-control]");
+      if (control) control.setAttribute("aria-invalid", "true");
+      const error = document.querySelector('[data-error-for="turnstileToken"]');
+      if (error) error.textContent = "The bot-protection check expired. Complete it again.";
+      const loading = document.querySelector("[data-turnstile-loading]");
+      if (loading) loading.hidden = true;
+    };
+    window.onTurnstileError = function () {
+      const field = document.getElementById("turnstile-token");
+      if (field) field.value = "";
+      const control = document.querySelector("[data-turnstile-control]");
+      if (control) control.setAttribute("aria-invalid", "true");
+      const error = document.querySelector('[data-error-for="turnstileToken"]');
+      if (error) error.textContent = "Bot protection could not load. Check the connection and refresh the page.";
+      const loading = document.querySelector("[data-turnstile-loading]");
+      if (loading) loading.hidden = true;
+    };
+    window.setTimeout(function () {
+      if (document.querySelector(".cf-turnstile iframe")) return;
+      const loading = document.querySelector("[data-turnstile-loading]");
+      if (loading) loading.hidden = true;
+      const error = document.querySelector('[data-error-for="turnstileToken"]');
+      if (error && !error.textContent) {
+        error.textContent = "Bot protection did not load. Check the connection and refresh the page.";
+        const control = document.querySelector("[data-turnstile-control]");
+        if (control) control.setAttribute("aria-invalid", "true");
+      }
+    }, 6000);
+  </script>
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script>
+    type ApiResult = {
+      ok: boolean;
+      code?: string;
+      message?: string;
+      requestId?: string;
+      fieldErrors?: Record<string, string>;
+    };
+
+    type TurnstileWindow = Window & { turnstile?: { reset: () => void } };
+
+    const form = document.querySelector<HTMLFormElement>("#rfq-form");
+    const category = document.querySelector<HTMLSelectElement>("#product-category");
+    const selectionDetails = document.querySelector<HTMLFieldSetElement>("#selection-details");
+    const application = document.querySelector<HTMLInputElement>("#application");
+    const email = document.querySelector<HTMLInputElement>("#email");
+    const whatsapp = document.querySelector<HTMLInputElement>("#whatsapp");
+    const submit = document.querySelector<HTMLButtonElement>("[data-rfq-submit]");
+    const submitLabel = document.querySelector<HTMLElement>("[data-submit-label]");
+    const status = document.querySelector<HTMLOutputElement>("[data-rfq-status]");
+
+    function setSelectionMode() {
+      const active = category?.value === "selection-help";
+      if (selectionDetails) {
+        selectionDetails.hidden = !active;
+        selectionDetails.disabled = !active;
+      }
+      if (application) application.required = active;
+    }
+
+    function findControl(field: string): HTMLElement | null {
+      if (field === "turnstileToken") {
+        return document.querySelector<HTMLElement>("[data-turnstile-control]");
+      }
+      const item = form?.elements.namedItem(field);
+      return item instanceof HTMLElement ? item : null;
+    }
+
+    function setFieldError(field: string, message: string) {
+      const error = document.querySelector<HTMLElement>(`[data-error-for="${field}"]`);
+      const control = findControl(field);
+      if (error) error.textContent = message;
+      control?.setAttribute("aria-invalid", "true");
+    }
+
+    function clearErrors() {
+      document.querySelectorAll<HTMLElement>("[data-error-for]").forEach((error) => {
+        error.textContent = "";
+      });
+      form?.querySelectorAll<HTMLElement>("[aria-invalid='true']").forEach((control) => {
+        control.removeAttribute("aria-invalid");
+      });
+    }
+
+    function focusFirstError() {
+      form?.querySelector<HTMLElement>("[aria-invalid='true']")?.focus();
+    }
+
+    function setBusy(busy: boolean) {
+      if (submit) submit.disabled = busy;
+      form?.setAttribute("aria-busy", String(busy));
+      if (submitLabel) submitLabel.textContent = busy ? "Validating and sending…" : "Send inquiry";
+    }
+
+    function resetTurnstile() {
+      const token = document.querySelector<HTMLInputElement>("#turnstile-token");
+      if (token) token.value = "";
+      (window as TurnstileWindow).turnstile?.reset();
+    }
+
+    function applyQueryDefaults() {
+      const params = new URLSearchParams(window.location.search);
+      const audience = params.get("audience");
+      const product = params.get("category");
+      if (audience && form?.elements.namedItem("customerType") instanceof HTMLSelectElement) {
+        const select = form.elements.namedItem("customerType") as HTMLSelectElement;
+        if (Array.from(select.options).some((option) => option.value === audience)) select.value = audience;
+      }
+      if (product && category && Array.from(category.options).some((option) => option.value === product)) {
+        category.value = product;
+      }
+      setSelectionMode();
+    }
+
+    category?.addEventListener("change", setSelectionMode);
+    applyQueryDefaults();
+
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!form || !status) return;
+
+      clearErrors();
+      status.textContent = "";
+      status.dataset.state = "";
+
+      let clientValid = true;
+
+      if (!email?.value.trim() && !whatsapp?.value.trim()) {
+        const message = "Provide an email address or WhatsApp number.";
+        setFieldError("email", message);
+        setFieldError("whatsapp", message);
+        clientValid = false;
+      }
+
+      form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("input, select, textarea").forEach((control) => {
+        if (control.checkValidity()) return;
+        let message = "Review this field.";
+        if (control.validity.valueMissing) message = "Complete this required field.";
+        else if (control.validity.typeMismatch && control.type === "email") message = "Enter a valid email address.";
+        else if (
+          control.validity.tooShort &&
+          (control instanceof HTMLInputElement || control instanceof HTMLTextAreaElement)
+        ) {
+          message = `Enter at least ${control.minLength} characters.`;
+        }
+        else if (control.validity.rangeUnderflow || control.validity.rangeOverflow || control.validity.stepMismatch) {
+          message = "Enter a whole-number quantity from 1 to 1,000,000.";
+        }
+        if (control.name) setFieldError(control.name, message);
+        clientValid = false;
+      });
+
+      const turnstileToken = document.querySelector<HTMLInputElement>("#turnstile-token");
+      if (!turnstileToken?.value) {
+        setFieldError("turnstileToken", "Complete the bot-protection check before submitting.");
+        clientValid = false;
+      }
+
+      if (!clientValid) {
+        form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(":invalid").forEach((control) => {
+          control.setAttribute("aria-invalid", "true");
+        });
+        status.textContent = "Review the highlighted fields. Nothing has been sent.";
+        status.dataset.state = "error";
+        focusFirstError();
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      const payload = {
+        ...data,
+        privacyAccepted: data.privacyAccepted === "on",
+        sourcePage: window.location.pathname,
+      };
+
+      setBusy(true);
+      status.textContent = "Checking the inquiry and bot-protection response…";
+      status.dataset.state = "pending";
+
+      try {
+        const response = await fetch("/api/rfq", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const result = (await response.json()) as ApiResult;
+
+        if (!response.ok || !result.ok) {
+          Object.entries(result.fieldErrors ?? {}).forEach(([field, message]) => setFieldError(field, message));
+          status.textContent = result.message ?? "The inquiry could not be sent. Your entries remain in the form.";
+          status.dataset.state = "error";
+          if (result.requestId) status.textContent += ` Reference: ${result.requestId}.`;
+          if (result.code !== "validation_failed" && result.code !== "configuration_required") resetTurnstile();
+          focusFirstError();
+          return;
+        }
+
+        sessionStorage.setItem("rfq-delivered", JSON.stringify({ requestId: result.requestId, submittedAt: new Date().toISOString() }));
+        window.location.assign("/thank-you/");
+      } catch {
+        status.textContent = "The server could not be reached. Your entries remain in the form; check the connection and try again.";
+        status.dataset.state = "error";
+      } finally {
+        setBusy(false);
+      }
+    });
+  </script>
+</BaseLayout>

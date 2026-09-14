@@ -62,7 +62,7 @@ typography:
     lineHeight: 1.35
     letterSpacing: "0.13em"
 rounded:
-  field: "3px"
+  field: "4px"
   action: "4px"
 spacing:
   xs: "6px"
@@ -86,8 +86,8 @@ components:
     backgroundColor: "{colors.pure-white}"
     textColor: "{colors.deep-navy}"
     rounded: "{rounded.field}"
-    padding: "10px 12px"
-    height: "44px"
+    padding: "13px 14px"
+    height: "52px"
 ---
 
 # Design System: XINGXU FAN
@@ -98,7 +98,7 @@ components:
 
 The system presents industrial products with the discipline of a technical showroom: product scale is decisive, operating evidence is explicit, and inquiry is the natural next step. Warm and cool white fields keep the page open; deep ink gives it authority; blue-green rules organize information; safety orange appears only where action or state needs emphasis.
 
-Interior pages extend that world without introducing a new composition language. They begin with the buyer's problem, provide category- or audience-specific evidence and guidance, state the publication or operating boundary, and end with one clear action. Product, company, contact, privacy, and submission states must always distinguish what is visible in the preview from what is verified, published, reachable, or live.
+Interior pages extend that world without introducing a new composition language. They begin with the buyer's problem, provide category- or audience-specific evidence and guidance, state the publication or operating boundary, and end with one clear action. Product, company, contact, privacy, and submission states must distinguish published, reachable, live behavior from local simulation, pending setup, and unverified claims. The Stage 4 RFQ is a functional inquiry surface; production delivery remains a separate configuration and verification boundary.
 
 **Key Characteristics:**
 
@@ -159,11 +159,13 @@ Deep ink and blue-green organize warm and cool white fields; safety orange is th
 
 ## Layout
 
-The desktop frame uses broad responsive gutters (`max(4.5vw, 32px)`). The homepage retains its established three-column trust opening, ruled capability band, three-card product grid, and buyer-path workspace paired with a dark RFQ rail.
+The desktop frame uses broad responsive gutters (`max(4.5vw, 32px)`). The homepage retains its established three-column trust opening, ruled capability band, three-card product grid, and buyer-path workspace paired with a dark RFQ preparation rail that leads to the dedicated form.
 
 Phase 3 interior pages use a repeatable two-column opening: the breadcrumb and problem-led H1 occupy the larger field, while a concise brief, notice, or action occupies the smaller field beneath an orange top rule. The page then moves through product-, audience-, or evidence-specific content, states an explicit publication or operating boundary, and finishes with the shared dark action panel. Product detail pages may replace the brief column with one decisive concept-product bay; policy pages use a centered reading column capped at 940px; status and 404 pages use simplified two-part utility compositions.
 
-At the medium breakpoint (1020px), the primary navigation collapses to the menu control, three-column content grids become two columns, four-column selection and evidence groups become two columns, and wide content/action pairings tighten. At the mobile breakpoint (720px), the system uses 18px gutters and one-column reflow for heroes, product cards, product detail, fit boundaries, partner and capability grids, inquiry preparation, policy/status utilities, action panels, and footer. The mobile reading order must preserve problem or status first, supporting evidence/content second, the explicit boundary next, and the action last. Two-up evidence photography may remain two columns when its labels and replacement status stay readable.
+The Stage 4 `/request-a-quote/` surface uses a wide two-column desktop workspace: the complete inquiry form occupies the primary column and a sticky, ordered guidance rail occupies the secondary column. Its form groups use two-up fields where width allows, while requirement summaries and conditional selection-help fields can span the form column.
+
+At the medium breakpoint (1020px), the primary navigation collapses to the menu control, three-column content grids become two columns, four-column selection and evidence groups become two columns, and wide content/action pairings tighten. The RFQ form and guidance rail reflow to one column at this breakpoint and the rail stops sticking. At the mobile breakpoint (720px), the system uses 18px gutters and one-column reflow for heroes, product cards, product detail, fit boundaries, partner and capability grids, inquiry preparation, every RFQ field and its guidance, policy/status utilities, action panels, and footer. The mobile reading order must preserve problem or status first, supporting evidence/content second, the explicit boundary next, and the action last. Two-up evidence photography may remain two columns when its labels and replacement status stay readable.
 
 ## Elevation & Depth
 
@@ -173,7 +175,7 @@ The system is flat by default. Depth comes from alternating white fields, thin b
 
 ## Shapes
 
-Corners are almost square: fields and evidence/product containers use a 3px radius, while actions and navigation controls use 4px. Thin borders, hard section edges, rectangular image bays, and horizontal status rules preserve a precise industrial character; pills, vertical orange tabs, and oversized soft radii are outside the approved language.
+Corners are almost square: evidence and product containers use a 3px radius, while Stage 4 RFQ fields, actions, and navigation controls use 4px. Thin borders, hard section edges, rectangular image bays, and horizontal status rules preserve a precise industrial character; pills, vertical orange tabs, and oversized soft radii are outside the approved language.
 
 ## Components
 
@@ -187,7 +189,7 @@ Corners are almost square: fields and evidence/product containers use a 3px radi
 
 - **Desktop:** A 66px-minimum three-part header places the compact stacked brand at left, familiar B2B destinations in the center, and the quote action at right. The active destination is link blue with a short orange underline.
 - **Responsive:** At 1020px the desktop links collapse into a 44px menu control. At 720px the 62px header becomes sticky, hides the brand descriptor and header quote button, and keeps the compact brand and menu visible.
-- **Destination discipline:** Navigation exposes only working routes. The shared header currently leads to Products, For Distributors, About, Contact, and the RFQ anchor; the homepage buyer tabs expose all three partner guides.
+- **Destination discipline:** Navigation exposes only working routes. The shared header currently leads to Products, For Distributors, About, Contact, and the dedicated RFQ route; the homepage buyer tabs expose all three partner guides.
 
 ### Breadcrumbs
 
@@ -202,9 +204,17 @@ Breadcrumbs are a compact ordered wayfinding line above interior H1s. They use t
 
 ### Inputs and Fields
 
-- **Style:** Persistent labels, white fields, 3px corners, 44px minimum control height, and cool blue-gray borders on the dark RFQ rail.
-- **Focus:** Border and outline shift to cyan; placeholders retain readable contrast.
-- **Status:** Error and success messages use pale state colors on lightly tinted backgrounds and an `aria-live` status output.
+- **Style:** The Stage 4 RFQ uses persistent readable labels, explicit required or optional indicators, white 52px-minimum controls with 4px corners, and cool blue-gray borders. Helper and error positions remain associated with their controls; placeholders supplement labels and never replace them.
+- **Contact rule:** Require at least one reply path: email or WhatsApp. Preferred channel remains a separate optional choice.
+- **Conditional detail:** Selecting `Need selection help` reveals the operating-duty fieldset and makes its application field required; choosing a product category keeps those fields hidden and disabled.
+- **Focus and error:** Focus uses a visible blue/cyan ring. Invalid controls use a warm error treatment, persistent field-level copy, `aria-invalid`, and focus moves to the first invalid control after validation.
+
+### RFQ Submission, Turnstile, and Result States
+
+- **Submission states:** The flow exposes visible pending, success, and failure states. Pending and failure copy appears in a polite live region on the form; a successful `201` response writes a per-tab `sessionStorage` delivery marker and then routes to `/thank-you/`, where the visible success state appears only when the marker carries a request reference. Direct navigation to the success route is not confirmation.
+- **Duplicate lock:** While server validation and delivery are in progress, disable the submit action, mark the form busy, and change the label to `Validating and sending…` so repeated clicks cannot create a second request.
+- **Bot protection:** Turnstile is a visible labelled group, not an invisible prerequisite. It has a readable loading state, keyboard focus treatment, invalid styling, field-level expiry or verification errors, and explicit script/iframe load-failure messaging.
+- **Validation authority:** Client checks provide immediate guidance, but the Worker remains authoritative: it validates the bounded JSON payload, contact rule, conditional fields, consent, source path, and Turnstile response before attempting one grouped email.
 
 ### Action Panel
 
@@ -215,7 +225,8 @@ The shared final action is a full-width deep-navy panel with a restrained techni
 - **Product concept boundary:** Concept imagery communicates category form only. It is not stock, model, performance, or facility evidence and remains visibly stamped and captioned until replacement.
 - **Product publication boundary:** A model record appears only after its name, photographs, core specifications, and publication approval are verified. Empty product states say that no public model record exists.
 - **Contact boundary:** Pending channels are status records, not live links. A channel is presented as active only after its public detail is authorized, reachable, owned, and tested.
-- **Privacy and submission boundary:** Until a live endpoint, validation, consent, delivery, retention, and rights route exist, the RFQ preview sends and stores nothing. The privacy and thank-you routes must say this directly and must not imply a successful submission.
+- **Privacy and submission boundary:** Stage 4 posts to `/api/rfq`, performs server-side validation and Turnstile verification, and attempts one grouped email. It adds no inquiry database, file upload, or attachment storage. A success message is permitted only after the configured email service accepts the message and the current tab carries the delivery marker; direct access to `/thank-you/` never proves submission.
+- **Environment boundary:** `local-test` mode uses Cloudflare's public Turnstile test site key and secret plus Wrangler's simulated `send_email` output; it does not send a real email. `live` mode uses the approved production hostname, live Turnstile keys, server-only secret, and restricted verified sender and destination. The presence of the form or a successful local test must not be presented as proof that production delivery is publicly deployed or verified.
 
 ### Ordered Workflows
 
@@ -230,11 +241,13 @@ Use visible ordinals only when sequence changes how the content is followed, suc
 - **Do** preserve the Phase 3 flow from a problem-led opening through specific evidence or guidance, an explicit content boundary, and one clear action.
 - **Do** use horizontal orange top rules for status emphasis and retain the 6rem interior-H1 ceiling.
 - **Do** keep reduced-motion behavior, visible keyboard focus, and the mobile reading order intact.
+- **Do** keep field labels, helper text, errors, Turnstile state, delivery state, and the local-versus-live boundary readable at every responsive width.
 
 ### Don't:
 
 - **Don't** present a concept image as a real Xingxu product, location, warehouse, nameplate, stock item, model, or performance record.
 - **Don't** imply a published SKU, factory, certification, authorization, customer, export record, performance figure, or active contact channel without evidence.
-- **Don't** imply that the current RFQ preview transmits, stores, protects, or delivers data, or that the reserved thank-you route proves submission.
+- **Don't** treat a local-test `201`, the presence of the RFQ form, or direct access to the thank-you route as proof of live production delivery.
+- **Don't** add an inquiry database, file upload, or attachment storage to the Stage 4 truth boundary without a separately approved data, privacy, and retention design.
 - **Don't** use decorative ordinals for unordered categories, capabilities, evidence, checks, or status groups.
 - **Don't** reintroduce repeated section kickers, action-panel eyebrows, orange side rails, generic blue-machinery styling, decorative gradients, pill-heavy UI, or orange used as atmosphere.

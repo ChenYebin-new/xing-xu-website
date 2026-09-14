@@ -30,7 +30,7 @@ const pageDescription = `${audience.promise} Review the information and boundari
       </div>
       <div class="partner-hero__brief">
         <p>{audience.promise}</p>
-        <a class="button" href="/#request">{audience.inquiryLabel} <Icon name="arrow" size={21} /></a>
+        <a class="button" href={`/request-a-quote/?audience=${audience.id}`}>{audience.inquiryLabel} <Icon name="arrow" size={21} /></a>
       </div>
     </section>
 
@@ -83,8 +83,8 @@ const pageDescription = `${audience.promise} Review the information and boundari
     <ActionPanel
       eyebrow={`${audience.shortLabel} inquiry`}
       title="Turn the requirement into a reviewable brief"
-      body="Use the homepage RFQ workspace to check the first required inputs. This phase sends and stores nothing; live submission is part of the next implementation stage."
-      primaryHref="/#request"
+      body="Use the structured RFQ workspace to bring buying context, technical requirements and delivery scope into one reviewable request."
+      primaryHref={`/request-a-quote/?audience=${audience.id}`}
       primaryLabel={audience.inquiryLabel}
       secondaryHref="/products/"
       secondaryLabel="Review product categories"
