@@ -1,6 +1,6 @@
 # XINGXU FAN 网站开发计划
 
-状态：阶段 0～2 已由用户验收并完成 Git 发布；阶段 3 已完成并由用户验收；阶段 4 本地实现与模拟投递已完成，真实 Gmail 验收等待获批公开部署；GitHub／Workers Builds CI 本地适配已完成但尚未提交、连接或部署
+状态：阶段 0～2 已由用户验收并完成 Git 发布；阶段 3 已完成并由用户验收；阶段 4 本地实现与模拟投递已完成，真实 Gmail 验收等待获批公开部署；GitHub／Workers Builds CI 已提交并完成连接，本次状态提交用于触发首次隐藏自动构建
 项目：Quanzhou Xingxu Fan & Ventilation Supply
 目标仓库：`https://github.com/ChenYebin-new/xing-xu-website`
 目标市场：Malaysia and the Philippines
@@ -121,7 +121,7 @@
 
 ### 阶段 4：RFQ 完整流程
 
-实现状态（2026-09-14）：代码、本地模拟流程、独立生产配置和隐藏 Worker 账户写入均已完成。前后端校验、条件字段、同源限制、32 KB 请求上限、Turnstile Siteverify、重复点击锁定、错误关联、邮件分组格式、安全日志、成功页会话确认和 Wrangler 模拟邮件均已实现。`xingxufan.com`、生产 Turnstile widget、Email Routing 与已验证目的地址已由账户所有者准备；两个 Worker Secret 已安全写入，且 Cloudflare API 已确认没有公开路由。剩余验收项为公开 Preview／正式域名部署和一次真实收件测试。
+实现状态（2026-09-14）：代码、本地模拟流程、独立生产配置和隐藏 Worker 账户写入均已完成。前后端校验、条件字段、同源限制、32 KB 请求上限、Turnstile Siteverify、重复点击锁定、错误关联、邮件分组格式、安全日志、成功页会话确认和 Wrangler 模拟邮件均已实现。`xingxufan.com`、生产 Turnstile widget、Email Routing 与已验证目的地址已由账户所有者准备；两个 Worker Secret 已安全写入，且 Cloudflare API 与 Dashboard 已确认没有公开入口。当前剩余验收项为首次 Workers Builds 隐藏构建、后续获批的公开 Preview／正式域名部署和一次真实收件测试。
 
 任务：
 
@@ -171,14 +171,14 @@
 
 ### 阶段 7：预览、仓库与 Cloudflare 交付
 
-实现状态（2026-09-14）：GitHub／Cloudflare Workers Builds 的跨平台 CI 入口、安全配置生成、秘密分层、失败关闭、输出脱敏和清理测试已在本地完成。根配置与 production 环境均关闭 `workers.dev` 和 Preview URL，仓库不声明 Route；当前 Cloudflare API 快照也没有 Dashboard Route 或 Custom Domain，但首次部署前仍须复核外部状态。尚未执行 Git 提交／推送、GitHub App 授权、仓库连接、Cloudflare 自动构建或域名绑定。
+实现状态（2026-09-14）：GitHub／Cloudflare Workers Builds 的跨平台 CI 入口、安全配置生成、秘密分层、失败关闭、输出脱敏和清理测试已完成并提交到 `main`，GitHub App 授权与目标仓库连接也已完成。根配置与 production 环境均关闭 `workers.dev` 和 Preview URL，仓库不声明 Route；首次部署前已通过 Cloudflare API 与 Dashboard 再次确认没有公开 Worker URL、Preview URL、Dashboard Route 或 Custom Domain。本次状态提交用于触发首次隐藏自动构建；正式域名尚未绑定，DNS 未修改。
 
 任务：
 
-- 先生成本地和 Cloudflare Preview 供用户验收。
-- 用户确认后才选择性暂存、提交并推送到新 GitHub 仓库。
-- 通过 Cloudflare Workers Builds 或明确的 CI 流程连接该仓库。
-- 最后配置正式域名、DNS、发件身份、Turnstile 正式密钥和环境变量。
+- 先完成本地 Preview；首次 Workers Builds 部署在所有公网入口关闭的状态下完成隐藏验证，公开 Preview 需另行授权。
+- 用户确认后才选择性暂存、提交并推送到新 GitHub 仓库。（初次 Git 发布及 CI 适配提交已完成。）
+- 通过 Cloudflare Workers Builds 连接该仓库。（已连接；首次隐藏构建由本次 `main` 推送触发。）
+- 正式域名、发件身份、Turnstile 正式密钥和环境变量已准备；公开域名／Route 与必要 DNS 变更在获得单独授权后执行。
 - 上线后完成一次真实访问、真实表单投递、404、移动端和联系方式检查。
 
 验收：
@@ -209,8 +209,8 @@
 - 可公开的门店地址与地图策略。
 - 门店、仓库、产品和铭牌原图。
 - 首批真实型号、参数、包装、MOQ、交期和质保政策。
-- 拟使用的正式域名，以及是否将 DNS 托管到 Cloudflare。
+- `xingxufan.com` 已确定；上线前仍需确认是否同时启用 `www`，并单独批准 Worker 自定义域／Route 与必要 DNS 变更。
 
 ## 7. 已确认与当前停止边界
 
-阶段 0～3 已按前序确认完成。用户已授权并完成阶段 4 的本地部分、隐藏 Worker 账户写入及 GitHub／Workers Builds CI 本地适配；正式域名、Turnstile widget、Email Routing、目标邮箱验证和两个 Worker Runtime Secrets 均已准备好。当前停止边界是 Git 提交／推送、GitHub App 连接、Cloudflare 自动构建、公开 Preview、正式域名／DNS 绑定和真实投递验收。不得在未获公开部署授权前启用 Worker 公网入口或修改正式 DNS；不得要求用户在聊天中粘贴 Turnstile secret。
+阶段 0～3 已按前序确认完成。用户已授权并完成阶段 4 的本地部分、隐藏 Worker 账户写入、GitHub／Workers Builds CI 适配和仓库连接；正式域名、Turnstile widget、Email Routing、目标邮箱验证和两个 Worker Runtime Secrets 均已准备好。用户已授权以本次文档状态提交触发首次隐藏自动构建；构建完成后仍须核验构建结果与外部入口状态。当前停止边界是公开 Preview、正式域名／DNS 绑定和真实投递验收。不得在未获公开部署授权前启用 Worker 公网入口或修改正式 DNS；不得要求用户在聊天中粘贴 Turnstile secret。
