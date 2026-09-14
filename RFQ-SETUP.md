@@ -1,6 +1,6 @@
 # RFQ 从本地测试切换到正式投递
 
-状态（2026-09-14）：本地代码、模拟邮件与 GitHub／Workers Builds CI 适配已完成并提交到 `main`，Cloudflare 已连接目标 GitHub 仓库；`xingxufan.com`、生产 Turnstile widget、Email Routing 和已验证目标邮箱已由账户所有者准备。隐藏的 `xing-xu-website` Worker 已创建，`TURNSTILE_SECRET` 与 `RFQ_TO_EMAIL` 已写入并完成名称核验；Cloudflare API 与 Dashboard 已确认生产 `workers.dev`、Preview URL、Custom Domain 和正式 Route 均未启用，DNS 未修改。本次状态提交用于触发首次隐藏自动构建；不要在聊天、Git、截图或 `.env` 提交中暴露 Turnstile secret。
+状态（2026-09-14）：本地代码、模拟邮件与 GitHub／Workers Builds CI 适配已完成并提交到 `main`，Cloudflare 已连接目标 GitHub 仓库；`xingxufan.com`、生产 Turnstile widget、Email Routing 和已验证目标邮箱已由账户所有者准备。隐藏的 `xing-xu-website` Worker 已创建，`TURNSTILE_SECRET` 与 `RFQ_TO_EMAIL` 已写入并完成名称核验。提交 `e1eee00` 的首次隐藏自动构建与部署已成功完成；部署日志显示没有发布目标，部署后 Dashboard 仍确认生产 `workers.dev`、Preview URL、Custom Domain 和正式 Route 均未启用，DNS 未修改，两个 Runtime Secret 保持加密状态。不要在聊天、Git、截图或 `.env` 提交中暴露 Turnstile secret。
 
 ## 当前本地模式
 
@@ -79,7 +79,9 @@ Cloudflare 的 `xing-xu-website` Worker 已按以下配置连接 GitHub：
 - `RFQ_TO_EMAIL` 是 Worker Runtime Secret，只供 Worker 发送邮件时读取。
 - `CI_RFQ_DESTINATION_ADDRESS` 是构建侧的同一收件目标副本，用于 Wrangler 的 `destination_address` 限制。以后更换目标邮箱时，需要同时更新它和 Runtime Secret `RFQ_TO_EMAIL`，但不要把值写入仓库。
 
-`npm run ci:build` 会先从子进程环境移除收件地址、Worker Runtime Secrets 和 Cloudflare 部署凭据，再运行类型检查、测试及 Astro 构建；在缺少正式 Sitekey、使用测试 Sitekey、检查失败或正式 Sitekey 没有进入 RFQ 页面时都会失败。`npm run cf:deploy:production` 固定部署 `production` 环境，结构化生成临时配置并在成功、Wrangler 非零退出或异常后清理；它不会通过命令参数传递收件地址。脚本还会核对 Cloudflare 自动注入的 Worker 名称与账号覆盖值：如存在，必须分别匹配 `xing-xu-website` 和已批准账号；核对通过后原样保留给 Wrangler，让官方 CI match-tag 保护继续验证部署目标。根配置和 production 环境目前都明确设置 `workers_dev = false`、`preview_urls = false`，仓库也没有 `route`／`routes`。Wrangler 省略路由字段不会删除控制台中另行管理的 Route／Custom Domain，因此本次推送前已通过 Dashboard／API 再次确认生产与 Preview 的 `workers.dev` 入口关闭，Route／Custom Domain 为空；首次 GitHub 自动部署保持隐藏，部署后仍需复核外部入口。
+`npm run ci:build` 会先从子进程环境移除收件地址、Worker Runtime Secrets 和 Cloudflare 部署凭据，再运行类型检查、测试及 Astro 构建；在缺少正式 Sitekey、使用测试 Sitekey、检查失败或正式 Sitekey 没有进入 RFQ 页面时都会失败。`npm run cf:deploy:production` 固定部署 `production` 环境，结构化生成临时配置并在成功、Wrangler 非零退出或异常后清理；它不会通过命令参数传递收件地址。脚本还会核对 Cloudflare 自动注入的 Worker 名称与账号覆盖值：如存在，必须分别匹配 `xing-xu-website` 和已批准账号；核对通过后原样保留给 Wrangler，让官方 CI match-tag 保护继续验证部署目标。根配置和 production 环境目前都明确设置 `workers_dev = false`、`preview_urls = false`，仓库也没有 `route`／`routes`。Wrangler 省略路由字段不会删除控制台中另行管理的 Route／Custom Domain，因此首次部署前后均已通过 Dashboard／API 确认生产与 Preview 的 `workers.dev` 入口关闭，Route／Custom Domain 为空；首次 GitHub 自动部署已验证保持隐藏。
+
+首次隐藏构建验收记录：提交 `e1eee00` 的 Build 与 Deploy 均成功，生产构建生成 14 个页面并验证正式 Sitekey 已进入 RFQ 页面但未输出其值；Wrangler 上传 Worker 版本后报告 `No targets deployed`。部署后 Dashboard 复核 `ASSETS` 与 `RFQ_EMAIL` 绑定正常，`TURNSTILE_SECRET` 与 `RFQ_TO_EMAIL` 仍为加密的 Runtime Secret。
 
 Cloudflare 当前构建镜像支持根目录 `.node-version`；仓库固定为 Node.js `24.18.0`。本地使用同一 Node 24 大版本即可执行验证。
 
