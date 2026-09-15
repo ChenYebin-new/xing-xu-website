@@ -15,7 +15,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
     <section class="rfq-hero" aria-labelledby="page-title">
       <div>
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Request a quote" }]} />
-        <h1 id="page-title">Send the Details Needed for a Useful Fan Quotation</h1>
+        <h1 id="page-title">Request a Fan Quote</h1>
         <p>
           Start with buying context, a product direction and the delivery requirement. If the fan has not been
           selected, add the operating conditions you already know.
@@ -402,7 +402,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
       }
 
       if (!clientValid) {
-        form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(":invalid").forEach((control) => {
+        form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("input:invalid, select:invalid, textarea:invalid").forEach((control) => {
           control.setAttribute("aria-invalid", "true");
         });
         status.textContent = "Review the highlighted fields. Nothing has been sent.";

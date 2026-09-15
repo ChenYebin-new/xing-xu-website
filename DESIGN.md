@@ -35,21 +35,21 @@ colors:
 typography:
   display:
     fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
-    fontSize: "clamp(3.8rem, 7vw, 6rem)"
+    fontSize: "clamp(44px, 4.5vw, 64px)"
     fontWeight: 800
-    lineHeight: 0.86
-    letterSpacing: "-0.04em"
+    lineHeight: 1
+    letterSpacing: "-0.03em"
   headline:
     fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
-    fontSize: "clamp(2.4rem, 4.1vw, 4.2rem)"
+    fontSize: "clamp(28px, 3vw, 40px)"
     fontWeight: 800
-    lineHeight: 0.96
+    lineHeight: 1.08
     letterSpacing: "-0.03em"
   title:
     fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
-    fontSize: "clamp(1.75rem, 2.5vw, 2.4rem)"
+    fontSize: "clamp(28px, 2.4vw, 34px)"
     fontWeight: 700
-    lineHeight: 1
+    lineHeight: 1.05
     letterSpacing: "-0.025em"
   body:
     fontFamily: "Segoe UI Variable Text, Segoe UI, Arial, sans-serif"
@@ -70,7 +70,10 @@ spacing:
   md: "14px"
   lg: "18px"
   xl: "26px"
-  page: "max(4.5vw, 32px)"
+  page: "max(32px, calc((100vw - 1440px) / 2))"
+  page-mobile: "18px"
+  section: "clamp(40px, 4vw, 64px)"
+  section-mobile: "32px"
 components:
   button-primary:
     backgroundColor: "{colors.safety-orange}"
@@ -143,15 +146,15 @@ Deep ink and blue-green organize warm and cool white fields; safety orange is th
 
 ### Hierarchy
 
-- **Interior Display:** Extra-bold condensed type for page H1s (`clamp(3.8rem, 7vw, 6rem)`, weight 800, line-height 0.86, tracking `-0.04em`). About, partner, contact, privacy, status, and 404 variants may begin between 3.5rem and 3.7rem, but every desktop interior H1 has a 6rem maximum. At the mobile breakpoint, the shared scale becomes `clamp(3.35rem, 15vw, 5.2rem)`.
-- **Homepage Display:** The denser homepage opening keeps its compact established scale (`clamp(3.25rem, 3.75vw, 3.8rem)`) rather than inheriting the larger interior H1.
-- **Headline:** Extra-bold condensed type for section openings (`clamp(2.4rem, 4.1vw, 4.2rem)`, line-height 0.96). Narrower content and boundary headings use related scales that top out between 3.5rem and 4rem; the shared final action uses `clamp(2.7rem, 4.7vw, 4.8rem)`.
-- **Title:** Bold condensed type for product, capability, evidence, and status-card names (`clamp(1.75rem, 2.5vw, 2.4rem)`, line-height 1).
-- **Utility Display:** Privacy subsection headings use a fixed 2rem size; the pale 404 route code is a deliberately oversized background-like display (`clamp(10rem, 24vw, 24rem)`, 9rem on mobile), not part of the content-heading scale.
+- **Interior Display:** Extra-bold condensed type for page H1s (`clamp(44px, 4.5vw, 64px)`, weight 800, line-height 1, tracking `-0.03em`). Titles use a wider 18-24ch measure to avoid excessive wrapping and reach a 64px desktop maximum. At the 720px mobile breakpoint, interior H1s use 44px; wording must remain readable without clipping.
+- **Homepage Display:** The trust opening retains its own condensed scale (`clamp(2.85rem, 3.5vw, 3.4rem)`, line-height 0.94), with related tablet and mobile scales from the approved preview. It does not inherit the shared interior H1.
+- **Headline:** Extra-bold condensed type for compact interior section openings (`clamp(28px, 3vw, 40px)`, line-height 1.08). Boundary and final-action headings use related scales up to 44px, with smaller mobile variants. Homepage section openings retain their own scale up to 3.45rem.
+- **Title:** Bold condensed type for category and content-card names (`clamp(28px, 2.4vw, 34px)`, line-height approximately 1.05). Capability, evidence, and status labels use smaller role-specific sizes where the hierarchy calls for them.
+- **Utility Display:** Privacy subsection headings use a fixed 2rem size; the pale 404 route code is a deliberately oversized background-like display (`clamp(10rem, 18vw, 18rem)`, 9rem on mobile), not part of the content-heading scale. Product use-case band headings use `clamp(24px, 2vw, 28px)`, a 74ch maximum measure, and 1.2 leading so their supporting statement does not compete with the main section hierarchy.
 - **Body:** Regular system sans at a 1rem floor with 1.5-1.7 line-height and restrained 51-74 character line lengths; buyer requirements, contact-channel names, and privacy explanations use this voice rather than metadata sizing. Supporting copy may step down to 0.84-0.98rem where it remains comfortably legible.
 - **Label and Wayfinding:** Small, bold, widely tracked uppercase text at 0.79rem is reserved for genuine concept, contact, and pending-state metadata. Breadcrumbs use normal-case 0.86rem text. Neither role becomes a second heading above every section or action panel.
 
-**The Six-Rem Ceiling Rule.** Interior H1s may feel oversized through condensed proportion and tight leading, but never exceed 6rem on desktop.
+**The Compact Interior Ceiling Rule.** Interior H1s never exceed 64px on desktop or 44px on mobile. Identity comes from condensed proportion and clear hierarchy, while the wider title measure keeps useful content close to the opening.
 
 **The Two-Voice Rule.** Barlow Condensed carries identity and hierarchy; the body stack carries explanation, navigation, wayfinding, and form content.
 
@@ -159,13 +162,19 @@ Deep ink and blue-green organize warm and cool white fields; safety orange is th
 
 ## Layout
 
-The desktop frame uses broad responsive gutters (`max(4.5vw, 32px)`). The homepage retains its established three-column trust opening, ruled capability band, three-card product grid, and buyer-path workspace paired with a dark RFQ preparation rail that leads to the dedicated form.
+The shared content measure is capped at 1440px. Desktop gutters use `max(32px, calc((100vw - 1440px) / 2))`, and mobile gutters are 18px. Header, section content, and footer align to that frame while section backgrounds continue across the viewport. Standard section spacing is 40-64px on desktop and 28-40px on mobile, with a 32px mobile default. Text-only tiles follow their content height rather than reserving empty space.
 
-Phase 3 interior pages use a repeatable two-column opening: the breadcrumb and problem-led H1 occupy the larger field, while a concise brief, notice, or action occupies the smaller field beneath an orange top rule. The page then moves through product-, audience-, or evidence-specific content, states an explicit publication or operating boundary, and finishes with the shared dark action panel. Product detail pages may replace the brief column with one decisive concept-product bay; policy pages use a centered reading column capped at 940px; status and 404 pages use simplified two-part utility compositions.
+The homepage retains its three-column trust opening, ruled capability band, three-card product grid, and buyer-path workspace paired with a dark RFQ preparation rail. The fan stays visually decisive and all four evidence slots remain visible. At 1180px the hero becomes two columns followed by a four-slot evidence row; at 900px it stacks identity, product, and evidence. At 720px evidence remains two columns. Product image rows are compact, and the buyer panel does not carry a fixed empty minimum height.
 
-The Stage 4 `/request-a-quote/` surface uses a wide two-column desktop workspace: the complete inquiry form occupies the primary column and a sticky, ordered guidance rail occupies the secondary column. Its form groups use two-up fields where width allows, while requirement summaries and conditional selection-help fields can span the form column.
+Interior openings keep their title, brief, notice, and action close together. The Products index uses one wide title row followed by a compact explanation-and-action row; other interior headers align a concise aside closely with the title. The page then moves through product-, audience-, or evidence-specific content, states an explicit publication or operating boundary, and finishes with the shared dark action panel. Product detail heroes use two columns at 901px and above with a 380-420px product bay; at 900px and below they stack, with a smaller mobile bay. Policy pages keep their centered 940px reading measure; status and 404 pages retain focused utility compositions without excessive forced height.
 
-At the medium breakpoint (1020px), the primary navigation collapses to the menu control, three-column content grids become two columns, four-column selection and evidence groups become two columns, and wide content/action pairings tighten. The RFQ form and guidance rail reflow to one column at this breakpoint and the rail stops sticking. At the mobile breakpoint (720px), the system uses 18px gutters and one-column reflow for heroes, product cards, product detail, fit boundaries, partner and capability grids, inquiry preparation, every RFQ field and its guidance, policy/status utilities, action panels, and footer. The mobile reading order must preserve problem or status first, supporting evidence/content second, the explicit boundary next, and the action last. Two-up evidence photography may remain two columns when its labels and replacement status stay readable.
+Contact release checks keep a 24px gap below their section heading before the ruled content tiles. Supporting use-case statements and text-only tiles use their compact role-specific typography and content height.
+
+The refreshed route headings are `Industrial Fan Categories` on Products, `Prepare Your Fan Inquiry` on Contact, and `Request a Fan Quote` on RFQ. The Products category-section heading is `Choose Your Fan Category`. Remaining H1 wording and factual content stay unchanged in this layout pass.
+
+The Stage 4 `/request-a-quote/` surface uses a compact header followed by a two-column desktop workspace: the complete inquiry form occupies the primary column and a sticky, ordered guidance rail occupies the secondary column. Reduce header, workspace, and group-transition gaps while preserving persistent labels, 52px-minimum controls, helpers, errors, and all existing field and submission semantics. Form groups use two-up fields where width allows; requirement summaries and conditional selection-help fields can span the form column.
+
+At 1020px the primary navigation collapses to the menu control, three-column content grids become two columns, four-column selection and evidence groups become two columns, and wide content/action pairings tighten. In the 721-1020px category grids, center the last card at the same width as the preceding cards. The RFQ form and guidance rail reflow to one column at 1020px and the rail stops sticking. At 720px primary grids, tabs, fields, guidance, utility surfaces, action panels, and footer stack. Mobile order preserves problem or status first, supporting content second, the explicit boundary next, and the action last. Two-up evidence photography may remain while labels and replacement status are readable.
 
 ## Elevation & Depth
 
@@ -193,21 +202,21 @@ Corners are almost square: evidence and product containers use a 3px radius, whi
 
 ### Breadcrumbs
 
-Breadcrumbs are a compact ordered wayfinding line above interior H1s. They use the body stack at 0.86rem, muted ink, slash separators, and a generous responsive gap below so the H1 owns the opening. The current page is text with `aria-current`; prior levels are links.
+Breadcrumbs are a compact ordered wayfinding line above interior H1s. They use the body stack at 0.86rem, muted ink, slash separators, and a 24px bottom gap on desktop or 20px on mobile. The current page is text with `aria-current`; prior levels are links.
 
 ### Cards and Content Groups
 
-- **Product category cards:** White, low-radius containers with a cool image bay, a large concept visual, explicit concept stamp, concise selection inputs, and one guide link.
+- **Product category cards:** The entire white, low-radius card is a native link, including heading, visual, copy, blank area, and footer. Its category heading supplies the accessible name through `aria-labelledby`; decorative arrows and link-like footer labels are not nested interactive controls. One card creates one keyboard focus stop and preserves Enter, modified-click, and middle-click navigation. Keep the cool image bay, decisive concept visual, explicit concept status, and concise selection inputs.
 - **Evidence bays:** Desaturated photographs or generated placeholders with explicit replacement labels until approved, traceable sources exist.
-- **Content groups:** Use shared borders and alternating fields for selection inputs, support areas, capabilities, release checks, and channel status. Unordered groups are not decorated with `01/02/03` markers.
-- **Depth:** Thin muted-blue borders at rest; a restrained lift is allowed only on interactive product cards.
+- **Content groups:** Use shared borders and alternating fields for selection inputs, support areas, capabilities, release checks, and channel status. Text-only groups follow content height on desktop and mobile. Unordered groups are not decorated with `01/02/03` markers.
+- **Hover and focus:** Interactive category cards share a stronger border and restrained lift on hover or visible keyboard focus; their decorative arrow shifts slightly and changes color. Keyboard focus keeps the cyan 3px outline and 4px offset. Reduced-motion preferences suppress movement and transitions.
 
 ### Inputs and Fields
 
 - **Style:** The Stage 4 RFQ uses persistent readable labels, explicit required or optional indicators, white 52px-minimum controls with 4px corners, and cool blue-gray borders. Helper and error positions remain associated with their controls; placeholders supplement labels and never replace them.
 - **Contact rule:** Require at least one reply path: email or WhatsApp. Preferred channel remains a separate optional choice.
 - **Conditional detail:** Selecting `Need selection help` reveals the operating-duty fieldset and makes its application field required; choosing a product category keeps those fields hidden and disabled.
-- **Focus and error:** Focus uses a visible blue/cyan ring. Invalid controls use a warm error treatment, persistent field-level copy, `aria-invalid`, and focus moves to the first invalid control after validation.
+- **Focus and error:** Focus uses a visible blue/cyan ring. Invalid controls use a warm error treatment, persistent field-level copy, `aria-invalid`, and focus moves to the first invalid control after validation. Native invalid-field collection is restricted to `input`, `select`, and `textarea`; invalid fieldsets are not marked as controls. This fixes the pre-existing empty-submit focus defect while retaining entered values and blocking API requests for invalid submissions.
 
 ### RFQ Submission, Turnstile, and Result States
 
@@ -239,7 +248,7 @@ Use visible ordinals only when sequence changes how the content is followed, suc
 - **Do** replace every generated concept or evidence image with an approved real source before launch, keeping status labels until replacement is verified.
 - **Do** use product facts, names, contact details, and evidence only after their source is approved and traceable.
 - **Do** preserve the Phase 3 flow from a problem-led opening through specific evidence or guidance, an explicit content boundary, and one clear action.
-- **Do** use horizontal orange top rules for status emphasis and retain the 6rem interior-H1 ceiling.
+- **Do** use horizontal orange top rules for status emphasis and retain the 64px desktop / 44px mobile interior-H1 ceiling.
 - **Do** keep reduced-motion behavior, visible keyboard focus, and the mobile reading order intact.
 - **Do** keep field labels, helper text, errors, Turnstile state, delivery state, and the local-versus-live boundary readable at every responsive width.
 
@@ -251,3 +260,15 @@ Use visible ordinals only when sequence changes how the content is followed, suc
 - **Don't** add an inquiry database, file upload, or attachment storage to the Stage 4 truth boundary without a separately approved data, privacy, and retention design.
 - **Don't** use decorative ordinals for unordered categories, capabilities, evidence, checks, or status groups.
 - **Don't** reintroduce repeated section kickers, action-panel eyebrows, orange side rails, generic blue-machinery styling, decorative gradients, pill-heavy UI, or orange used as atmosphere.
+
+## Approved UI Refresh Evidence
+
+The user explicitly approved the homepage and Products desktop/mobile UI previews and authorized extending their layout and interaction rules to the existing site. The approved source and captures are in `.impeccable/review/ui-refresh-preview/`, including `shared.css`, `home.css`, `products.css`, the 1440px and 390px captures, and preview measurement and interaction records. This authorization completes the preview confirmation step; it does not require another visual approval before implementation.
+
+Production desktop/mobile captures and validation records are saved in `.impeccable/review/ui-refresh-result/`. The 2026-09-15 16:49 local production-source build passed: 23 Astro files checked with zero errors, warnings, or hints, and 14 routes generated. Worker TypeScript passed, as did 63 Vitest tests and 12 Node CI tests.
+
+The current pass checked 81 route/viewport layouts at 1920, 1440, 1024, 768, and 390px, supplemented by 900px and 721px breakpoint checks and 320px RFQ/utility checks. No measured horizontal overflow, clipping, or image-load defects were found. On `/products/` at 1440 × 900, all three category titles and principal images end above the first viewport's bottom edge. `layout-measurements.json` and the result captures record these observations.
+
+Browser behavior coverage comprised 20 scenario groups: the original `regression.json` retains its 19-pass / 1-failure result, and `focused-regression.json` records the passing retest after the invalid-control selector fix. Together they verify all 20 groups. The retest focused `#customer-type`, showed 11 field errors, retained the entered name, marked no fieldset invalid, and made zero API requests. Card pointer and keyboard navigation, buyer tabs, preselection, conditional fields, mocked submission states, status truth, and 52px RFQ controls were covered. Turnstile and API responses were mocked locally; these results are not live verification, email acceptance, or inbox-delivery evidence.
+
+One mechanical design-detector pass ran. Its saved tool output, `design-detection.log`, was truncated, so the complete findings count and remainder cannot be confirmed from that record. Human review identified mostly existing color, size, and radius documentation advisories plus an existing RFQ error-summary left-border warning. This is a reviewed, limited detector record, not a clean detector report; no unrelated visual or backend changes were made to suppress those findings.

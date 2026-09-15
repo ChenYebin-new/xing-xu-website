@@ -14,10 +14,10 @@ const pageDescription =
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <main>
-    <section class="interior-hero interior-hero--split" aria-labelledby="page-title">
+    <section class="interior-hero" aria-labelledby="page-title">
       <div>
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Products" }]} />
-        <h1 id="page-title">Start With the Airflow Problem, Not a Guess at the Model</h1>
+        <h1 id="page-title">Industrial Fan Categories</h1>
       </div>
       <div class="interior-hero__aside">
         <p>
@@ -30,14 +30,18 @@ const pageDescription =
 
     <section class="category-index" aria-labelledby="category-index-title">
       <header class="content-heading">
-        <h2 id="category-index-title">Choose the closest airflow arrangement</h2>
+        <h2 id="category-index-title">Choose Your Fan Category</h2>
         <p>Each guide tells you what to bring to the first selection discussion and where a category label stops being enough.</p>
       </header>
 
       <div class="category-index__grid">
         {
           productCategories.map((category, index) => (
-            <article class="category-feature">
+            <a
+              class="category-feature"
+              href={`/products/${category.slug}/`}
+              aria-labelledby={`category-feature-${category.slug}`}
+            >
               <div class="category-feature__visual">
                 <Image
                   src={category.conceptImage}
@@ -50,16 +54,16 @@ const pageDescription =
                 <span class="concept-stamp">Concept visual</span>
               </div>
               <div class="category-feature__copy">
-                <h3>{category.name}</h3>
+                <h3 id={`category-feature-${category.slug}`}>{category.name}</h3>
                 <p>{category.summary}</p>
                 <ul aria-label={`Key inputs for ${category.name}`}>
                   {category.selectionInputs.map((input) => <li>{input}</li>)}
                 </ul>
-                <a class="text-link" href={`/products/${category.slug}/`}>
+                <span class="text-link">
                   Read the selection guide <Icon name="arrow" size={19} />
-                </a>
+                </span>
               </div>
-            </article>
+            </a>
           ))
         }
       </div>

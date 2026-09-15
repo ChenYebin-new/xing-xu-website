@@ -132,9 +132,13 @@ const evidenceImages = {
       <div class="product-grid">
         {
           productCategories.map((category, index) => (
-            <article class:list={["product-card", index === 0 && "product-card--primary"]}>
+            <a
+              class:list={["product-card", index === 0 && "product-card--primary"]}
+              href={`/products/${category.slug}/`}
+              aria-labelledby={`product-card-${category.slug}`}
+            >
               <div class="product-card__copy">
-                <h3>{category.name}</h3>
+                <h3 id={`product-card-${category.slug}`}>{category.name}</h3>
                 <p>{category.summary}</p>
               </div>
               <Image
@@ -147,11 +151,11 @@ const evidenceImages = {
               />
               <div class="product-card__footer">
                 <span>Concept image — no published SKU</span>
-                <a href={`/products/${category.slug}/`} aria-label={`View ${category.name}`}>
+                <span class="product-card__arrow">
                   <Icon name="arrow" size={21} />
-                </a>
+                </span>
               </div>
-            </article>
+            </a>
           ))
         }
       </div>
