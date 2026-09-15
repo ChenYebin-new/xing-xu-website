@@ -1,14 +1,15 @@
 # RFQ 从本地测试切换到正式投递
 
-状态（2026-09-14）：本地代码、模拟邮件与 GitHub／Workers Builds CI 适配已完成并提交到 `main`，Cloudflare 已连接目标 GitHub 仓库；`xingxufan.com`、生产 Turnstile widget、Email Routing 和已验证目标邮箱已由账户所有者准备。隐藏的 `xing-xu-website` Worker 已创建，`TURNSTILE_SECRET` 与 `RFQ_TO_EMAIL` 已写入并完成名称核验。提交 `e1eee00` 的首次隐藏自动构建与部署已成功完成；部署日志显示没有发布目标，部署后 Dashboard 仍确认生产 `workers.dev`、Preview URL、Custom Domain 和正式 Route 均未启用，DNS 未修改，两个 Runtime Secret 保持加密状态。不要在聊天、Git、截图或 `.env` 提交中暴露 Turnstile secret。
+状态（2026-09-15，依据用户交接与本任务前序只读核验）：本地代码、模拟邮件与 GitHub／Workers Builds CI 已完成，正式域名 `https://xingxufan.com` 已公开运行；`www` 跳转与 Email Routing 已由用户完成。生产 Turnstile widget、已验证目标邮箱、`TURNSTILE_SECRET` 与 `RFQ_TO_EMAIL` 已配置。当前 RFQ 已通过数据校验及 Turnstile，但在 Worker 邮件发送步骤返回 `delivery_failed`，尚未完成真实 Gmail 收件验收。本次加入的是安全诊断补丁，不能视为邮件故障已修复。不要在聊天、Git、截图或 `.env` 提交中暴露 Secret、真实目标邮箱或完整询盘。
 
 ## 当前本地模式
 
 - `wrangler.jsonc` 使用 `RFQ_MODE = "local-test"`。
 - hostname 只允许 `localhost` 与 `127.0.0.1`。
-- `.dev.vars` 使用 Cloudflare 官方公开的 always-pass 测试 secret，并已被 Git 忽略。
+- `.dev.vars` 仅供手动本地开发使用，应填写 Cloudflare 官方公开的 always-pass 测试 secret，并已被 Git 忽略；不得把生产 Secret 用于本地回归。
 - `RFQ_EMAIL` 在 `wrangler dev` 中是本地模拟绑定；邮件文本与 HTML 只写入 `.wrangler/tmp/email/`。
 - 本地测试成功不代表 Gmail 已收到邮件。
+- `npm test` 的 RFQ 测试直接注入模拟 `RfqRuntime`，通过显式 Miniflare 兼容日期与 `nodejs_compat` 在 Workers runtime 执行，禁用远程绑定且不加载 Wrangler 配置或 `.dev.vars`；不会调用真实 Siteverify 或真实邮件服务。
 - `wrangler.jsonc` 的 `production` 环境另行使用 `RFQ_MODE = "live"`、`xingxufan.com` 和正式发件地址；不会把 localhost 带入生产 hostname 列表。
 - `turnstile_secret.txt` 保存生产 Sitekey、Secret、发件地址和目标地址，已被 Git 忽略。生产构建脚本只把公开 Sitekey 注入前端，不会把 Secret 或目标地址写入 `dist`。
 
@@ -16,7 +17,7 @@
 
 不必。Turnstile 可以在网站部署前创建，测试密钥也可在 localhost 使用；正式 widget 只需提前知道准备使用的 hostname。
 
-但真实 RFQ 邮件投递需要先准备一个由 Cloudflare 管理／验证的发件域名，并验证目标 Gmail。因此推荐顺序是：确定域名与 DNS → 创建 Turnstile widget → 开通 Email Service 发件域名与 Gmail 目的地址 → 由开发者写入非秘密配置和 Worker secret → 部署 Preview → 做真实投递验收。
+但真实 RFQ 邮件投递需要先核对获批的发件域名、发件身份、已验证目标 Gmail 和邮件绑定权限。当前网站已经公开运行，不需要为了排查 RFQ 重新启用 Preview；应核对正式域名实际运行的提交与安全日志，再完成真实投递验收。Email Routing 的接收／转发成功不等于 Worker 发送通知成功。
 
 ## 需要账户所有者完成的操作
 
@@ -50,7 +51,7 @@
 - `npm run build:production` 从已忽略文件读取公开 Sitekey，构建后验证它已进入 RFQ 页面，但不显示实际值。
 - `npm run cf:dry-run:production` 临时生成一份被忽略的 Wrangler 配置，把目标地址注入 binding，执行 `wrangler deploy --dry-run --env production` 后立即删除；命令输出会隐藏目标地址且不会写入 Cloudflare。
 
-账户写入已完成：账号与 Worker 名称已经核对，两个 Secret 通过标准输入一次性写入，实际值未进入命令参数、Git、构建产物或持久日志。仓库把生产环境固定为 `workers_dev = false`、`preview_urls = false`；后续公开 Preview、绑定 `xingxufan.com` 和修改 DNS 仍须单独确认。
+账户写入与正式域名部署已由用户完成。仓库继续把生产环境固定为 `workers_dev = false`、`preview_urls = false`，正式域名由控制台另行管理；不需要为邮件诊断开启公开 Preview。以后修改域名、DNS、绑定、Runtime Secrets、Build variables 或邮件权限仍须单独确认，不要求用户把值粘贴到聊天中。
 
 ### 5. GitHub／Workers Builds 连接配置
 
@@ -79,15 +80,23 @@ Cloudflare 的 `xing-xu-website` Worker 已按以下配置连接 GitHub：
 - `RFQ_TO_EMAIL` 是 Worker Runtime Secret，只供 Worker 发送邮件时读取。
 - `CI_RFQ_DESTINATION_ADDRESS` 是构建侧的同一收件目标副本，用于 Wrangler 的 `destination_address` 限制。以后更换目标邮箱时，需要同时更新它和 Runtime Secret `RFQ_TO_EMAIL`，但不要把值写入仓库。
 
-`npm run ci:build` 会先从子进程环境移除收件地址、Worker Runtime Secrets 和 Cloudflare 部署凭据，再运行类型检查、测试及 Astro 构建；在缺少正式 Sitekey、使用测试 Sitekey、检查失败或正式 Sitekey 没有进入 RFQ 页面时都会失败。`npm run cf:deploy:production` 固定部署 `production` 环境，结构化生成临时配置并在成功、Wrangler 非零退出或异常后清理；它不会通过命令参数传递收件地址。脚本还会核对 Cloudflare 自动注入的 Worker 名称与账号覆盖值：如存在，必须分别匹配 `xing-xu-website` 和已批准账号；核对通过后原样保留给 Wrangler，让官方 CI match-tag 保护继续验证部署目标。根配置和 production 环境目前都明确设置 `workers_dev = false`、`preview_urls = false`，仓库也没有 `route`／`routes`。Wrangler 省略路由字段不会删除控制台中另行管理的 Route／Custom Domain，因此首次部署前后均已通过 Dashboard／API 确认生产与 Preview 的 `workers.dev` 入口关闭，Route／Custom Domain 为空；首次 GitHub 自动部署已验证保持隐藏。
+`npm run ci:build` 会先从子进程环境移除收件地址、Worker Runtime Secrets 和 Cloudflare 部署凭据，再运行类型检查、测试及 Astro 构建；在缺少正式 Sitekey、使用测试 Sitekey、检查失败或正式 Sitekey 没有进入 RFQ 页面时都会失败。`npm run cf:deploy:production` 固定部署 `production` 环境，结构化生成临时配置并在成功、Wrangler 非零退出或异常后清理；它不会通过命令参数传递收件地址。脚本还会核对 Cloudflare 自动注入的 Worker 名称与账号覆盖值：如存在，必须分别匹配 `xing-xu-website` 和已批准账号；核对通过后原样保留给 Wrangler，让官方 CI match-tag 保护继续验证部署目标。根配置和 production 环境目前都明确设置 `workers_dev = false`、`preview_urls = false`，仓库也没有 `route`／`routes`。正式域名与必要路由由控制台另行管理，省略路由字段不会删除这些设置；历史首次隐藏部署的空 Route／Custom Domain 结果不代表当前公开部署状态。推送 `main` 会按现有 Workers Builds 连接触发自动构建部署。
 
 首次隐藏构建验收记录：提交 `e1eee00` 的 Build 与 Deploy 均成功，生产构建生成 14 个页面并验证正式 Sitekey 已进入 RFQ 页面但未输出其值；Wrangler 上传 Worker 版本后报告 `No targets deployed`。部署后 Dashboard 复核 `ASSETS` 与 `RFQ_EMAIL` 绑定正常，`TURNSTILE_SECRET` 与 `RFQ_TO_EMAIL` 仍为加密的 Runtime Secret。
 
 Cloudflare 当前构建镜像支持根目录 `.node-version`；仓库固定为 Node.js `24.18.0`。本地使用同一 Node 24 大版本即可执行验证。
 
-### 6. Preview 与真实 Gmail 验收
+### 6. 安全诊断日志与排查
 
-部署获批 Preview 后至少检查：
+- Worker 邮件发送失败只记录 `event`、`requestId`、`status`、白名单 `errorCode`、固定 `errorCategory` 和可选的 400～599 整数 `httpStatus`。不会记录原始错误对象、消息、堆栈、邮箱、客户资料、询盘正文、Turnstile Token 或 Secret。
+- 错误码白名单依据 [Cloudflare Workers Email API](https://developers.cloudflare.com/email-service/api/send-emails/workers-api/)；未知错误或不可读取的属性降级为 `UNKNOWN`／`unknown`，不得据此猜测具体根因。客户端仍只收到通用 `502 delivery_failed`。
+- 确认 Workers Builds 的部署提交与本次 Git 发布提交一致，再由用户重新提交一份测试询盘，并用新的请求参考编号查找 `rfq_delivery` 失败日志；旧请求不会补出新增诊断字段。
+- 按明确错误码核对对应条件：例如收件限制、发件域名／身份或服务限额。`CI_RFQ_DESTINATION_ADDRESS` 与 `RFQ_TO_EMAIL` 已由用户确认一致，不预先认定它们不匹配；比较配置时不复制真实邮箱到日志、聊天或 Git。
+- 任何 DNS、绑定、Secret、域名或邮件权限变更都须另外授权。`status: "sent"` 只说明 Worker 的发送调用已完成，不证明最终 Gmail 收件。
+
+### 7. 正式域名与真实 Gmail 验收
+
+正式域名已公开部署；确认诊断补丁对应提交已部署并修复明确原因后，至少检查：
 
 1. 正常询盘只发送一封分组邮件，Gmail 实际收到。
 2. 邮件包含来源页、UTC 提交时间与请求参考编号。

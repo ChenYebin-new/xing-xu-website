@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { formatRfqEmail, parseRfqRequest } from "../src/lib/rfq";
 import { handleRfqRequest, type OutboundEmail, type RfqRuntime } from "../worker/index";
@@ -247,15 +247,168 @@ describe("RFQ Worker boundary", () => {
     expect(setup.sent).toHaveLength(1);
   });
 
-  it("reports email-provider failure without claiming success", async () => {
-    const setup = runtime({
-      sendEmail: async () => {
-        throw new Error("provider unavailable");
-      },
+  describe("delivery diagnostics", () => {
+    afterEach(() => {
+      vi.restoreAllMocks();
     });
-    const response = await handleRfqRequest(requestFor(validPayload()), setup.runtime);
-    expect(response.status).toBe(502);
-    expect((await response.json()).code).toBe("delivery_failed");
+
+    async function failDelivery(error: unknown) {
+      const errorLog = vi.spyOn(console, "error").mockImplementation(() => {});
+      const sendEmail = vi.fn(async () => {
+        throw error;
+      });
+      const setup = runtime({ sendEmail });
+      const response = await handleRfqRequest(requestFor(validPayload()), setup.runtime);
+      expect(response.status).toBe(502);
+      expect(await response.json()).toEqual({
+        ok: false,
+        code: "delivery_failed",
+        message: "The inquiry could not be delivered. Your entries remain in this form; please try again later.",
+        requestId: "request-test-id",
+      });
+      expect(sendEmail).toHaveBeenCalledOnce();
+      expect(errorLog).toHaveBeenCalledOnce();
+      return errorLog;
+    }
+
+    const failedLog = {
+      event: "rfq_delivery",
+      requestId: "request-test-id",
+      status: "failed",
+    };
+
+    it("reports email-provider failure without claiming success or logging its message", async () => {
+      const errorLog = await failDelivery(new Error("provider unavailable"));
+      expect(errorLog).toHaveBeenCalledWith({ ...failedLog, errorCode: "UNKNOWN", errorCategory: "unknown" });
+    });
+
+    it.each([
+      ["E_VALIDATION_ERROR", "payload_validation"],
+      ["E_FIELD_MISSING", "payload_validation"],
+      ["E_TOO_MANY_RECIPIENTS", "payload_validation"],
+      ["E_TOO_MANY_ATTACHMENTS", "payload_validation"],
+      ["E_CONTENT_TOO_LARGE", "payload_validation"],
+      ["E_SENDER_NOT_VERIFIED", "sender_domain"],
+      ["E_SENDER_DOMAIN_NOT_AVAILABLE", "sender_domain"],
+      ["E_RECIPIENT_NOT_ALLOWED", "recipient_policy"],
+      ["E_RECIPIENT_SUPPRESSED", "recipient_suppressed"],
+      ["E_DELIVERY_FAILED", "delivery"],
+      ["E_RATE_LIMIT_EXCEEDED", "service_limit"],
+      ["E_DAILY_LIMIT_EXCEEDED", "service_limit"],
+      ["E_INTERNAL_SERVER_ERROR", "provider_internal"],
+      ["E_HEADER_NOT_ALLOWED", "header_validation"],
+      ["E_HEADER_USE_API_FIELD", "header_validation"],
+      ["E_HEADER_VALUE_INVALID", "header_validation"],
+      ["E_HEADER_VALUE_TOO_LONG", "header_validation"],
+      ["E_HEADER_NAME_INVALID", "header_validation"],
+      ["E_HEADERS_TOO_LARGE", "header_validation"],
+      ["E_HEADERS_TOO_MANY", "header_validation"],
+    ])("classifies the allowlisted provider code %s", async (code, category) => {
+      const error = Object.assign(new Error("private provider detail"), { code, status: 400 });
+      const errorLog = await failDelivery(error);
+      expect(errorLog).toHaveBeenCalledWith({
+        ...failedLog,
+        errorCode: code,
+        errorCategory: category,
+        httpStatus: 400,
+      });
+    });
+
+    it("never includes inquiry, destination, token or secret canaries in the error log", async () => {
+      const canaries = [
+        "private-target@example.com",
+        "amina@example.com",
+        "Amina Santos",
+        "Example Engineering",
+        "+639001234567",
+        "Ventilation fan for a workshop exhaust system.",
+        "test-token",
+        "production-secret",
+      ];
+      const privateDetail = canaries.join(" | ");
+      const error = Object.assign(new Error(privateDetail), {
+        code: "E_RECIPIENT_NOT_ALLOWED",
+        statusCode: 403,
+        name: privateDetail,
+        stack: privateDetail,
+        destination: canaries[0],
+        inquiry: validPayload(),
+        whatsapp: canaries[4],
+      });
+      const successLog = vi.spyOn(console, "info").mockImplementation(() => {});
+      const errorLog = await failDelivery(error);
+      expect(errorLog).toHaveBeenCalledWith({
+        ...failedLog,
+        errorCode: "E_RECIPIENT_NOT_ALLOWED",
+        errorCategory: "recipient_policy",
+        httpStatus: 403,
+      });
+      const serializedLog = JSON.stringify(errorLog.mock.calls);
+      for (const canary of canaries) expect(serializedLog).not.toContain(canary);
+      expect(successLog).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      ["string", "private-target@example.com"],
+      ["null", null],
+      ["undefined", undefined],
+      ["number", 502],
+      ["plain object", { message: "private-target@example.com" }],
+      ["unlisted code", { code: "E_FUTURE_ERROR" }],
+      ["code containing private data", { code: "E_private-target@example.com" }],
+      ["prototype property name", { code: "__proto__" }],
+      ["constructor property name", { code: "constructor" }],
+      ["non-string code", { code: ["E_DELIVERY_FAILED"] }],
+      ["lowercase code", { code: "e_delivery_failed" }],
+    ])("fails safely for an unknown thrown value: %s", async (_label, error) => {
+      const errorLog = await failDelivery(error);
+      expect(errorLog).toHaveBeenCalledWith({ ...failedLog, errorCode: "UNKNOWN", errorCategory: "unknown" });
+    });
+
+    it.each([
+      ["lower bound", { status: 400 }, 400],
+      ["upper bound", { status: 599 }, 599],
+      ["primary status", { status: 502, statusCode: 503 }, 502],
+      ["statusCode fallback", { statusCode: 429 }, 429],
+      ["invalid primary fallback", { status: 200, statusCode: 503 }, 503],
+      ["below bound", { status: 399 }, undefined],
+      ["above bound", { status: 600 }, undefined],
+      ["non-integer", { status: 502.5 }, undefined],
+      ["string", { status: "502" }, undefined],
+      ["not finite", { status: Infinity }, undefined],
+      ["not a number", { statusCode: NaN }, undefined],
+    ])("includes only a safe numeric HTTP status: %s", async (_label, statusFields, httpStatus) => {
+      const errorLog = await failDelivery({ code: "E_DELIVERY_FAILED", ...statusFields });
+      expect(errorLog).toHaveBeenCalledWith({
+        ...failedLog,
+        errorCode: "E_DELIVERY_FAILED",
+        errorCategory: "delivery",
+        ...(httpStatus === undefined ? {} : { httpStatus }),
+      });
+    });
+
+    it("keeps the generic response when diagnostic property getters throw", async () => {
+      const error = Object.defineProperties({}, {
+        code: { get: () => { throw new Error("private-code@example.com"); } },
+        status: { get: () => { throw new Error("private-status@example.com"); } },
+        statusCode: { get: () => { throw new Error("private-status-code@example.com"); } },
+      });
+      const errorLog = await failDelivery(error);
+      expect(errorLog).toHaveBeenCalledWith({ ...failedLog, errorCode: "UNKNOWN", errorCategory: "unknown" });
+    });
+
+    it("uses a safe fallback when the primary status getter throws", async () => {
+      const error = Object.defineProperty({ code: "E_DELIVERY_FAILED", statusCode: 503 }, "status", {
+        get: () => { throw new Error("private-status@example.com"); },
+      });
+      const errorLog = await failDelivery(error);
+      expect(errorLog).toHaveBeenCalledWith({
+        ...failedLog,
+        errorCode: "E_DELIVERY_FAILED",
+        errorCategory: "delivery",
+        httpStatus: 503,
+      });
+    });
   });
 
   it("rejects requests larger than the body limit", async () => {

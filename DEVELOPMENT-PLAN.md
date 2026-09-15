@@ -1,11 +1,11 @@
 # XINGXU FAN 网站开发计划
 
-状态：阶段 0～2 已由用户验收并完成 Git 发布；阶段 3 已完成并由用户验收；阶段 4 本地实现、模拟投递和首次 Workers Builds 隐藏部署已完成，真实 Gmail 验收等待获批公开部署；GitHub／Workers Builds CI 已提交、连接并通过实际构建验证
+状态：阶段 0～3 已完成并由用户验收；网站已通过正式域名公开运行，GitHub／Workers Builds CI 已连接并通过实际构建验证。阶段 4 本地实现与生产部署已完成，但 RFQ 在邮件发送步骤失败，真实 Gmail 收件尚未验收；当前优先发布安全诊断补丁并查明明确根因，不标记阶段 4 完成
 项目：Quanzhou Xingxu Fan & Ventilation Supply
 目标仓库：`https://github.com/ChenYebin-new/xing-xu-website`
 目标市场：Malaysia and the Philippines
 首版语言：English
-更新时间：2026-09-14
+更新时间：2026-09-15（外部状态依据用户交接与本任务前序只读核验，本次 Git 发布不修改控制台配置）
 
 ## 1. 已锁定的开发依据
 
@@ -121,7 +121,9 @@
 
 ### 阶段 4：RFQ 完整流程
 
-实现状态（2026-09-14）：代码、本地模拟流程、独立生产配置、隐藏 Worker 账户写入和首次 Workers Builds 隐藏部署均已完成。前后端校验、条件字段、同源限制、32 KB 请求上限、Turnstile Siteverify、重复点击锁定、错误关联、邮件分组格式、安全日志、成功页会话确认和 Wrangler 模拟邮件均已实现。`xingxufan.com`、生产 Turnstile widget、Email Routing 与已验证目的地址已由账户所有者准备；两个 Worker Secret 已安全写入。提交 `e1eee00` 的构建与部署成功，Cloudflare Dashboard 在部署后确认没有公开入口且 Runtime Secret 保持加密。当前剩余验收项为后续获批的公开 Preview／正式域名部署和一次真实收件测试。
+实现状态（2026-09-15）：代码、本地模拟流程、独立生产配置、Worker Runtime Secrets 与 Workers Builds 部署已完成。前后端校验、条件字段、同源限制、32 KB 请求上限、Turnstile Siteverify、重复点击锁定、错误关联、邮件分组格式、安全日志和成功页会话确认均已实现。正式域名 `https://xingxufan.com` 已公开运行，`www` 跳转及 Email Routing 已由用户完成。历史提交 `e1eee00` 的首次构建部署在没有公开入口时完成隐藏验证，不再代表当前公开部署状态。当前 RFQ 已通过校验与 Turnstile，但在 `RFQ_EMAIL.send(...)` 步骤返回 `delivery_failed`；生产故障尚未修复，真实 Gmail 收件仍待验收。
+
+本次安全诊断补丁接收邮件发送异常，只记录白名单错误码、固定分类及有效整数 HTTP 状态，不记录原始错误消息、堆栈、邮箱、询盘、Token 或 Secret。未知异常安全降级，前端通用失败响应不变。自动化测试显式注入模拟运行时并禁用远程绑定，不读取 Wrangler 配置或 `.dev.vars`。补丁发布后先确认部署提交，再由用户提供新的测试请求参考编号，按明确错误码定位；本地测试与构建成功不证明真实投递成功。
 
 任务：
 
@@ -134,11 +136,13 @@
 
 验收：
 
-- 正常询盘能够真实到达指定 Gmail。（待获批公开部署与真实收件验收）
+- 正常询盘能够真实到达指定 Gmail。（待修复邮件发送故障并完成真实收件验收）
 - 无效字段、过期或重复 Turnstile token、邮件发送失败都有可理解的页面反馈。
 - 键盘可以完成整张表单，错误信息与字段正确关联。
 
 ### 阶段 5：真实素材替换
+
+状态：用户已明确延期。当前概念图与占位图必须继续显著标注，不得冒充真实照片或参数证据。
 
 任务：
 
@@ -171,14 +175,14 @@
 
 ### 阶段 7：预览、仓库与 Cloudflare 交付
 
-实现状态（2026-09-14）：GitHub／Cloudflare Workers Builds 的跨平台 CI 入口、安全配置生成、秘密分层、失败关闭、输出脱敏和清理测试已完成并提交到 `main`，GitHub App 授权与目标仓库连接也已完成。提交 `e1eee00` 的 Build 与 Deploy 均成功；Wrangler 上传 Worker 版本后报告 `No targets deployed`。根配置与 production 环境均关闭 `workers.dev` 和 Preview URL，仓库不声明 Route；部署前后均通过 Cloudflare API 与 Dashboard 确认没有公开 Worker URL、Preview URL、Dashboard Route 或 Custom Domain。正式域名尚未绑定，DNS 未修改。
+实现状态（2026-09-15）：GitHub／Cloudflare Workers Builds 的跨平台 CI 入口、安全配置生成、秘密分层、失败关闭、输出脱敏和清理测试已完成并提交到 `main`，GitHub App 授权与目标仓库连接也已完成。历史提交 `e1eee00` 的首次 Build 与 Deploy 均成功且报告 `No targets deployed`；之后用户已完成正式域名公开部署、`www` 跳转与 Email Routing。根配置与 production 环境继续关闭 `workers.dev` 和 Preview URL，仓库不声明 Route；当前正式域名与必要路由由控制台另行管理，不再处于域名未绑定状态。普通 `main` 推送会按现有连接触发自动构建部署；真实 RFQ 收件和后续质量检查尚未完成。
 
 任务：
 
-- 先完成本地 Preview；首次 Workers Builds 部署在所有公网入口关闭的状态下完成隐藏验证，公开 Preview 需另行授权。
+- 本地 Preview 与首次 Workers Builds 隐藏验证已完成；正式域名现已公开运行，排查邮件故障无需另行开启公开 Preview。
 - 用户确认后才选择性暂存、提交并推送到新 GitHub 仓库。（初次 Git 发布及 CI 适配提交已完成。）
 - 通过 Cloudflare Workers Builds 连接该仓库。（已连接；首次隐藏构建与部署已经完成并通过核验。）
-- 正式域名、发件身份、Turnstile 正式密钥和环境变量已准备；公开域名／Route 与必要 DNS 变更在获得单独授权后执行。
+- 正式域名部署、Turnstile widget、Runtime Secrets 与 Build variables 已由用户完成；发件身份／邮件绑定的真实投递能力仍须验收，后续 DNS、域名／Route、绑定或秘密值变更需要单独授权。
 - 上线后完成一次真实访问、真实表单投递、404、移动端和联系方式检查。
 
 验收：
@@ -200,7 +204,7 @@
 
 ## 6. 开发开始后仍需用户提供的资料
 
-这些资料不会阻止项目骨架和页面预览开发，但会阻止正式上线：
+网站早期版本已经公开运行；下列未补齐资料仍影响真实内容替换和完整质量验收，不能用概念图或虚构信息填补：
 
 - 公开使用的 Facebook 页面 URL。
 - WhatsApp 号码及国际格式。
@@ -209,8 +213,8 @@
 - 可公开的门店地址与地图策略。
 - 门店、仓库、产品和铭牌原图。
 - 首批真实型号、参数、包装、MOQ、交期和质保政策。
-- `xingxufan.com` 已确定；上线前仍需确认是否同时启用 `www`，并单独批准 Worker 自定义域／Route 与必要 DNS 变更。
+- `xingxufan.com` 已公开运行，`www` 跳转已由用户完成；以后域名／Route、DNS 或邮件配置变更仍需单独授权。
 
 ## 7. 已确认与当前停止边界
 
-阶段 0～3 已按前序确认完成。用户已授权并完成阶段 4 的本地部分、隐藏 Worker 账户写入、GitHub／Workers Builds CI 适配、仓库连接和首次隐藏自动构建；构建成功，外部入口与 Runtime Secret 状态也已在部署后复核。正式域名、Turnstile widget、Email Routing、目标邮箱验证和两个 Worker Runtime Secrets 均已准备好。当前停止边界是公开 Preview、正式域名／DNS 绑定和真实投递验收。不得在未获公开部署授权前启用 Worker 公网入口或修改正式 DNS；不得要求用户在聊天中粘贴 Turnstile secret。
+阶段 0～3 已完成。阶段 4 的本地实现、生产配置、GitHub／Workers Builds 连接与正式域名部署已完成，`www` 跳转与 Email Routing 已由用户确认完成；RFQ 已通过 Turnstile，但邮件发送仍失败。当前最高优先级是通过安全诊断日志查明明确根因，并完成一次真实 Gmail 收件验收。用户已授权安全诊断补丁与本次选择性 Git 发布；推送 `main` 按既有连接触发自动构建部署，不自动授权修改 Cloudflare DNS、Secrets、绑定、邮件权限或域名／Route。真实素材替换已延期，质量检查与最终隐私文本仍待验收。不得要求用户在聊天中粘贴任何 Secret、真实目标邮箱或完整客户询盘。

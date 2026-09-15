@@ -43,6 +43,60 @@ type ApiErrorBody = {
   fieldErrors?: Record<string, string>;
 };
 
+const EMAIL_ERROR_CATEGORIES: Readonly<Record<string, string>> = {
+  E_VALIDATION_ERROR: "payload_validation",
+  E_FIELD_MISSING: "payload_validation",
+  E_TOO_MANY_RECIPIENTS: "payload_validation",
+  E_TOO_MANY_ATTACHMENTS: "payload_validation",
+  E_CONTENT_TOO_LARGE: "payload_validation",
+  E_SENDER_NOT_VERIFIED: "sender_domain",
+  E_SENDER_DOMAIN_NOT_AVAILABLE: "sender_domain",
+  E_RECIPIENT_NOT_ALLOWED: "recipient_policy",
+  E_RECIPIENT_SUPPRESSED: "recipient_suppressed",
+  E_DELIVERY_FAILED: "delivery",
+  E_RATE_LIMIT_EXCEEDED: "service_limit",
+  E_DAILY_LIMIT_EXCEEDED: "service_limit",
+  E_INTERNAL_SERVER_ERROR: "provider_internal",
+  E_HEADER_NOT_ALLOWED: "header_validation",
+  E_HEADER_USE_API_FIELD: "header_validation",
+  E_HEADER_VALUE_INVALID: "header_validation",
+  E_HEADER_VALUE_TOO_LONG: "header_validation",
+  E_HEADER_NAME_INVALID: "header_validation",
+  E_HEADERS_TOO_LARGE: "header_validation",
+  E_HEADERS_TOO_MANY: "header_validation",
+};
+
+function readEmailErrorProperty(error: unknown, property: "code" | "status" | "statusCode"): unknown {
+  try {
+    return typeof error === "object" && error !== null ? Reflect.get(error, property) : undefined;
+  } catch {
+    // An unfamiliar error shape must not interrupt the normal failure response.
+    return undefined;
+  }
+}
+
+function validErrorHttpStatus(value: unknown): value is number {
+  return typeof value === "number" && Number.isInteger(value) && value >= 400 && value <= 599;
+}
+
+function classifyEmailDeliveryError(error: unknown): {
+  errorCode: string;
+  errorCategory: string;
+  httpStatus?: number;
+} {
+  const code = readEmailErrorProperty(error, "code");
+  const knownCode = typeof code === "string" && Object.hasOwn(EMAIL_ERROR_CATEGORIES, code);
+  const status = readEmailErrorProperty(error, "status");
+  const statusCode = validErrorHttpStatus(status) ? status : readEmailErrorProperty(error, "statusCode");
+
+  // Never log the raw error, message, stack, or an unrecognized code: they may contain RFQ data or secrets.
+  return {
+    errorCode: knownCode ? code : "UNKNOWN",
+    errorCategory: knownCode ? EMAIL_ERROR_CATEGORIES[code] : "unknown",
+    ...(validErrorHttpStatus(statusCode) ? { httpStatus: statusCode } : {}),
+  };
+}
+
 class RequestBodyError extends Error {
   constructor(
     readonly code: "invalid_json" | "payload_too_large",
@@ -293,8 +347,8 @@ export async function handleRfqRequest(request: Request, runtime: RfqRuntime): P
 
   try {
     await runtime.sendEmail(email);
-  } catch {
-    console.error({ event: "rfq_delivery", requestId, status: "failed" });
+  } catch (error: unknown) {
+    console.error({ event: "rfq_delivery", requestId, status: "failed", ...classifyEmailDeliveryError(error) });
     return apiError(
       502,
       "delivery_failed",

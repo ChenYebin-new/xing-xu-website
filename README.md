@@ -6,7 +6,9 @@ Quanzhou Xingxu Fan & Ventilation Supply 的独立英文 B2B 网站项目，第�
 
 ## 当前状态
 
-阶段 0～2 已完成并通过本地验收；阶段 3 已完成并由用户验收；阶段 4 的本地实现、生产配置和隐藏 Worker 账户写入已完成。GitHub 已连接 Cloudflare Workers Builds，构建命令、秘密分层和生产分支已经复核；提交 `e1eee00` 的首次隐藏自动构建与部署已成功完成。正式域名、Turnstile widget、Email Routing 和目标邮箱验证已准备好，两个 Worker Secret 已配置；尚待公开 Preview／正式域名部署与一次真实收件验收：
+状态更新（2026-09-15，依据用户交接与本任务前序只读核验）：阶段 0～3 已完成并由用户验收；阶段 4 的本地实现、生产配置和 Workers Builds 构建部署已完成。网站已通过 `https://xingxufan.com` 公开运行，`www` 跳转及 Email Routing 已由用户完成，Turnstile widget、已验证目标邮箱和两个 Worker Runtime Secrets 已配置。RFQ 已通过校验与 Turnstile，但仍在 `RFQ_EMAIL.send(...)` 步骤返回 `delivery_failed`，真实 Gmail 收件尚未验收，阶段 4 不标记为完成。
+
+已实现的功能：
 
 - Astro + TypeScript 静态项目骨架。
 - Cloudflare Workers Static Assets 本地配置。
@@ -23,7 +25,17 @@ Quanzhou Xingxu Fan & Ventilation Supply 的独立英文 B2B 网站项目，第�
 - About、Contact、Privacy、带会话确认保护的 Thank You 状态和自定义 404 页面。
 - 全站共享导航、页脚、面包屑和下一步行动组件。
 
-当前 RFQ 仍没有公开入口：默认环境通过 Turnstile 测试验证，并由 Wrangler 的模拟邮件绑定接收；不会发送到真实邮箱。独立 `production` 环境已经切换为 `live`、正式 hostname 和正式发件地址；本机生产构建由被忽略的本地配置注入 Sitekey，Workers Builds 则从普通 Build variable 注入。Turnstile secret 与目标邮箱已安全写入隐藏 Worker。首次自动构建日志显示 Build 与 Deploy 均成功且 `No targets deployed`；部署后 Cloudflare Dashboard 仍确认生产 `workers.dev` 和 Preview URL 均关闭，没有 Custom Domain 或 Route，两个 Runtime Secret 保持加密状态。最终隐私文本、公开部署和真实投递仍待验收。
+公开 RFQ 页面现已可访问，但邮件转化链路尚未完整可用。默认环境仍使用 `local-test` 和 Wrangler 模拟邮件，不发送真实邮件；独立 `production` 环境使用 `live`、正式 hostname 和正式发件地址。Workers Builds 从普通 Build variable 注入公开 Sitekey，Turnstile secret 与目标邮箱只作为 Worker Runtime Secrets 保存。历史提交 `e1eee00` 的首次部署曾在没有公开入口时完成隐藏验证；该历史结果不再代表当前正式域名的部署状态。
+
+### 本次 RFQ 安全诊断补丁
+
+- 邮件发送失败日志保留请求参考编号，并增加白名单 `errorCode`、固定 `errorCategory` 和可选的 400～599 整数 `httpStatus`。不记录原始错误消息、堆栈、任意未知错误码、邮箱、客户资料、询盘、Token 或 Secret。
+- 未识别的异常降级为 `UNKNOWN`／`unknown`；前端仍返回通用 `502 delivery_failed`，不泄露内部诊断，也不进入成功页。
+- RFQ 自动化测试显式注入模拟运行时，在本地 Workers runtime 中执行并禁用远程绑定，不加载 Wrangler 配置或 `.dev.vars`。这些测试不证明真实邮件绑定有效或 Gmail 已收件。
+
+本补丁用于获取安全诊断信息，不是已确认的生产故障修复。推送后需确认 Workers Builds 已部署对应提交，再由用户提交测试询盘，用新的请求参考编号核对日志，最后完成真实 Gmail 收件验收。具体步骤见 `RFQ-SETUP.md`。
+
+本地验收记录（2026-09-15）：`npm run ci:build` 通过，包含 63 项 RFQ 测试、12 项 CI 脚本测试、Worker 类型检查与 Wrangler 生成类型一致性检查；Astro 检查 23 个文件，错误、警告与提示均为 0，并构建 14 个页面。该记录不包含本次补丁的线上部署或真实 Gmail 收件验收。
 
 ## 技术栈
 
@@ -78,18 +90,24 @@ Deploy command: npm run cf:deploy:production
 - 构建必须提供普通 Build variable `PUBLIC_TURNSTILE_SITE_KEY`；缺失或仍是 Cloudflare 测试 Sitekey 时会在构建前失败。
 - 部署必须提供 Build secret `CI_RFQ_DESTINATION_ADDRESS`；脚本只用它生成受限的临时 Email binding 配置，完整捕获并脱敏 Wrangler 输出，随后删除临时配置和本次日志。
 - `TURNSTILE_SECRET` 与 `RFQ_TO_EMAIL` 继续只作为 Worker Runtime Secrets 存在，不提供给构建脚本。
-- Wrangler 命令固定使用 `--env production`；根配置与 production 环境都关闭 `workers.dev` 和 Preview URL，仓库也不声明 Route。由于省略 `route`／`routes` 不会删除控制台中另行管理的路由，首次部署前后均已通过 Dashboard／API 确认生产与 Preview 的 `workers.dev` 入口关闭，Custom Domain 和 Route 为空；首次自动部署已验证保持隐藏。
+- Wrangler 部署命令固定使用 `--env production`；根配置与 production 环境都关闭 `workers.dev` 和 Preview URL，仓库不声明 Route。控制台另行管理正式域名与必要路由；仓库省略 `route`／`routes` 不会删除这些控制台设置。历史首次隐藏部署已通过核验，当前正式域名已公开运行。
 - `.node-version` 固定 Cloudflare 构建使用的 Node.js 版本，避免默认小版本变化造成无记录的构建差异。
 
-Cloudflare 控制台的具体字段和值以及 Secret 分层见 `RFQ-SETUP.md`。GitHub／Workers Builds 连接已经完成；公开 Preview、正式域名和 DNS 仍需后续单独授权。
+Cloudflare 控制台的字段和 Secret 分层见 `RFQ-SETUP.md`。GitHub／Workers Builds 连接与正式域名部署已完成；推送 `main` 会按现有连接触发自动构建部署。以后修改 DNS、域名／Route、Build variables、Runtime Secrets 或邮件权限，仍需要单独授权，不属于普通 Git 发布。
 
-完整 Worker 本地运行与测试：
+手动运行完整 Worker 本地模拟（只使用公开测试密钥）：
 
 ```powershell
 Copy-Item .dev.vars.example .dev.vars
 npm run cf:dev
+```
+
+自动化回归检查不需要 `.dev.vars`，不会发送真实邮件：
+
+```powershell
 npm test
 npm run check:worker
+npm run check:ci
 ```
 
 `.dev.vars` 与 `turnstile_secret.txt` 已被 Git 忽略。示例值是 Cloudflare 官方公开测试密钥，不得把生产 secret 写入仓库或聊天。生产接入见 `RFQ-SETUP.md`。
@@ -115,6 +133,6 @@ npm run check:worker
 - 不把概念图或生成占位图描述为真实产品、门店、仓库或铭牌。
 - 不发布未经核实的型号、性能参数、认证、授权、客户、出口记录或制造商表述。
 - 不提交本地环境文件、真实 Secret、目标邮箱、本地依赖、构建产物或本机工具状态；仓库只保留明确列出的非敏感配置名与示例值。
-- 首次隐藏 Cloudflare 构建结果已核验；公开部署、正式域名和生产 RFQ 流程仍需要单独验收与授权。
+- 历史首次隐藏 Cloudflare 构建结果已核验，当前正式域名已公开运行；生产 RFQ 仍在邮件发送步骤失败，真实 Gmail 收件与最终隐私文本仍须验收，不得把本地测试或构建成功当作投递成功。
 
 更多信息见 `PRODUCT.md`、`MARKET-AND-AUDIENCE.md`、`SITEMAP.md` 和 `DEVELOPMENT-PLAN.md`。
