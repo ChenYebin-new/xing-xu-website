@@ -67,7 +67,7 @@ Confirmed capabilities:
 - Product selection advice.
 - Export packaging coordination.
 - Logistics coordination.
-- Public contact through an existing Facebook page, WhatsApp account, Gmail address, and WeChat account.
+- Public contact through the approved Gmail address and user-provided WhatsApp QR image; Facebook and WeChat contact details remain pending.
 - Direct RFQ submission from the website.
 
 Initial featured categories:
@@ -78,9 +78,17 @@ Initial featured categories:
 
 The exact number of products is undecided. The site must support publishing products incrementally without inventing placeholder specifications. Blowers and smoke-exhaust fans may be added later after product data and market-specific requirements are verified.
 
+Approved public contacts (2026-09-15):
+
+- Public email: `leochen7531@gmail.com`, shared across the homepage, contact page, footer, RFQ page, and privacy contact information; direct email links use `mailto:leochen7531@gmail.com`.
+- WhatsApp: the user-provided LeoChen QR image, preserved in full at `src/assets/contact/leochen-whatsapp-qr.jpg`. The contact page displays it in its original proportions and links to the original image; other WhatsApp entries link to `/contact/#whatsapp`. Do not redraw the QR code, infer a phone number, or generate a direct WhatsApp URL.
+- Facebook and WeChat remain visibly marked as awaiting contact details.
+
+This update changes public contact information only. RFQ inquiry recipients, email bindings, runtime secrets, and production configuration remain unchanged; the public Gmail address does not establish the RFQ delivery destination or prove actual delivery. Privacy changes are limited to the contact address, without adding retention or rights-processing commitments. The user subsequently authorized selective commit and push to `origin/main` through Command One on 2026-09-15, triggering the existing Workers Builds workflow; deployment results require separate verification. This does not authorize additional Cloudflare configuration changes or real-email tests.
+
 Open decisions:
 
-- Exact public URLs, handles, numbers, email address, physical address, and inquiry recipients.
+- Facebook and WeChat public URLs or handles, any separately provided WhatsApp phone number or direct URL, physical address, and inquiry recipients.
 - Domain name and whether a domain-based forwarding address will supplement the public Gmail address.
 - First set of publishable SKUs and their verified specifications.
 - Whether product drawings or document uploads will be accepted in the first RFQ form.

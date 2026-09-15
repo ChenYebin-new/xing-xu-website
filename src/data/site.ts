@@ -3,6 +3,7 @@ import type { ImageMetadata } from "astro";
 import axialFanConcept from "../assets/concept-products/axial-fan-concept.png";
 import centrifugalFanConcept from "../assets/concept-products/centrifugal-fan-concept.png";
 import negativePressureFanConcept from "../assets/concept-products/negative-pressure-fan-concept.png";
+import whatsAppQrImage from "../assets/contact/leochen-whatsapp-qr.jpg";
 
 export type ProductCategory = {
   slug: "negative-pressure-fans" | "axial-fans" | "centrifugal-fans";
@@ -54,10 +55,10 @@ export type EvidenceSlot = {
   replacementNote: string;
 };
 
-export type ContactChannel = {
-  name: "WhatsApp" | "Facebook" | "Gmail" | "WeChat";
-  status: "details-pending";
-};
+export type ContactChannel =
+  | { name: "WhatsApp" | "Facebook" | "Gmail" | "WeChat"; status: "details-pending" }
+  | { name: "Gmail"; status: "active"; kind: "email"; address: string; href: string }
+  | { name: "WhatsApp"; status: "active"; kind: "qr"; image: ImageMetadata; href: string };
 
 export type DownloadResource = {
   title: string;
@@ -306,10 +307,26 @@ export const capabilities = [
   },
 ] as const;
 
+export const emailContact = {
+  name: "Gmail",
+  status: "active",
+  kind: "email",
+  address: "leochen7531@gmail.com",
+  href: "mailto:leochen7531@gmail.com",
+} as const satisfies ContactChannel;
+
+export const whatsAppContact = {
+  name: "WhatsApp",
+  status: "active",
+  kind: "qr",
+  image: whatsAppQrImage,
+  href: "/contact/#whatsapp",
+} as const satisfies ContactChannel;
+
 export const contactChannels = [
-  { name: "WhatsApp", status: "details-pending" },
+  whatsAppContact,
   { name: "Facebook", status: "details-pending" },
-  { name: "Gmail", status: "details-pending" },
+  emailContact,
   { name: "WeChat", status: "details-pending" },
 ] as const satisfies readonly ContactChannel[];
 

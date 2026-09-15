@@ -233,10 +233,20 @@ const evidenceImages = {
           Open the RFQ workspace <Icon name="arrow" size={21} />
         </a>
 
-        <div class="contact-preview" aria-label="Planned contact channels">
+        <div class="contact-preview" aria-label="Contact channels">
           <p>Other ways to contact us</p>
           <ul>
-            {contactChannels.map((channel) => <li>{channel.name}<span>Details pending</span></li>)}
+            {contactChannels.map((channel) => (
+              <li>
+                {channel.status === "active" ? (
+                  <a class={channel.kind === "email" ? "contact-email-link" : undefined} href={channel.href}>
+                    {channel.kind === "email" ? channel.address : "WhatsApp QR code"}
+                  </a>
+                ) : (
+                  <>{channel.name}<span>Details pending</span></>
+                )}
+              </li>
+            ))}
           </ul>
         </div>
       </div>

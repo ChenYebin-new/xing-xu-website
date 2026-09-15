@@ -1,12 +1,12 @@
 ---
 import ActionPanel from "../components/ActionPanel.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
-import { contactChannels } from "../data/site";
+import { contactChannels, whatsAppContact } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const pageTitle = "Contact | XINGXU FAN";
 const pageDescription =
-  "Review the planned XINGXU FAN contact channels and the information to prepare for an industrial fan supply inquiry.";
+  "Contact XINGXU FAN by email or scan LeoChen's WhatsApp QR code to discuss an industrial fan supply inquiry.";
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -14,31 +14,63 @@ const pageDescription =
     <section class="contact-hero" aria-labelledby="page-title">
       <div>
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact" }]} />
-        <h1 id="page-title">Prepare Your Fan Inquiry</h1>
+        <h1 id="page-title">Contact XINGXU FAN</h1>
       </div>
       <div class="contact-hero__notice" role="note">
-        <strong>Preview boundary</strong>
+        <strong>Let’s discuss your fan requirement</strong>
         <p>
-          No phone number, email address, social profile, messaging ID or street address has been approved for public
-          display in this build. The entries below are status records, not active links.
+          Email us or scan the WhatsApp QR code below. Include the product category, quantity and destination
+          so we can understand your request.
         </p>
       </div>
     </section>
 
     <section class="channel-status" aria-labelledby="channels-title">
       <header class="content-heading">
-        <h2 id="channels-title">Four channels awaiting release details</h2>
+        <h2 id="channels-title">Ways to Contact Us</h2>
       </header>
       <ul>
         {
           contactChannels.map((channel) => (
             <li>
               <strong>{channel.name}</strong>
-              <span>Details pending approval</span>
+              {channel.status === "active" ? (
+                <a class={channel.kind === "email" ? "contact-email-link" : "text-link"} href={channel.href}>
+                  {channel.kind === "email" ? channel.address : "View WhatsApp QR code"}
+                </a>
+              ) : (
+                <span>Details pending</span>
+              )}
             </li>
           ))
         }
       </ul>
+    </section>
+
+    <section class="contact-whatsapp" id="whatsapp" aria-labelledby="whatsapp-title">
+      <div>
+        <h2 id="whatsapp-title">WhatsApp · LeoChen</h2>
+        <p>Open WhatsApp on your phone and scan this QR code to add LeoChen as a contact.</p>
+        <p>If you are browsing on your phone, open the original image to view or save the QR code.</p>
+        <a class="text-link" href={whatsAppContact.image.src} target="_blank" rel="noopener noreferrer">
+          Open original QR image
+        </a>
+      </div>
+      <a
+        class="contact-whatsapp__image"
+        href={whatsAppContact.image.src}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open LeoChen’s original WhatsApp QR image in a new tab"
+      >
+        <img
+          src={whatsAppContact.image.src}
+          width={whatsAppContact.image.width}
+          height={whatsAppContact.image.height}
+          alt="LeoChen’s WhatsApp contact QR code"
+          decoding="async"
+        />
+      </a>
     </section>
 
     <section class="inquiry-prep" aria-labelledby="prepare-title">
@@ -55,19 +87,10 @@ const pageDescription =
       </ol>
     </section>
 
-    <section class="contact-release" aria-labelledby="release-title">
-      <h2 id="release-title">A channel becomes active only after three checks</h2>
-      <div>
-        <article><h3>Authorized</h3><p>The business approves the exact public detail and how it may be used.</p></article>
-        <article><h3>Reachable</h3><p>The link, account or address is tested from the public website experience.</p></article>
-        <article><h3>Owned</h3><p>The destination is controlled by the business and has a clear response owner.</p></article>
-      </div>
-    </section>
-
     <ActionPanel
-      eyebrow="Current next step"
-      title="Use the RFQ workspace to prepare one reviewable request"
-      body="The form validates required fields and is prepared for protected delivery through the approved Cloudflare configuration; public activation and live-delivery acceptance remain separate release steps."
+      eyebrow="A more detailed request"
+      title="Prefer to organize your requirements in one place?"
+      body="The RFQ workspace brings your buying context, product requirements, quantity and destination together. You can also contact us directly by email or WhatsApp."
       primaryHref="/request-a-quote/"
       primaryLabel="Open RFQ workspace"
       secondaryHref="/products/"

@@ -1,7 +1,7 @@
 ---
 import Breadcrumbs from "../components/Breadcrumbs.astro";
 import Icon from "../components/Icon.astro";
-import { audiencePaths, productCategories } from "../data/site";
+import { audiencePaths, emailContact, productCategories, whatsAppContact } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const pageTitle = "Request an Industrial Fan Quotation | XINGXU FAN";
@@ -224,6 +224,12 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
         <div class="rfq-guidance__boundary">
           <strong>No database or file upload</strong>
           <p>This stage sends one grouped email and does not add an inquiry database or attachment storage.</p>
+        </div>
+        <div class="rfq-direct-contact">
+          <h3>Contact us directly</h3>
+          <p>You can also share your fan requirements by email or WhatsApp.</p>
+          <a class="text-link contact-email-link" href={emailContact.href}>{emailContact.address}</a>
+          <a class="text-link" href={whatsAppContact.href}>View WhatsApp QR code</a>
         </div>
       </aside>
     </section>

@@ -1,3 +1,7 @@
+---
+import { emailContact, whatsAppContact } from "../data/site";
+---
+
 <footer class="site-footer">
   <div>
     <a class="footer-brand" href="/">XINGXU FAN</a>
@@ -9,5 +13,9 @@
     <a href="/contact/">Contact</a>
     <a href="/privacy/">Privacy</a>
   </nav>
-  <p class="footer-note">English preview for Malaysia and the Philippines. Public contact details are pending approval.</p>
+  <div class="footer-note">
+    <p>English preview for Malaysia and the Philippines.</p>
+    <p>Email: <a class="contact-email-link" href={emailContact.href}>{emailContact.address}</a></p>
+    <p><a href={whatsAppContact.href}>WhatsApp QR code</a></p>
+  </div>
 </footer>

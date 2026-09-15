@@ -1026,6 +1026,19 @@ svg {
   text-transform: uppercase;
 }
 
+.contact-email-link {
+  overflow-wrap: anywhere;
+}
+
+.contact-preview li {
+  min-width: 0;
+}
+
+.contact-preview a {
+  color: #dbeaf3;
+  text-underline-offset: 3px;
+}
+
 .site-footer {
   display: grid;
   grid-template-columns: minmax(250px, 1fr) auto minmax(300px, 1fr);
@@ -1075,6 +1088,16 @@ svg {
 .footer-note {
   justify-self: end;
   text-align: right;
+}
+
+.footer-note a {
+  color: #d9e6f0;
+  text-underline-offset: 3px;
+}
+
+.footer-note .contact-email-link {
+  display: block;
+  margin-bottom: 8px;
 }
 
 .breadcrumbs {
@@ -1864,6 +1887,78 @@ svg {
   padding: 20px 24px;
   border: 1px solid var(--line);
   background: var(--paper-cool);
+}
+
+.channel-status li a {
+  min-width: 0;
+  color: var(--blue-700);
+  text-underline-offset: 3px;
+}
+
+.contact-whatsapp {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+  padding: var(--section-space) var(--page-gutter);
+  background: var(--paper-cool);
+  scroll-margin-top: 100px;
+}
+
+.contact-whatsapp h2 {
+  margin: 0 0 20px;
+  font-family: var(--display);
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.08;
+}
+
+.contact-whatsapp p {
+  max-width: 48ch;
+  margin: 0 0 18px;
+  color: var(--ink-600);
+}
+
+.contact-whatsapp__image {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  justify-self: center;
+}
+
+.contact-whatsapp__image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.rfq-direct-contact {
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.rfq-direct-contact a {
+  display: block;
+  margin-top: 12px;
+  color: var(--blue-700);
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .contact-whatsapp {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .channel-status li {
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-whatsapp {
+    padding: 32px 18px;
+  }
 }
 
 .channel-status li strong {

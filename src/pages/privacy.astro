@@ -1,5 +1,6 @@
 ---
 import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { emailContact } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const pageTitle = "Privacy and RFQ Delivery Status | XINGXU FAN";
@@ -54,7 +55,7 @@ const pageDescription =
       <section>
         <h2>Requirements before public submission</h2>
         <ul>
-          <li>Approve the business identity responsible for the inquiry and an accessible privacy contact.</li>
+          <li>Approve the business identity responsible for the inquiry and the privacy response owner.</li>
           <li>Deploy the prepared production configuration and connect the authorized domain to the intended Worker.</li>
           <li>Use the prepared production Turnstile widget sitekey and Worker secret only in their approved build and runtime locations.</li>
           <li>Activate the approved sender and verified Gmail destination through the restricted email binding.</li>
@@ -65,15 +66,16 @@ const pageDescription =
       <section>
         <h2>Contact and rights requests</h2>
         <p>
-          No public privacy contact has been approved for this build. A working contact route and response owner must
-          be published before the inquiry form is activated. Until then, this page records an implementation boundary
-          rather than a complete production privacy notice.
+          For privacy inquiries, email <a class="contact-email-link" href={emailContact.href}>{emailContact.address}</a>.
+          The response owner and rights-request process must still be approved before public submission. Until then,
+          this page records an implementation boundary rather than a complete production privacy notice.
         </p>
       </section>
 
       <footer class="policy-page__footer">
         <p>Last reviewed for the local Stage 4 build: 14 September 2026.</p>
-        <a class="text-link" href="/contact/">Review contact status</a>
+        <p>Public contact details reviewed: 15 September 2026.</p>
+        <a class="text-link" href="/contact/">View contact details</a>
       </footer>
     </article>
   </main>
