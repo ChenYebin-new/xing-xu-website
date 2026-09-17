@@ -178,7 +178,7 @@ At 1020px the primary navigation collapses to the menu control, three-column con
 
 ## Elevation & Depth
 
-The system is flat by default. Depth comes from alternating white fields, thin blue rules, tonal image bays, and two restrained navy shadows; product imagery may use a stronger drop shadow to preserve physical scale. Buttons and interactive product cards lift only slightly on hover. Dark boundary and action sections gain separation from tone and top rules, not floating-card effects.
+The system is flat by default. Depth comes from alternating white fields, thin blue rules, tonal image bays, and two restrained navy shadows; product imagery may use a stronger drop shadow to preserve physical scale. On fine-pointer hover, buttons lift by 1px and interactive product cards lift by 8px. Dark boundary and action sections gain separation from tone and top rules, not floating-card effects.
 
 **The Evidence Stays Flat Rule.** Do not turn proof bays, status rows, or content boundaries into glossy marketing cards; their hierarchy comes from photography, labels, tonal contrast, and rules.
 
@@ -186,12 +186,22 @@ The system is flat by default. Depth comes from alternating white fields, thin b
 
 Corners are almost square: evidence and product containers use a 3px radius, while Stage 4 RFQ fields, actions, and navigation controls use 4px. Thin borders, hard section edges, rectangular image bays, and horizontal status rules preserve a precise industrial character; pills, vertical orange tabs, and oversized soft radii are outside the approved language.
 
+## Motion
+
+The showroom opening introduces the supplier in a measured left-to-right sequence, then settles the main fan into its image bay with one inspection sweep. This follows the visitor's reading order from business identity to equipment and supporting evidence. Interior two-column openings use opposing entrances; product lists and evidence photography arrive as local groups, with sibling delays increasing by 100ms and capped at 300ms. Supporting boundaries, policy text, contact QR imagery and submission status use a quiet fade.
+
+`src/scripts/motion.ts` provides one shared, dependency-free Web Animations / IntersectionObserver layer across all 14 routes. Entrances play once near the viewport and never replay when scrolling back. Ordinary entrances run for 950ms on desktop and 700ms on mobile. Text and ordinary content groups move by 40px / 22px; `.product-card`, `.category-feature` and `.evidence-slot` move by 64px / 36px and settle from scale 0.96 / 0.98 to their original size. Quiet fades run for 460ms. The homepage's fan entrance runs for 1150ms on desktop and 850ms on mobile, with a 160ms delay; its single 1250ms inspection sweep starts after a 320ms delay. Presentation entrances use `cubic-bezier(0.22, 0.68, 0.36, 1)`; interaction transitions retain `cubic-bezier(0.16, 1, 0.3, 1)`, and the scan traverses the product bay at a constant speed.
+
+Default HTML and CSS keep content visible. Animation styles apply only while a finite animation is running and leave no retained fill styles. Missing JavaScript or observer support preserves the complete static page. Keyboard focus, pointer activation, anchor targets, restored pages and printing bypass relevant entrances immediately. RFQ controls, errors, Turnstile, sticky containers and hidden buyer panels are excluded. Reduced-motion preferences skip entrances and scans and suppress hover displacement, while retaining 80ms color feedback; a preference change cancels running motion.
+
+Hover movement is limited to devices with a fine pointer and hover support: buttons lift by 1px, product and category cards lift by 8px over 260ms, and their images scale to 1.075 over 300ms. Arrows within product and category cards move by 6px; independent text-link arrows retain their 3px movement and 180ms timing. Button feedback retains its 200ms timing. Keyboard focus changes color and preserves the existing cyan outline without spatial movement. Image dimensions, QR proportions, native full-card links, content and responsive layout remain the incumbent visual truth.
+
 ## Components
 
 ### Buttons and Text Links
 
 - **Primary:** Solid safety orange, white bold text, compact 4px corners, a 52px minimum height, and a directional arrow where space permits.
-- **Hover / Focus:** Darken to the approved hover orange and lift by 1px; keyboard focus uses a visible cyan 3px outline with 4px offset.
+- **Hover / Focus:** Darken to the approved hover orange; fine-pointer hover lifts by 1px. Keyboard focus uses a visible cyan 3px outline with 4px offset and no movement.
 - **Text link:** Link blue with a one-pixel underline; hover shifts to the dark orange. On dark fields it uses a pale blue-white and moves to white on hover.
 
 ### Site Header and Navigation
@@ -209,7 +219,7 @@ Breadcrumbs are a compact ordered wayfinding line above interior H1s. They use t
 - **Product category cards:** The entire white, low-radius card is a native link, including heading, visual, copy, blank area, and footer. Its category heading supplies the accessible name through `aria-labelledby`; decorative arrows and link-like footer labels are not nested interactive controls. One card creates one keyboard focus stop and preserves Enter, modified-click, and middle-click navigation. Keep the cool image bay, decisive concept visual, explicit concept status, and concise selection inputs.
 - **Evidence bays:** Desaturated photographs or generated placeholders with explicit replacement labels until approved, traceable sources exist.
 - **Content groups:** Use shared borders and alternating fields for selection inputs, support areas, capabilities, release checks, and channel status. Text-only groups follow content height on desktop and mobile. Unordered groups are not decorated with `01/02/03` markers.
-- **Hover and focus:** Interactive category cards share a stronger border and restrained lift on hover or visible keyboard focus; their decorative arrow shifts slightly and changes color. Keyboard focus keeps the cyan 3px outline and 4px offset. Reduced-motion preferences suppress movement and transitions.
+- **Hover and focus:** Interactive category cards share a stronger border and color feedback. Fine-pointer hover adds a restrained lift, slight image zoom and arrow movement. Keyboard focus keeps the cyan 3px outline and 4px offset without movement. Reduced-motion preferences suppress spatial motion and preserve short color feedback.
 
 ### Inputs and Fields
 
