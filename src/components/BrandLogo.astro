@@ -1,0 +1,132 @@
+---
+interface Props {
+  descriptor?: string;
+  size?: "header" | "footer";
+  variant?: "default" | "reverse";
+}
+
+const {
+  descriptor,
+  size = "header",
+  variant = "default",
+} = Astro.props;
+---
+
+<span
+  class:list={[
+    "brand-logo",
+    `brand-logo--${size}`,
+    variant === "reverse" && "brand-logo--reverse",
+  ]}
+>
+  <svg
+    class="brand-logo__mark"
+    viewBox="0 0 350 256"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M11 0H124L349 256H236Z" fill="currentColor" />
+    <path d="M109 135L163 193L106 256H0Z" fill="currentColor" />
+    <path d="M246 0H349L239 112L190 56Z" fill="var(--orange)" />
+  </svg>
+  <span class="brand-logo__copy">
+    <strong class="brand-logo__wordmark">XINGXU FAN</strong>
+    {descriptor && <span class="brand-logo__descriptor">{descriptor}</span>}
+  </span>
+</span>
+
+<style>
+  .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--ink-950);
+    white-space: nowrap;
+  }
+
+  .brand-logo__mark {
+    display: block;
+    flex: 0 0 auto;
+    width: 45px;
+    height: auto;
+    overflow: visible;
+  }
+
+  .brand-logo__copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand-logo__wordmark {
+    font-family: var(--display);
+    font-size: 1.72rem;
+    font-weight: 800;
+    letter-spacing: 0.005em;
+    line-height: 0.84;
+  }
+
+  .brand-logo__descriptor {
+    margin-top: 5px;
+    color: var(--ink-600);
+    font-size: 0.54rem;
+    font-weight: 700;
+    letter-spacing: 0.105em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .brand-logo--reverse {
+    color: #ffffff;
+  }
+
+  .brand-logo--reverse .brand-logo__descriptor {
+    color: #b8c9dc;
+  }
+
+  .brand-logo--footer {
+    gap: 11px;
+  }
+
+  .brand-logo--footer .brand-logo__mark {
+    width: 52px;
+  }
+
+  .brand-logo--footer .brand-logo__wordmark {
+    font-size: 2rem;
+  }
+
+  @media (max-width: 1240px) {
+    .brand-logo--header {
+      gap: 8px;
+    }
+
+    .brand-logo--header .brand-logo__mark {
+      width: 41px;
+    }
+
+    .brand-logo--header .brand-logo__wordmark {
+      font-size: 1.55rem;
+    }
+
+    .brand-logo--header .brand-logo__descriptor {
+      font-size: 0.49rem;
+      letter-spacing: 0.085em;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .brand-logo--header .brand-logo__mark {
+      width: 39px;
+    }
+
+    .brand-logo--header .brand-logo__wordmark {
+      font-size: 1.5rem;
+    }
+
+    .brand-logo--header .brand-logo__descriptor {
+      display: none;
+    }
+  }
+</style>

@@ -206,7 +206,8 @@ Hover movement is limited to devices with a fine pointer and hover support: butt
 
 ### Site Header and Navigation
 
-- **Desktop:** A 66px-minimum three-part header places the compact stacked brand at left, familiar B2B destinations in the center, and the quote action at right. The active destination is link blue with a short orange underline.
+- **Brand mark:** Use the approved `2A / Precision` angular X: deep-navy primary diagonal and lower-left segment, with one restrained orange upper-right segment. Keep the three pieces flat, sharply cut and separated by transparent space; do not add gradients, shadows, extra airflow lines or rounded terminals.
+- **Desktop:** A 66px-minimum three-part header places the compact horizontal mark-and-wordmark lockup at left, familiar B2B destinations in the center, and the quote action at right. The active destination is link blue with a short orange underline.
 - **Responsive:** At 1020px the desktop links collapse into a 44px menu control. At 720px the 62px header becomes sticky, hides the brand descriptor and header quote button, and keeps the compact brand and menu visible.
 - **Destination discipline:** Navigation exposes only working routes. The shared header currently leads to Products, For Distributors, About, Contact, and the dedicated RFQ route; the homepage buyer tabs expose all three partner guides.
 

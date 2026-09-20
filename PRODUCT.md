@@ -99,6 +99,7 @@ Open decisions:
 
 - The public English name is `Quanzhou Xingxu Fan & Ventilation Supply`.
 - The compact website brand is `XINGXU FAN`.
+- The approved logo is the `2A / Precision` X mark selected on 2026-09-20: a sharp deep-navy diagonal X construction with a separated deep-navy lower-left segment and a restrained orange upper-right segment. The final production asset uses flat site colors, transparent negative space and no concept-board effects.
 - The company must be represented truthfully as a supplier and sourcing partner.
 - The site is a completely new project. It must not inherit the prior website's layout, visual system, copy, or implementation.
 - English copy should be direct, technically credible, and suitable for B2B buyers in Malaysia and the Philippines.

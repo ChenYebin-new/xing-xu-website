@@ -1,5 +1,6 @@
 ---
 import Icon from "./Icon.astro";
+import BrandLogo from "./BrandLogo.astro";
 
 const pathname = Astro.url.pathname;
 
@@ -17,8 +18,7 @@ const navItems = [
 
 <header class="site-header" data-site-header>
   <a class="brand" href="/" aria-label="XINGXU FAN home">
-    <strong>XINGXU FAN</strong>
-    <span>Industrial supply & sourcing</span>
+    <BrandLogo descriptor="Industrial supply & sourcing" />
   </a>
 
   <nav class="desktop-nav" aria-label="Primary navigation">

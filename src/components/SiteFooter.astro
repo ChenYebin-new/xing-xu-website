@@ -1,10 +1,13 @@
 ---
 import { emailContact, whatsAppContact } from "../data/site";
+import BrandLogo from "./BrandLogo.astro";
 ---
 
 <footer class="site-footer">
   <div>
-    <a class="footer-brand" href="/">XINGXU FAN</a>
+    <a class="footer-brand" href="/" aria-label="XINGXU FAN home">
+      <BrandLogo size="footer" variant="reverse" />
+    </a>
     <p>Industrial Fan Supplier and Sourcing Partner</p>
   </div>
   <nav aria-label="Footer navigation">
