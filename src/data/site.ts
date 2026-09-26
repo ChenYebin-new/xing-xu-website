@@ -1,8 +1,8 @@
 import type { ImageMetadata } from "astro";
 
-import axialFanConcept from "../assets/concept-products/axial-fan-concept.png";
-import centrifugalFanConcept from "../assets/concept-products/centrifugal-fan-concept.png";
-import negativePressureFanConcept from "../assets/concept-products/negative-pressure-fan-concept.png";
+import axialFanImage from "../assets/product-imagery/axial-fan.png";
+import centrifugalFanImage from "../assets/product-imagery/centrifugal-fan.png";
+import negativePressureFanImage from "../assets/product-imagery/negative-pressure-fan.png";
 import whatsAppQrImage from "../assets/contact/leochen-whatsapp-qr.jpg";
 
 export type ProductCategory = {
@@ -18,8 +18,8 @@ export type ProductCategory = {
   }[];
   suitableWhen: readonly string[];
   notSuitableWhen: readonly string[];
-  conceptImage: ImageMetadata;
-  conceptAlt: string;
+  productImage: ImageMetadata;
+  productAlt: string;
 };
 
 export type ProductRecord = {
@@ -47,12 +47,6 @@ export type AudiencePath = {
   workflow: readonly string[];
   boundary: string;
   inquiryLabel: string;
-};
-
-export type EvidenceSlot = {
-  id: "storefront" | "warehouse" | "product" | "nameplate";
-  label: string;
-  replacementNote: string;
 };
 
 export type ContactChannel =
@@ -105,8 +99,8 @@ export const productCategories = [
       "The process air is hazardous, corrosive or unusually hot and the operating medium has not been defined.",
       "A guaranteed result is requested without confirmed site, duct and electrical information.",
     ],
-    conceptImage: negativePressureFanConcept,
-    conceptAlt: "Generated concept image of a square negative-pressure fan",
+    productImage: negativePressureFanImage,
+    productAlt: "Square negative-pressure fan with a galvanized frame and metal blades",
   },
   {
     slug: "axial-fans",
@@ -145,8 +139,8 @@ export const productCategories = [
       "Hazardous-area, smoke-control or other regulated duty is required without verified documentation.",
       "The fan is expected to replace engineering review of the complete air system.",
     ],
-    conceptImage: axialFanConcept,
-    conceptAlt: "Generated concept image of a cylindrical axial fan",
+    productImage: axialFanImage,
+    productAlt: "Green cylindrical axial fan with red blades and a protective grille",
   },
   {
     slug: "centrifugal-fans",
@@ -185,8 +179,8 @@ export const productCategories = [
       "Combustible, corrosive or regulated service is proposed without a complete technical review.",
       "A performance guarantee is requested before the system resistance and configuration are confirmed.",
     ],
-    conceptImage: centrifugalFanConcept,
-    conceptAlt: "Generated concept image of a centrifugal fan",
+    productImage: centrifugalFanImage,
+    productAlt: "Green centrifugal fan with a red inlet and blue-grey motor",
   },
 ] as const satisfies readonly ProductCategory[];
 
@@ -290,13 +284,6 @@ export const audiencePaths = [
     inquiryLabel: "Start an integration inquiry",
   },
 ] as const satisfies readonly AudiencePath[];
-
-export const evidenceSlots = [
-  { id: "storefront", label: "Storefront", replacementNote: "Approved storefront photo required" },
-  { id: "warehouse", label: "Warehouse", replacementNote: "Approved warehouse photo required" },
-  { id: "product", label: "Product", replacementNote: "Approved product photo required" },
-  { id: "nameplate", label: "Nameplate", replacementNote: "Readable nameplate photo required" },
-] as const satisfies readonly EvidenceSlot[];
 
 export const capabilities = [
   { title: "Selection Advice", detail: "Turn operating requirements into a clearer product discussion." },

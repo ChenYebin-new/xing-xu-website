@@ -44,14 +44,13 @@ const pageDescription =
             >
               <div class="category-feature__visual">
                 <Image
-                  src={category.conceptImage}
-                  alt={category.conceptAlt}
+                  src={category.productImage}
+                  alt={category.productAlt}
                   widths={[420, 720, 960]}
                   sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 28vw"
                   format="webp"
                   loading={index === 0 ? "eager" : "lazy"}
                 />
-                <span class="concept-stamp">Concept visual</span>
               </div>
               <div class="category-feature__copy">
                 <h3 id={`category-feature-${category.slug}`}>{category.name}</h3>
@@ -79,7 +78,7 @@ const pageDescription =
             ? "There are currently no public SKU or model records in this preview. That is intentional: model names, photographs and specifications will be added only after they are checked and approved."
             : `${productRecords.length} verified model records are currently available.`}
         </p>
-        <p class="boundary-note">Concept images on these pages show category form only. They are not stock, model or performance evidence.</p>
+        <p class="boundary-note">Actual configuration is confirmed with your quotation.</p>
       </div>
     </section>
 

@@ -103,6 +103,12 @@ The system presents industrial products with the discipline of a technical showr
 
 Interior pages extend that world without introducing a new composition language. They begin with the buyer's problem, provide category- or audience-specific evidence and guidance, state the publication or operating boundary, and end with one clear action. Product, company, contact, privacy, and submission states must distinguish published, reachable, live behavior from local simulation, pending setup, and unverified claims. The Stage 4 RFQ is a functional inquiry surface; production delivery remains a separate configuration and verification boundary.
 
+## Product imagery revision — 2026-09-26
+
+This revision supersedes the earlier concept stamps, desaturated evidence placeholders, and simulated product drop shadows described below. Seven new ImageGen originals now supply all product and gallery photography areas. The homepage hero uses the green/red centrifugal fan direction from the user-provided references. The four former evidence bays are now a product construction gallery, with no generated storefront, warehouse, shipment or nameplate presented as business evidence.
+
+Complete machines retain their native 3:2 framing; detail galleries use natural color and neutral image bays. Following the user's final presentation choice, public AI-source captions are omitted and alt text describes the pictured equipment. The website does not label generated work as actual photographs. Verified model and business evidence requirements remain in force. Original assets, supplied reference photos, the approved 2A identity and the functional WhatsApp QR remain intact. Prompts and provenance are retained internally in `src/assets/product-imagery/README.md`.
+
 **Key Characteristics:**
 
 - Evidence-led rather than claim-led.

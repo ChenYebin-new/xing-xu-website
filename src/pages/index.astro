@@ -1,17 +1,13 @@
 ---
 import { Image } from "astro:assets";
+import { productDetails } from "../data/imagery";
 
 import Icon from "../components/Icon.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import storefrontPlaceholder from "../assets/evidence-placeholders/storefront-placeholder.png";
-import warehousePlaceholder from "../assets/evidence-placeholders/warehouse-placeholder.png";
-import productPlaceholder from "../assets/evidence-placeholders/product-placeholder.png";
-import nameplatePlaceholder from "../assets/evidence-placeholders/nameplate-placeholder.png";
 import {
   audiencePaths,
   capabilities,
   contactChannels,
-  evidenceSlots,
   productCategories,
 } from "../data/site";
 
@@ -19,24 +15,6 @@ const pageTitle = "XINGXU FAN | Industrial Fan Supply & Sourcing";
 const pageDescription =
   "Quanzhou-based industrial fan supply, selection advice, cross-brand sourcing, export packaging and logistics coordination for Southeast Asian buyers.";
 
-const evidenceImages = {
-  storefront: {
-    src: storefrontPlaceholder,
-    alt: "Generated generic storefront photo placeholder, not the Xingxu business location",
-  },
-  warehouse: {
-    src: warehousePlaceholder,
-    alt: "Generated generic warehouse photo placeholder, not the Xingxu warehouse",
-  },
-  product: {
-    src: productPlaceholder,
-    alt: "Generated generic industrial fan photo placeholder, not a stocked Xingxu product",
-  },
-  nameplate: {
-    src: nameplatePlaceholder,
-    alt: "Generated blank equipment nameplate placeholder, not a real product nameplate",
-  },
-};
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -58,8 +36,8 @@ const evidenceImages = {
       <figure class="hero-product">
         <div class="hero-product__frame">
           <Image
-            src={productCategories[0].conceptImage}
-            alt={productCategories[0].conceptAlt}
+            src={productCategories[2].productImage}
+            alt={productCategories[2].productAlt}
             widths={[480, 720, 960]}
             sizes="(max-width: 720px) 90vw, (max-width: 1180px) 52vw, 35vw"
             format="webp"
@@ -67,42 +45,34 @@ const evidenceImages = {
             fetchpriority="high"
           />
           <span class="inspection-line" aria-hidden="true"></span>
-          <span class="concept-stamp">Concept visual</span>
         </div>
-        <figcaption>Replace with an approved product photo before launch.</figcaption>
       </figure>
 
       <aside class="evidence" id="evidence" aria-labelledby="evidence-title">
         <div class="evidence__heading">
           <span aria-hidden="true"></span>
-          <h2 id="evidence-title">Real Business Evidence</h2>
+          <h2 id="evidence-title">A Closer Look</h2>
         </div>
         <div class="evidence__grid">
           {
-            evidenceSlots.map((slot) => (
+            productDetails.map((slot) => (
               <article class="evidence-slot">
                 <div class="evidence-slot__visual">
                   <Image
-                    src={evidenceImages[slot.id].src}
-                    alt={evidenceImages[slot.id].alt}
+                    src={slot.image}
+                    alt={slot.alt}
                     widths={[320, 480]}
                     sizes="(max-width: 720px) 44vw, (max-width: 1180px) 22vw, 15vw"
                     format="webp"
                     loading="lazy"
                   />
-                  <span class="evidence-slot__mark">
-                    <Icon name={slot.id} size={32} />
-                    <strong>Photo placeholder</strong>
-                    <small>Source required</small>
-                  </span>
                 </div>
                 <h3>{slot.label}</h3>
-                <p>{slot.replacementNote}</p>
+                <p>{slot.detail}</p>
               </article>
             ))
           }
         </div>
-        <p class="evidence__note">Only approved, traceable business photos will replace these evidence bays.</p>
       </aside>
     </section>
 
@@ -142,15 +112,15 @@ const evidenceImages = {
                 <p>{category.summary}</p>
               </div>
               <Image
-                src={category.conceptImage}
-                alt={category.conceptAlt}
+                src={category.productImage}
+                alt={category.productAlt}
                 widths={[360, 560, 720]}
                 sizes="(max-width: 760px) 88vw, (max-width: 1100px) 44vw, 29vw"
                 format="webp"
                 loading="lazy"
               />
               <div class="product-card__footer">
-                <span>Concept image — no published SKU</span>
+                <span>View category</span>
                 <span class="product-card__arrow">
                   <Icon name="arrow" size={21} />
                 </span>

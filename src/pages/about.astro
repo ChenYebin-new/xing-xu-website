@@ -1,37 +1,16 @@
 ---
 import { Image } from "astro:assets";
+import { productDetails } from "../data/imagery";
 
-import nameplatePlaceholder from "../assets/evidence-placeholders/nameplate-placeholder.png";
-import productPlaceholder from "../assets/evidence-placeholders/product-placeholder.png";
-import storefrontPlaceholder from "../assets/evidence-placeholders/storefront-placeholder.png";
-import warehousePlaceholder from "../assets/evidence-placeholders/warehouse-placeholder.png";
 import ActionPanel from "../components/ActionPanel.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
-import { capabilities, evidenceSlots, publicationChecklist } from "../data/site";
+import { capabilities, publicationChecklist } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const pageTitle = "About XINGXU FAN | Industrial Fan Supply & Sourcing";
 const pageDescription =
   "Learn how the Quanzhou-based XINGXU FAN preview presents industrial fan supply, selection advice and sourcing with explicit evidence boundaries.";
 
-const evidenceImages = {
-  storefront: {
-    src: storefrontPlaceholder,
-    alt: "Generated generic storefront photo placeholder, not the Xingxu business location",
-  },
-  warehouse: {
-    src: warehousePlaceholder,
-    alt: "Generated generic warehouse photo placeholder, not the Xingxu warehouse",
-  },
-  product: {
-    src: productPlaceholder,
-    alt: "Generated generic industrial fan photo placeholder, not a stocked Xingxu product",
-  },
-  nameplate: {
-    src: nameplatePlaceholder,
-    alt: "Generated blank equipment nameplate placeholder, not a real product nameplate",
-  },
-};
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -71,30 +50,25 @@ const evidenceImages = {
 
     <section class="about-evidence" aria-labelledby="evidence-title">
       <header class="content-heading content-heading--light">
-        <h2 id="evidence-title">The launch version requires traceable business photographs</h2>
-        <p>
-          Every frame below is visibly a generated placeholder. None is evidence of the business location, stock or
-          a specific product.
-        </p>
+        <h2 id="evidence-title">A Closer Look at Fan Construction</h2>
       </header>
       <div class="about-evidence__grid">
         {
-          evidenceSlots.map((slot) => (
+          productDetails.map((slot) => (
             <figure>
               <div>
                 <Image
-                  src={evidenceImages[slot.id].src}
-                  alt={evidenceImages[slot.id].alt}
+                  src={slot.image}
+                  alt={slot.alt}
                   widths={[360, 560]}
                   sizes="(max-width: 720px) 45vw, 23vw"
                   format="webp"
                   loading="lazy"
                 />
-                <span>Photo placeholder</span>
               </div>
               <figcaption>
                 <strong>{slot.label}</strong>
-                <small>{slot.replacementNote}</small>
+                <small>{slot.detail}</small>
               </figcaption>
             </figure>
           ))

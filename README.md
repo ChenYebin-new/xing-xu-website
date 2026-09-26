@@ -19,13 +19,24 @@ Quanzhou Xingxu Fan & Ventilation Supply 的独立英文 B2B 网站项目，第�
 - Turnstile 服务端 Siteverify 校验，生产模式强制检查 `action=rfq` 与正式 hostname。
 - Cloudflare Email Service 绑定、分组文本／HTML 邮件和不记录完整询盘正文的安全日志。
 - Wrangler `local-test` 模式：使用 Cloudflare 测试密钥和本地模拟邮箱完成端到端测试，不发送真实邮件。
-- 明确标记的产品概念图与 Storefront、Warehouse、Product、Nameplate 证据占位图。
+- 三类风机展示图，以及首页与 About 共用的四张产品结构细节图。
 - 产品分类总览与三个分类选型说明页；没有真实资料时不生成 SKU 页面。
 - Distributors、Contractors、Equipment Manufacturers 三个合作对象详情页。
 - About、Contact、Privacy、带会话确认保护的 Thank You 状态和自定义 404 页面。
 - 全站共享导航、页脚、面包屑和下一步行动组件。
 
 公开 RFQ 页面现已可访问，但邮件转化链路尚未完整可用。默认环境仍使用 `local-test` 和 Wrangler 模拟邮件，不发送真实邮件；独立 `production` 环境使用 `live`、正式 hostname 和正式发件地址。Workers Builds 从普通 Build variable 注入公开 Sitekey，Turnstile secret 与目标邮箱只作为 Worker Runtime Secrets 保存。历史提交 `e1eee00` 的首次部署曾在没有公开入口时完成隐藏验证；该历史结果不再代表当前正式域名的部署状态。
+
+### 产品图片更新（2026-09-26）
+
+- 新增 7 张独立生成的写实图片：离心风机、轴流风机、负压风机，以及机壳、进风口与叶轮、电机与传动、整机侧面细节。离心风机与细节图参考用户提供的产品结构和配色，网站未直接使用这些参考照片。
+- 首页主图改为绿壳、红色进风口的离心风机；首页与 About 原有的四个证据占位区域改为产品结构展示。分类页共用统一图片数据，Astro 输出响应式 WebP。
+- 按用户确认移除前台 `Concept visual`、`Photo placeholder` 与 AI 来源说明，替代文本仅描述设备结构；不增加实拍、库存、工厂或出货记录等事实宣称。来源与原始提示词保留在 `src/assets/product-imagery/README.md`。
+- 图片保持自然色彩和完整整机构图，移除占位遮罩、灰度滤镜及模拟投影。保留旧资产、2A 品牌标志和 WhatsApp 二维码，不改动 RFQ 或生产配置。
+
+图片替换验收：Astro 检查 26 个文件零错误／警告／提示，构建 14 个页面；构建产物的 19 处图片引用有效，前台没有旧占位标记或 AI 来源说明。六个受影响页面在 1440px 桌面和实际 390px 手机视口下未发现横向溢出。Git 发布与线上部署结果分别核验。
+
+命令一发布前复核（2026-09-26）：`npm run build` 与完整 `npm run check:ci` 通过，包含 Worker 类型检查、63 项 RFQ 测试、12 项 CI 脚本测试及 Wrangler 类型一致性检查。Wrangler 在受限沙箱下出现日志权限与类型检查错误，使用正常读取权限并将日志写入项目内被忽略的 `.wrangler/logs/` 后通过，未修改生成类型或生产配置。这些本地检查不证明 Cloudflare 已部署该版本或邮件已送达。
 
 ### 本次 RFQ 安全诊断补丁
 
@@ -177,12 +188,14 @@ npm run check:ci
 
 - `src/pages/`：首页、产品、合作对象和说明型静态页面。
 - `src/components/`：共享导航、页脚、面包屑和行动区。
-- `src/data/site.ts`：产品、买家、证据和联系方式的数据模型。
+- `src/data/site.ts`：产品、买家和联系方式的数据模型。
+- `src/data/imagery.ts`：首页与 About 共用的产品细节图库。
 - `src/lib/rfq.ts`：RFQ 数据边界、服务器校验和邮件格式化。
 - `worker/index.ts`：Static Assets 路由、Turnstile 验证和邮件投递端点。
 - `test/rfq.spec.ts`：RFQ 校验、Turnstile 与投递状态自动化测试。
 - `src/styles/global.css`：全局视觉系统和响应式样式。
-- `src/assets/`：概念产品图、证据占位图及提示词溯源。
+- `src/styles/product-imagery.css`：产品图片的比例、布局和自然色彩展示规则。
+- `src/assets/product-imagery/`：当前使用的 7 张展示图片及提示词溯源；旧图仍保留在原资产目录。
 - `DESIGN.md`：已批准的设计系统。
 - `DEVELOPMENT-PLAN.md`：阶段计划、验收标准与发布边界。
 - `PRODUCT-DATA-CHECKLIST.md`：真实资料替换清单。
