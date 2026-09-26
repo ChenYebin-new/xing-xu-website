@@ -84,6 +84,8 @@ Quanzhou Xingxu Fan & Ventilation Supply 的独立英文 B2B 网站项目，第�
 
 ### 公开联系方式
 
+联系页文案更新（2026-09-26）：首次联系引导改为 “Let’s find the right fan for your needs”，说明客户可以先分享已有信息，型号或参数不确定时可从使用场景开始咨询选型。五项信息提示改用面向客户的业务、风机类型、用途、安装和数量／交付表述；此次仅调整该区块文案。
+
 用户于 2026-09-15 提供并授权展示以下公开联系方式：
 
 - 全站公开邮箱统一为 `leochen7531@gmail.com`，邮件入口使用 `mailto:leochen7531@gmail.com`。
