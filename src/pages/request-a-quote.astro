@@ -32,7 +32,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
     </section>
 
     <section class="rfq-workspace" aria-labelledby="rfq-form-title">
-      <form class="rfq-form" id="rfq-form" novalidate>
+      <form class="rfq-form" id="rfq-form" action="/api/rfq" method="post" novalidate>
         <header class="rfq-form__heading">
           <h2 id="rfq-form-title">Industrial fan inquiry</h2>
           <p>Fields marked “Required” must be complete. Provide either email or WhatsApp so the inquiry can be answered.</p>
@@ -191,24 +191,28 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
             <strong class="turnstile-label" id="turnstile-label">Bot protection</strong>
             <p class="turnstile-loading" data-turnstile-loading>Loading bot protection…</p>
             <div
+              id="rfq-turnstile"
               class="cf-turnstile"
               data-sitekey={turnstileSiteKey}
               data-action="rfq"
               data-theme="light"
+              data-size="compact"
               data-callback="onTurnstileSuccess"
               data-expired-callback="onTurnstileExpired"
               data-error-callback="onTurnstileError"
+              data-timeout-callback="onTurnstileTimeout"
             ></div>
             <small class="field-error" id="turnstile-token-error" data-error-for="turnstileToken"></small>
           </div>
 
           <div class="rfq-submit-row">
-            <button class="button" type="submit" data-rfq-submit>
+            <button class="button" type="submit" data-rfq-submit disabled>
               <span data-submit-label>Send inquiry</span> <Icon name="arrow" size={21} />
             </button>
             <p>Duplicate clicks are blocked while the server validates and delivers the inquiry.</p>
           </div>
-          <output class="rfq-status" data-rfq-status aria-live="polite"></output>
+          <noscript><p>This form needs JavaScript to send your inquiry. Enable it or use the email and WhatsApp links beside the form.</p></noscript>
+          <output class="rfq-status" data-rfq-status aria-live="polite" tabindex="-1"></output>
         </fieldset>
       </form>
 
@@ -236,6 +240,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
   </main>
 
   <script is:inline>
+    window.onTurnstileReady = function () {
+      const loading = document.querySelector("[data-turnstile-loading]");
+      if (loading) loading.hidden = true;
+    };
     window.onTurnstileSuccess = function (token) {
       const field = document.getElementById("turnstile-token");
       if (field) field.value = token;
@@ -266,20 +274,21 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
       const loading = document.querySelector("[data-turnstile-loading]");
       if (loading) loading.hidden = true;
     };
-    window.setTimeout(function () {
-      if (document.querySelector(".cf-turnstile iframe")) return;
-      const loading = document.querySelector("[data-turnstile-loading]");
-      if (loading) loading.hidden = true;
+    window.onTurnstileTimeout = function () {
+      window.onTurnstileExpired();
       const error = document.querySelector('[data-error-for="turnstileToken"]');
-      if (error && !error.textContent) {
-        error.textContent = "Bot protection did not load. Check the connection and refresh the page.";
-        const control = document.querySelector("[data-turnstile-control]");
-        if (control) control.setAttribute("aria-invalid", "true");
-      }
-    }, 6000);
+      if (error) error.textContent = "The bot-protection check timed out. Complete the new check and try again.";
+    };
+    window.setTimeout(function () {
+      // Use the public API and callback token; iframe internals can live in a shadow root.
+      if (window.turnstile || document.getElementById("turnstile-token")?.value) return;
+      window.onTurnstileError();
+    }, 15000);
   </script>
-  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileReady" onerror="window.onTurnstileError()" async defer></script>
   <script>
+    import { validWhatsApp } from "../lib/rfq";
+
     type ApiResult = {
       ok: boolean;
       code?: string;
@@ -288,7 +297,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
       fieldErrors?: Record<string, string>;
     };
 
-    type TurnstileWindow = Window & { turnstile?: { reset: () => void } };
+    type TurnstileWindow = Window & { turnstile?: { reset: (container: string) => void } };
 
     const form = document.querySelector<HTMLFormElement>("#rfq-form");
     const category = document.querySelector<HTMLSelectElement>("#product-category");
@@ -299,6 +308,8 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
     const submit = document.querySelector<HTMLButtonElement>("[data-rfq-submit]");
     const submitLabel = document.querySelector<HTMLElement>("[data-submit-label]");
     const status = document.querySelector<HTMLOutputElement>("[data-rfq-status]");
+    let submitting = false;
+    let delivered = false;
 
     function setSelectionMode() {
       const active = category?.value === "selection-help";
@@ -338,15 +349,20 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
     }
 
     function setBusy(busy: boolean) {
-      if (submit) submit.disabled = busy;
+      submitting = busy;
+      if (submit) submit.disabled = busy || delivered;
       form?.setAttribute("aria-busy", String(busy));
-      if (submitLabel) submitLabel.textContent = busy ? "Validating and sending…" : "Send inquiry";
+      if (submitLabel) submitLabel.textContent = delivered ? "Inquiry accepted" : busy ? "Validating and sending…" : "Send inquiry";
     }
 
     function resetTurnstile() {
       const token = document.querySelector<HTMLInputElement>("#turnstile-token");
       if (token) token.value = "";
-      (window as TurnstileWindow).turnstile?.reset();
+      try {
+        (window as TurnstileWindow).turnstile?.reset("#rfq-turnstile");
+      } catch {
+        setFieldError("turnstileToken", "Refresh the page to reload bot protection before trying again.");
+      }
     }
 
     function applyQueryDefaults() {
@@ -368,7 +384,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
 
     form?.addEventListener("submit", async (event) => {
       event.preventDefault();
-      if (!form || !status) return;
+      if (!form || !status || submitting || delivered) return;
 
       clearErrors();
       status.textContent = "";
@@ -380,6 +396,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
         const message = "Provide an email address or WhatsApp number.";
         setFieldError("email", message);
         setFieldError("whatsapp", message);
+        clientValid = false;
+      }
+      if (whatsapp?.value.trim() && !validWhatsApp(whatsapp.value.trim())) {
+        setFieldError("whatsapp", "Enter a valid WhatsApp number, including the country code when possible.");
         clientValid = false;
       }
 
@@ -427,6 +447,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
       setBusy(true);
       status.textContent = "Checking the inquiry and bot-protection response…";
       status.dataset.state = "pending";
+      try { sessionStorage.removeItem("rfq-delivered"); } catch { /* Storage is optional. */ }
 
       try {
         const response = await fetch("/api/rfq", {
@@ -446,14 +467,26 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x0000000
           return;
         }
 
-        sessionStorage.setItem("rfq-delivered", JSON.stringify({ requestId: result.requestId, submittedAt: new Date().toISOString() }));
-        window.location.assign("/thank-you/");
+        delivered = true;
+        status.textContent = "Your inquiry was accepted by the email service.";
+        if (result.requestId) status.textContent += ` Keep this reference: ${result.requestId}.`;
+        status.dataset.state = "success";
+        status.focus();
+        try {
+          sessionStorage.setItem("rfq-delivered", JSON.stringify({ requestId: result.requestId, submittedAt: new Date().toISOString() }));
+          window.location.assign("/thank-you/");
+        } catch {
+          // Keep the confirmed result here when storage or navigation is unavailable.
+        }
       } catch {
-        status.textContent = "The server could not be reached. Your entries remain in the form; check the connection and try again.";
+        status.textContent = "We could not confirm delivery. Your entries remain in the form. Check your connection and contact us before retrying if the inquiry may already have been sent.";
         status.dataset.state = "error";
+        resetTurnstile();
       } finally {
         setBusy(false);
       }
     });
+    // Keep native submission unavailable until the JSON submit handler is attached.
+    setBusy(false);
   </script>
 </BaseLayout>

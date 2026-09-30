@@ -44,7 +44,7 @@ const pageDescription = "Confirm whether the XINGXU FAN RFQ service accepted and
         asideCopy.textContent = `Request reference: ${result.requestId}. It identifies the delivery event without exposing the inquiry contents in application logs.`;
       }
     } catch {
-      sessionStorage.removeItem("rfq-delivered");
+      // Storage can be unavailable altogether; keep the unconfirmed default visible.
     }
   </script>
 </BaseLayout>

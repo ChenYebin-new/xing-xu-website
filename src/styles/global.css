@@ -2340,7 +2340,7 @@ svg {
 }
 
 .turnstile-field:focus-visible {
-  outline: 3px solid var(--orange-500);
+  outline: 3px solid var(--orange);
   outline-offset: 6px;
 }
 

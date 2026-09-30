@@ -30,7 +30,12 @@
     "@cloudflare/vitest-plugin": "^1.1.8",
     "@types/node": "^26.5.1",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.0",
+    "vitest": "^4.1.11",
     "wrangler": "^4.131.1"
+  },
+  "overrides": {
+    "miniflare": {
+      "undici": "7.29.1"
+    }
   }
 }

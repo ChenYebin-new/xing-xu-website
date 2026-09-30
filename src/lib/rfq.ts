@@ -87,8 +87,9 @@ function validEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-function validWhatsApp(value: string): boolean {
-  return /^[+()\d\s.-]{6,40}$/.test(value);
+export function validWhatsApp(value: string): boolean {
+  const digits = value.replace(/\D/g, "");
+  return /^\+?[()\d .-]{6,40}$/.test(value) && digits.length >= 6 && digits.length <= 15;
 }
 
 function validSourcePage(value: string): boolean {

@@ -8,7 +8,8 @@ $ErrorActionPreference = "Stop"
 
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $configPath = Join-Path $projectRoot "turnstile_secret.txt"
-$generatedWranglerPath = Join-Path $projectRoot ".wrangler.production.generated.jsonc"
+$runId = [Guid]::NewGuid().ToString("N")
+$generatedWranglerPath = Join-Path $projectRoot ".wrangler.production.generated.$runId.jsonc"
 $requiredKeys = @(
   "PUBLIC_TURNSTILE_SITE_KEY",
   "TURNSTILE_SECRET",
@@ -123,7 +124,7 @@ try {
 
       $wranglerLogDirectory = Join-Path $projectRoot ".wrangler\logs"
       New-Item -ItemType Directory -Force -Path $wranglerLogDirectory | Out-Null
-      $wranglerRunLogPath = Join-Path $wranglerLogDirectory "production-dry-run.log"
+      $wranglerRunLogPath = Join-Path $wranglerLogDirectory "production-dry-run-$runId.log"
       $env:WRANGLER_LOG_PATH = $wranglerRunLogPath
       $wranglerOutput = & $wranglerPath deploy --config $generatedWranglerPath --dry-run --env production 2>&1
       $wranglerExitCode = $LASTEXITCODE

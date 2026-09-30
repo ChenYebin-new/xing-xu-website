@@ -79,6 +79,16 @@ describe("RFQ validation", () => {
     }
   });
 
+  it.each(["------", "++++++", "( ) - .", "12----"])("rejects a non-callable WhatsApp contact: %s", (whatsapp) => {
+    const result = parseRfqRequest(validPayload({ email: "", whatsapp }));
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.fieldErrors.whatsapp).toContain("valid WhatsApp number");
+  });
+
+  it("accepts a formatted international WhatsApp contact without email", () => {
+    expect(parseRfqRequest(validPayload({ email: "", whatsapp: "+63 (900) 123-4567" })).ok).toBe(true);
+  });
+
   it("requires the application only when selection help is requested", () => {
     const result = parseRfqRequest(validPayload({ productCategory: "selection-help", application: "" }));
     expect(result.ok).toBe(false);
@@ -109,6 +119,33 @@ describe("RFQ email formatting", () => {
 });
 
 describe("RFQ Worker boundary", () => {
+  it.each(["allowedHostnames", "fromEmail", "toEmail", "turnstileSecret"] as const)(
+    "returns a configuration error when the runtime omits %s",
+    async (field) => {
+      const fetcher = vi.fn();
+      const setup = runtime({ [field]: undefined, fetcher });
+      const response = await handleRfqRequest(requestFor(validPayload()), setup.runtime);
+      expect(response.status).toBe(503);
+      expect((await response.json()).code).toBe("configuration_required");
+      expect(fetcher).not.toHaveBeenCalled();
+      expect(setup.sent).toHaveLength(0);
+    },
+  );
+
+  it("does not log customer-controlled source paths", async () => {
+    const info = vi.spyOn(console, "info").mockImplementation(() => {});
+    try {
+      const setup = runtime();
+      const sourcePage = "/request-a-quote/?email=private-customer@example.com";
+      const response = await handleRfqRequest(requestFor(validPayload({ sourcePage })), setup.runtime);
+      expect(response.status).toBe(201);
+      expect(JSON.stringify(info.mock.calls)).not.toContain("private-customer@example.com");
+      expect(setup.sent[0].text).toContain(sourcePage);
+    } finally {
+      info.mockRestore();
+    }
+  });
+
   it("rejects cross-origin submission before reading inquiry data", async () => {
     const setup = runtime();
     const response = await handleRfqRequest(requestFor(validPayload(), "https://attacker.example"), setup.runtime);

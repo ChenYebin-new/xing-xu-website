@@ -28,9 +28,12 @@
   aspect-ratio: 3 / 2;
   margin-top: 18px;
 }
+.category-feature__visual {
+  grid-template-rows: minmax(0, 1fr);
+}
 .category-feature__visual img {
-  height: auto;
-  aspect-ratio: 3 / 2;
+  min-height: 0;
+  height: 100%;
 }
 .product-detail-hero__visual {
   align-self: start;

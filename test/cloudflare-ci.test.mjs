@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import {
   existsSync,
   mkdirSync,
@@ -68,6 +69,37 @@ test("production build fails before starting Astro when the sitekey is absent", 
     /PUBLIC_TURNSTILE_SITE_KEY is required/,
   );
   assert.equal(runnerCalls, 0);
+});
+
+test("PowerShell build failure preserves an existing generated configuration", { skip: process.platform !== "win32" }, () => {
+  const { root } = temporaryProject();
+  const scripts = path.join(root, "scripts");
+  mkdirSync(scripts);
+  const script = path.join(scripts, "build-production.ps1");
+  writeFileSync(script, readFileSync(path.join(repositoryRoot, "scripts", "build-production.ps1")));
+  const existingConfig = path.join(root, ".wrangler.production.generated.jsonc");
+  writeFileSync(existingConfig, "preserve-existing-configuration");
+  writeFileSync(path.join(root, "turnstile_secret.txt"), [
+    `PUBLIC_TURNSTILE_SITE_KEY=${productionSiteKey}`,
+    "TURNSTILE_SECRET=0xFakeSecretOnlyForLocalTest12345678",
+    "RFQ_FROM_EMAIL=rfq@xingxufan.com",
+    `RFQ_TO_EMAIL=${destinationAddress}`,
+  ].join("\n"));
+  // Stub npm so this fixture never builds, authenticates or contacts a service.
+  writeFileSync(path.join(root, "npm.cmd"), "@echo off\r\nexit /b 1\r\n");
+  try {
+    const env = { ...process.env };
+    const pathKey = Object.keys(env).find((key) => key.toLowerCase() === "path") ?? "Path";
+    env[pathKey] = `${root}${path.delimiter}${env[pathKey] ?? ""}`;
+    const result = spawnSync("powershell.exe", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", script], {
+      cwd: root, env, encoding: "utf8", windowsHide: true, timeout: 15000,
+    });
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /production Astro build failed/);
+    assert.equal(readFileSync(existingConfig, "utf8"), "preserve-existing-configuration");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("production build passes only the public sitekey and redacts captured output", () => {
@@ -141,6 +173,7 @@ test("tracked Wrangler production configuration is hidden and uses one destinati
   assert.equal(generated.name, "xing-xu-website");
   assert.equal(generated.env.production.name, "xing-xu-website");
   assert.equal(generated.account_id, "e4aaa1d1aea8505cff4d65aa23cd0551");
+  assert.equal(generated.assets.not_found_handling, "404-page");
   assert.equal(generated.env.production.vars.RFQ_MODE, "live");
   assert.equal(generated.env.production.vars.TURNSTILE_HOSTNAMES, "xingxufan.com");
   assert.equal(generated.env.production.vars.RFQ_FROM_EMAIL, "rfq@xingxufan.com");

@@ -88,11 +88,14 @@ Cloudflare 当前构建镜像支持根目录 `.node-version`；仓库固定为 N
 
 ### 6. 安全诊断日志与排查
 
+- 成功日志仅保留 `event`、`requestId`、`status` 和枚举校验后的 `productCategory`；不记录用户提交的 `sourcePage`，避免来源路径或查询参数夹带个人信息。来源页仍包含在分组邮件中。
 - Worker 邮件发送失败只记录 `event`、`requestId`、`status`、白名单 `errorCode`、固定 `errorCategory` 和可选的 400～599 整数 `httpStatus`。不会记录原始错误对象、消息、堆栈、邮箱、客户资料、询盘正文、Turnstile Token 或 Secret。
 - 错误码白名单依据 [Cloudflare Workers Email API](https://developers.cloudflare.com/email-service/api/send-emails/workers-api/)；未知错误或不可读取的属性降级为 `UNKNOWN`／`unknown`，不得据此猜测具体根因。客户端仍只收到通用 `502 delivery_failed`。
 - 确认 Workers Builds 的部署提交与本次 Git 发布提交一致，再由用户重新提交一份测试询盘，并用新的请求参考编号查找 `rfq_delivery` 失败日志；旧请求不会补出新增诊断字段。
 - 按明确错误码核对对应条件：例如收件限制、发件域名／身份或服务限额。`CI_RFQ_DESTINATION_ADDRESS` 与 `RFQ_TO_EMAIL` 已由用户确认一致，不预先认定它们不匹配；比较配置时不复制真实邮箱到日志、聊天或 Git。
 - 任何 DNS、绑定、Secret、域名或邮件权限变更都须另外授权。`status: "sent"` 只说明 Worker 的发送调用已完成，不证明最终 Gmail 收件。
+
+2026-09-30 本地修复后的浏览器行为：成功结果不依赖 sessionStorage；存储不可用时，原页显示邮件服务接受状态与参考号并禁止重复发送。网络或非 JSON 响应失败表示“无法确认投递”，保留输入并刷新验证码；它不能证明邮件未发送。Turnstile 使用公开 API 和回调判定状态，不查询内部 iframe。无 JavaScript 时提交按钮保持禁用，表单原生后备方法为 POST，避免客户资料进入 URL。运行配置缺失返回 `503 configuration_required`，不继续验证或发送邮件。
 
 ### 7. 正式域名与真实 Gmail 验收
 

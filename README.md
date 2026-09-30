@@ -4,6 +4,48 @@ Quanzhou Xingxu Fan & Ventilation Supply 的独立英文 B2B 网站项目，第�
 
 本仓库与既有网站完全隔离，不继承旧站代码、布局、文案或视觉系统。
 
+## 全站代码审查（2026-09-30，本地）
+
+本次检查覆盖全部自有页面、组件、共享数据、浏览器脚本、样式、RFQ 校验与 Worker、构建部署脚本、配置和依赖锁定文件。以下结果针对当前本地代码；不更新后文的历史线上验收结论，也不代表真实邮件收件或 Cloudflare 已部署。
+
+### 已修复的问题
+
+| 优先级 | 问题及影响 | 修复 |
+| --- | --- | --- |
+| P1 | RFQ 未声明提交方法；JavaScript 不可用时，原生表单可把客户资料放入 URL | 声明 POST，提交按钮在脚本就绪前禁用，提供无 JavaScript 联系提示 |
+| P1 | 邮件服务接受询盘后，sessionStorage 写入失败被误报为网络失败，可能促使重复发送 | 将发送结果与浏览器存储分开处理；存储不可用时在原页保留成功状态和参考号，并锁定重复提交 |
+| P2 | Turnstile 依赖内部 iframe 判定加载，可能在验证成功后误报；网络／非 JSON 响应失败后未刷新 token | 使用公开 API 与官方回调，补齐交互超时处理；失败后刷新当前控件 token；紧凑尺寸适配窄屏，修正失效的焦点颜色变量 |
+| P2 | WhatsApp 正则接受 `------` 等无效联系方式 | 前后端共用校验，要求 6～15 位数字，保留常用国际号码格式 |
+| P2 | 部分运行配置缺失时直接抛出 TypeError | 缺失主机名、发件地址、收件地址或密钥时返回受控的 `503 configuration_required` |
+| P2 | 成功日志包含客户可控的来源路径，可夹带查询参数中的个人信息 | 来源路径仍保留在询价邮件中，但不写入应用日志 |
+| P2 | 有自定义 404 页面，但 Static Assets 没有启用对应路由处理 | 配置 `not_found_handling: "404-page"`，本地 Workers 请求验证为 HTTP 404 和站内错误页 |
+| P2 | 产品分类图片实际高度超过图片区域，风机上下部分被裁切 | 限定图片网格行与图片高度，在原有卡片尺寸内完整显示设备 |
+| P2 | PowerShell 构建清理固定文件名，失败时可能删除之前已有的临时配置 | 每次运行独立生成配置与日志文件名；增加保留旧文件的回归测试 |
+| P2 | 开发工具依赖包含已知安全公告 | Vitest 4.1.11、fast-uri 3.1.8、Miniflare 内 Undici 7.29.1；锁定后审计为 0 项漏洞 |
+
+Turnstile 生命周期与 404 配置分别核对 [Cloudflare 控件配置文档](https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/widget-configurations/) 和 [静态站点及自定义 404 文档](https://developers.cloudflare.com/workers/static-assets/routing/static-site-generation/)。依赖修补依据包括 [Vitest 安全公告](https://github.com/vitest-dev/vitest/security/advisories/GHSA-82fw-gwwq-j7x9) 和 [Undici 安全公告](https://github.com/nodejs/undici/security/advisories/GHSA-w293-vg96-wgc3)；扫描条目数包含依赖传播关系，不等于独立漏洞数，也不证明生产网站存在对应可利用路径。
+
+### 验证与证据范围
+
+- `npm run build`：26 个检查文件，0 错误／警告／提示，生成 14 个页面。
+- Worker TypeScript、73 项 RFQ 测试、13 项构建脚本测试和 Wrangler 类型一致性检查通过。新增 RFQ 回归用例在修复前实际复现了 8 项失败断言。
+- `npm audit`：修复前 14 个受影响依赖条目（1 high、13 moderate），修复后 0。
+- 本地 Edge 浏览器对 14 页 × 320／390／768／1024／1440px 共 70 个组合检查：未发现页面横向溢出、失败图片、重复 ID、缺失主标题或无名称的可见表单控件；22 个不同的站内链接和锚点有效。
+- 16 组功能场景通过，包括移动导航、买家切换、RFQ 参数预选、条件字段、错误焦点、验证码超时、重复提交、正常成功、存储不可用、网络及邮件失败、非 JSON 响应、无 JavaScript、减少动态效果和自定义 404。
+- 图片裁切另做 5 档宽度定向验证：3 张分类图片均受图片区域约束，保留 `object-fit: contain`；1440px 与 390px 截图复核完整设备构图。
+- 一次设计检测输出 120 条提示：1 条验证码错误边框提醒、119 条字体／颜色／圆角规范提示，主要涉及既有样式和设计文档一致性；不将它们直接视为功能故障或自动改版依据。
+- 浏览器证据与检查脚本保存在被 Git 忽略的 `.impeccable/review/code-audit-2026-09-30/`。验证码及邮件 API 使用本地模拟，没有发送真实询盘、访问密钥或部署。浏览器检查不等于完整 WCAG 合规认证、真实设备验收或线上 Core Web Vitals 测量。
+
+命令一发布前复核（2026-09-30）：重新执行 `npm run build`、完整 `npm run check:ci` 和 `npm audit`，结果分别为 26 个文件零诊断并生成 14 页、73 项 RFQ 测试与 13 项构建脚本测试及类型检查通过、0 项依赖漏洞。本次仅提交上述审查修复及相关文档；未跟踪的 `output/` 和被忽略的本地证据不纳入提交。GitHub 推送、Cloudflare 部署和真实邮件收件分别验收。
+
+### 下一步改进顺序
+
+1. **客户能看懂的业务文案。** RFQ 的 “Delivery boundary”、About 的 “Evidence and approvals still required”、Privacy 的本地开发说明，以及页脚的 preview 表述仍偏开发验收。建议将技术细节移到维护文档，公开页面解释客户应提供什么、如何联系、询盘如何处理；需要业务事实的承诺先由负责人确认。
+2. **真实产品资料与经营证据。** 当前 `productRecords` 和 `downloadResources` 为空。优先补齐少量经确认的主力型号、参数表、尺寸图、铭牌与经营照片，让客户能够判断是否匹配，而不是继续堆叠展示动画。现有图片和公开事实边界保持原有约定。
+3. **更短的首次询价流程。** 保留详细 RFQ，同时考虑先收集联系方式、类别、数量、目的地和简要需求，再按类别展开技术字段。实际测试不同买家能否顺畅完成，避免没有型号的客户被表单长度劝退。
+4. **搜索与分享元数据。** 当前布局没有 canonical、Open Graph／Twitter 元数据，源码没有 sitemap。确认对外发布内容后，为合适页面补齐这些基础设施；参见 [Google canonical 指南](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls) 与 [sitemap 指南](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)。
+5. **明确线上验收与维护。** 由业务方确认正式隐私说明中的负责人、保留期限与请求处理方式，再单独验收真实 Turnstile → Worker → 邮件服务 → 收件箱链路；将本地浏览器回归整理为可持续运行的 CI 测试，并逐步清理重复样式规则。以上建议没有在本次审查中自动扩大为业务改版或远程操作。
+
 ## 当前状态
 
 状态更新（2026-09-15，依据用户交接与本任务前序只读核验）：阶段 0～3 已完成并由用户验收；阶段 4 的本地实现、生产配置和 Workers Builds 构建部署已完成。网站已通过 `https://xingxufan.com` 公开运行，`www` 跳转及 Email Routing 已由用户完成，Turnstile widget、已验证目标邮箱和两个 Worker Runtime Secrets 已配置。RFQ 已通过校验与 Turnstile，但仍在 `RFQ_EMAIL.send(...)` 步骤返回 `delivery_failed`，真实 Gmail 收件尚未验收，阶段 4 不标记为完成。

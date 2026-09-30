@@ -166,6 +166,7 @@ async function readBoundedJson(request: Request): Promise<unknown> {
 }
 
 function configuredEmail(value: string, allowLocalTest = false): boolean {
+  if (typeof value !== "string") return false;
   const normalized = value.toLowerCase();
   const validShape = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   if (!validShape || normalized.endsWith(".invalid")) return false;
@@ -174,7 +175,7 @@ function configuredEmail(value: string, allowLocalTest = false): boolean {
 
 function allowedHostnameSet(value: string): Set<string> {
   return new Set(
-    value
+    (typeof value === "string" ? value : "")
       .split(",")
       .map((hostname) => hostname.trim().toLowerCase())
       .filter(Boolean),
@@ -361,7 +362,6 @@ export async function handleRfqRequest(request: Request, runtime: RfqRuntime): P
     event: "rfq_delivery",
     requestId,
     status: "sent",
-    sourcePage: parsed.value.submission.sourcePage,
     productCategory: parsed.value.submission.productCategory,
   });
   return jsonResponse({ ok: true, requestId, submittedAt }, 201);
