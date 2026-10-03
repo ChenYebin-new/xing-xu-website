@@ -12,7 +12,7 @@ export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
 export type ContactPreference = (typeof CONTACT_PREFERENCES)[number];
 
 export type RfqSubmission = {
-  customerType: CustomerType;
+  customerType: CustomerType | "";
   fullName: string;
   companyName: string;
   countryRegion: string;
@@ -106,7 +106,7 @@ export function parseRfqRequest(input: unknown): RfqParseResult {
   const productCategoryValue = cleanText(input.productCategory);
   const preferredContactValue = cleanText(input.preferredContact);
 
-  if (!isOneOf(customerTypeValue, CUSTOMER_TYPES)) {
+  if (customerTypeValue && !isOneOf(customerTypeValue, CUSTOMER_TYPES)) {
     errors.customerType = "Select a valid customer type.";
   }
   if (!isOneOf(productCategoryValue, PRODUCT_CATEGORIES)) {
@@ -116,10 +116,9 @@ export function parseRfqRequest(input: unknown): RfqParseResult {
     errors.preferredContact = "Select email, WhatsApp or either channel.";
   }
 
-  const fullName = boundedText(input, "fullName", "Full name", errors, { required: true, min: 2, max: 100 });
-  const companyName = boundedText(input, "companyName", "Company", errors, { required: true, min: 2, max: 140 });
+  const fullName = boundedText(input, "fullName", "Full name", errors, { min: 2, max: 100 });
+  const companyName = boundedText(input, "companyName", "Company", errors, { min: 2, max: 140 });
   const countryRegion = boundedText(input, "countryRegion", "Country or region", errors, {
-    required: true,
     min: 2,
     max: 100,
   });
@@ -145,7 +144,7 @@ export function parseRfqRequest(input: unknown): RfqParseResult {
   });
   const requirementSummary = boundedText(input, "requirementSummary", "Requirement summary", errors, {
     required: true,
-    min: 20,
+    min: 10,
     max: 4000,
   });
 
@@ -155,10 +154,7 @@ export function parseRfqRequest(input: unknown): RfqParseResult {
     errors.quantity = "Enter a whole-number quantity from 1 to 1,000,000.";
   }
 
-  const selectionRequired = productCategoryValue === "selection-help";
   const application = boundedText(input, "application", "Application", errors, {
-    required: selectionRequired,
-    min: selectionRequired ? 2 : undefined,
     max: 240,
   });
   const airflow = boundedText(input, "airflow", "Airflow", errors, { max: 160 });
@@ -194,7 +190,7 @@ export function parseRfqRequest(input: unknown): RfqParseResult {
     ok: true,
     value: {
       submission: {
-        customerType: customerTypeValue as CustomerType,
+        customerType: customerTypeValue as CustomerType | "",
         fullName,
         companyName,
         countryRegion,
@@ -248,10 +244,10 @@ export function formatRfqEmail(submission: RfqSubmission, submittedAt: string, r
     {
       title: "Buyer and contact",
       rows: [
-        ["Customer type", submission.customerType],
-        ["Full name", submission.fullName],
-        ["Company", submission.companyName],
-        ["Country or region", submission.countryRegion],
+        ["Customer type", display(submission.customerType)],
+        ["Full name", display(submission.fullName)],
+        ["Company", display(submission.companyName)],
+        ["Country or region", display(submission.countryRegion)],
         ["Email", display(submission.email)],
         ["WhatsApp", display(submission.whatsapp)],
         ["Preferred contact", display(submission.preferredContact)],
@@ -310,7 +306,7 @@ export function formatRfqEmail(submission: RfqSubmission, submittedAt: string, r
     .join("");
 
   return {
-    subject: `[Website RFQ] ${submission.productCategory} — ${submission.companyName}`,
+    subject: `[Website RFQ] ${submission.productCategory} — ${submission.companyName || submission.fullName || "New inquiry"}`,
     text,
     html: `<main><h1>New website RFQ</h1>${html}</main>`,
     replyTo: submission.email || undefined,

@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "file": "src/styles/global.css",
+      "sha256": "e7370c0f187a9ac0312bb6a8e2c867081d068f09aa1b08568a9dea7a9932a82e"
+    },
+    {
+      "file": "DESIGN.md",
+      "sha256": "14bc9741091ed87ce8e4c7adda4df85419a572b4854ee965ee785cc133404bbf"
+    },
+    {
+      "file": "README.md",
+      "sha256": "ce82ebcd953b8445d497f873f44658c927b305b59063ccdc3fddaafe83e04e58"
+    },
+    {
+      "file": "src/components/SiteHeader.astro",
+      "sha256": "8f981001d56e3187f2de1a7638b5d846c259aa7d2ca99d69965127b807ffdf58"
+    },
+    {
+      "file": "src/layouts/BaseLayout.astro",
+      "sha256": "8d1c438d005e970dc01763bce1eeb793a66d1060075a285a439f1e59cd2d16dd"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "sha256": "0c2f219881baa01948c056f723a1bb9353b5a303e752fd9467eddaa7c443d9e0"
+    },
+    {
+      "file": "src/scripts/motion.ts",
+      "sha256": "a29c9c5d84fa45f1bddbb9af79298b36e28c967f914b0a1f7851d1973592bf80"
+    },
+    {
+      "file": "src/scripts/product-gallery.ts",
+      "sha256": "397c7a4248a3007915fb95c3d7f5d7805ea43531894373d9c45ce9060c3e64d6"
+    }
+  ],
+  "allMatchTestedCandidate": true,
+  "rfqStagingUnchanged": true
+}

@@ -2,3 +2,6 @@
 # a few intentional trailing spaces, so ignore only end-of-line blanks for this
 # generated file and keep `wrangler types --check` reproducible.
 worker-configuration.d.ts whitespace=-blank-at-eol
+
+# Archived unified diffs need the leading space on empty context lines.
+output/command-one-ui-2026-10-03/*.patch whitespace=-blank-at-eol

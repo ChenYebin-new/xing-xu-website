@@ -1,0 +1,10 @@
+[
+  "src/styles/global.css",
+  "DESIGN.md",
+  "README.md",
+  "src/components/SiteHeader.astro",
+  "src/layouts/BaseLayout.astro",
+  "src/pages/index.astro",
+  "src/scripts/motion.ts",
+  "src/scripts/product-gallery.ts"
+]

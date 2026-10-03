@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-03",
+  "scope": "Local XINGXU FAN UI refinement; existing RFQ edits preserved",
+  "preview": "http://127.0.0.1:4322/",
+  "build": { "routes": 14, "astroFiles": 27, "errors": 0, "warnings": 0, "hints": 0 },
+  "tests": { "workerTypeCheck": "passed", "vitest": 95, "node": 13, "diffWhitespace": "passed" },
+  "responsive": {
+    "widths": [320, 390, 768, 1024, 1440, 1920],
+    "routeViewportChecks": 84,
+    "documentOverflow": 0,
+    "majorElementOverflow": 0,
+    "loadedVisibleBrokenImages": 0,
+    "method": "Read-only browser DOM measurements; major element overflow excludes hidden controls and uses 25px tolerance for transient entrance translation."
+  },
+  "interactions": {
+    "fourGallerySelectionsAndOverviewReset": "passed",
+    "keyboardSkipLinkFocusesContent": "passed",
+    "mobileMenuOpenCloseAndEscapeFocusReturn": "passed",
+    "verticalBuyerArrowNavigation": "passed",
+    "buyerEndKey": "passed",
+    "manufacturerPathPreselectsRfqBuyer": "passed",
+    "productCardNavigatesToCategory": "passed",
+    "categoryPathPreselectsRfqCategory": "passed",
+    "emptyRfqShowsErrorsAndFocusesEmail": "passed"
+  },
+  "designDetector": {
+    "passes": 1,
+    "warnings": 1,
+    "advisories": 115,
+    "review": "The warning is the existing red RFQ error-summary border. Advisories concern literal type sizes, colors and radii not fully represented by the design metadata; no clean-detector claim."
+  },
+  "limits": [
+    "Desktop browser viewport emulation does not establish physical-device behavior.",
+    "Reduced-motion and no-JavaScript fallbacks were source-reviewed, not separately emulated.",
+    "Local development logs include Cloudflare Turnstile warning 300030. No CAPTCHA was solved, no real inquiry was submitted, and live email delivery was not verified.",
+    "Existing generated product assets and factual publication boundaries are retained; no new business or product evidence is claimed.",
+    "No commit, push or deployment was performed."
+  ]
+}

@@ -1,0 +1,842 @@
+[
+  {
+    "route": "/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/products/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Industrial Fan Categories",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/products/negative-pressure-fans/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Negative Pressure Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/products/axial-fans/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Axial Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/products/centrifugal-fans/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Centrifugal Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/partners/distributors/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Fan Supply Support for Distributors",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/partners/contractors/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Selection Inputs for Project Teams",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/partners/manufacturers/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Fan Sourcing for Equipment Integration",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/about/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/contact/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Contact XINGXU FAN",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/request-a-quote/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Request a Fan Quote",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/privacy/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "How the RFQ Workflow Handles Inquiry Information",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/thank-you/",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "Check the Inquiry Delivery Status",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/404.html",
+    "brokenImages": [],
+    "contentWidth": 310,
+    "documentWidth": 310,
+    "h1": "This Route Does Not Match a Published Page",
+    "outside": [],
+    "overflow": false,
+    "viewport": 320
+  },
+  {
+    "route": "/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/products/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Industrial Fan Categories",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/products/negative-pressure-fans/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Negative Pressure Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/products/axial-fans/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Axial Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/products/centrifugal-fans/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Centrifugal Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/partners/distributors/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Fan Supply Support for Distributors",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/partners/contractors/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Selection Inputs for Project Teams",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/partners/manufacturers/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Fan Sourcing for Equipment Integration",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/about/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/contact/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Contact XINGXU FAN",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/request-a-quote/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Request a Fan Quote",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/privacy/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "How the RFQ Workflow Handles Inquiry Information",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/thank-you/",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "Check the Inquiry Delivery Status",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/404.html",
+    "brokenImages": [],
+    "contentWidth": 380,
+    "documentWidth": 380,
+    "h1": "This Route Does Not Match a Published Page",
+    "outside": [],
+    "overflow": false,
+    "viewport": 390
+  },
+  {
+    "route": "/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/products/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Industrial Fan Categories",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/products/negative-pressure-fans/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Negative Pressure Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/products/axial-fans/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Axial Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/products/centrifugal-fans/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Centrifugal Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/partners/distributors/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Fan Supply Support for Distributors",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/partners/contractors/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Selection Inputs for Project Teams",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/partners/manufacturers/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Fan Sourcing for Equipment Integration",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/about/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/contact/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Contact XINGXU FAN",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/request-a-quote/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Request a Fan Quote",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/privacy/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "How the RFQ Workflow Handles Inquiry Information",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/thank-you/",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "Check the Inquiry Delivery Status",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/404.html",
+    "brokenImages": [],
+    "contentWidth": 758,
+    "documentWidth": 758,
+    "h1": "This Route Does Not Match a Published Page",
+    "outside": [],
+    "overflow": false,
+    "viewport": 768
+  },
+  {
+    "route": "/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/products/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Industrial Fan Categories",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/products/negative-pressure-fans/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Negative Pressure Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/products/axial-fans/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Axial Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/products/centrifugal-fans/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Centrifugal Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/partners/distributors/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Fan Supply Support for Distributors",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/partners/contractors/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Selection Inputs for Project Teams",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/partners/manufacturers/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Fan Sourcing for Equipment Integration",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/about/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/contact/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Contact XINGXU FAN",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/request-a-quote/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Request a Fan Quote",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/privacy/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "How the RFQ Workflow Handles Inquiry Information",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/thank-you/",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "Check the Inquiry Delivery Status",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/404.html",
+    "brokenImages": [],
+    "contentWidth": 1014,
+    "documentWidth": 1014,
+    "h1": "This Route Does Not Match a Published Page",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1024
+  },
+  {
+    "route": "/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/products/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Industrial Fan Categories",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/products/negative-pressure-fans/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Negative Pressure Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/products/axial-fans/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Axial Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/products/centrifugal-fans/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Centrifugal Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/partners/distributors/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Fan Supply Support for Distributors",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/partners/contractors/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Selection Inputs for Project Teams",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/partners/manufacturers/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Fan Sourcing for Equipment Integration",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/about/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/contact/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Contact XINGXU FAN",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/request-a-quote/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Request a Fan Quote",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/privacy/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "How the RFQ Workflow Handles Inquiry Information",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/thank-you/",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "Check the Inquiry Delivery Status",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/404.html",
+    "brokenImages": [],
+    "contentWidth": 1430,
+    "documentWidth": 1430,
+    "h1": "This Route Does Not Match a Published Page",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1440
+  },
+  {
+    "route": "/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/products/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Industrial Fan Categories",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/products/negative-pressure-fans/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Negative Pressure Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/products/axial-fans/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Axial Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/products/centrifugal-fans/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Centrifugal Fans",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/partners/distributors/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Fan Supply Support for Distributors",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/partners/contractors/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Selection Inputs for Project Teams",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/partners/manufacturers/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Fan Sourcing for Equipment Integration",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/about/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Nearly 30 Years of Hands-On Fan Supply",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/contact/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Contact XINGXU FAN",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/request-a-quote/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Request a Fan Quote",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/privacy/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "How the RFQ Workflow Handles Inquiry Information",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/thank-you/",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "Check the Inquiry Delivery Status",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  },
+  {
+    "route": "/404.html",
+    "brokenImages": [],
+    "contentWidth": 1910,
+    "documentWidth": 1910,
+    "h1": "This Route Does Not Match a Published Page",
+    "outside": [],
+    "overflow": false,
+    "viewport": 1920
+  }
+]

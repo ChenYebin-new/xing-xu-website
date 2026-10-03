@@ -1,0 +1,132 @@
+diff --git a/src/styles/global.css b/src/styles/global.css
+index 56751f9..a53eb24 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -2188,6 +2188,69 @@ svg {
+   color: var(--ink-700);
+ }
+ 
++.rfq-extra {
++  border-top: 1px solid var(--line);
++}
++
++.rfq-extra summary {
++  display: flex;
++  min-height: 52px;
++  align-items: center;
++  justify-content: space-between;
++  gap: 18px;
++  padding: 20px 0;
++  color: var(--ink-900);
++  cursor: pointer;
++  list-style: none;
++}
++
++.rfq-extra summary::-webkit-details-marker {
++  display: none;
++}
++
++.rfq-extra summary strong,
++.rfq-extra summary small {
++  display: block;
++}
++
++.rfq-extra summary small {
++  margin-top: 6px;
++  color: var(--ink-600);
++  font-size: 0.88rem;
++  line-height: 1.45;
++}
++
++.rfq-extra summary svg {
++  flex: 0 0 auto;
++}
++
++.rfq-extra[open] > summary svg {
++  transform: rotate(180deg);
++}
++
++.rfq-extra summary:hover strong {
++  color: var(--blue-700);
++}
++
++.rfq-extra summary:focus-visible {
++  outline: 3px solid var(--orange);
++  outline-offset: 4px;
++}
++
++.rfq-extra__fields {
++  min-width: 0;
++  margin: 0;
++  padding: 8px 0 28px;
++  border: 0;
++}
++
++.rfq-extra__fields legend {
++  margin-bottom: 24px;
++  padding: 0;
++  font-size: 1rem;
++  font-weight: 740;
++}
++
+ .rfq-grid {
+   display: grid;
+   gap: 28px 24px;
+@@ -2298,12 +2361,6 @@ svg {
+   display: none;
+ }
+ 
+-.rfq-group--conditional {
+-  padding-right: clamp(20px, 3vw, 44px);
+-  padding-left: clamp(20px, 3vw, 44px);
+-  border-top: 4px solid var(--orange);
+-  background: var(--blue-050);
+-}
+ 
+ .privacy-check {
+   display: grid;
+@@ -3369,11 +3426,6 @@ a.product-card, a.category-feature {
+     gap: 2px;
+   }
+ 
+-  .rfq-group--conditional {
+-    margin-inline: -18px;
+-    padding-right: 18px;
+-    padding-left: 18px;
+-  }
+ 
+   .rfq-submit-row {
+     align-items: stretch;
+diff --git a/DESIGN.md b/DESIGN.md
+index 0acaffa..e0849c8 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -178,7 +178,7 @@ Contact release checks keep a 24px gap below their section heading before the ru
+ 
+ The refreshed route headings are `Industrial Fan Categories` on Products, `Prepare Your Fan Inquiry` on Contact, and `Request a Fan Quote` on RFQ. The Products category-section heading is `Choose Your Fan Category`. Remaining H1 wording and factual content stay unchanged in this layout pass.
+ 
+-The Stage 4 `/request-a-quote/` surface uses a compact header followed by a two-column desktop workspace: the complete inquiry form occupies the primary column and a sticky, ordered guidance rail occupies the secondary column. Reduce header, workspace, and group-transition gaps while preserving persistent labels, 52px-minimum controls, helpers, errors, and all existing field and submission semantics. Form groups use two-up fields where width allows; requirement summaries and conditional selection-help fields can span the form column.
++The `/request-a-quote/` surface uses a compact header followed by a two-column desktop workspace: the inquiry form occupies the primary column and a sticky, ordered guidance rail occupies the secondary column. The 2026-10-03 first-inquiry revision keeps only reply channels, category, estimated quantity, destination and a short requirement visible initially. Technical/delivery details and buyer details use two optional native disclosures with visible labels and chevrons; all categories can supply specifications, and collapsing a group or changing category preserves its values. A short selection-help inquiry does not require a second application answer. Preserve persistent labels, 52px-minimum controls, helpers, privacy acknowledgement, bot protection and submission states. Errors inside a disclosure open it before focusing the control. Form groups use two-up fields where width allows; requirement summaries span the form column.
+ 
+ At 1020px the primary navigation collapses to the menu control, three-column content grids become two columns, four-column selection and evidence groups become two columns, and wide content/action pairings tighten. In the 721-1020px category grids, center the last card at the same width as the preceding cards. The RFQ form and guidance rail reflow to one column at 1020px and the rail stops sticking. At 720px primary grids, tabs, fields, guidance, utility surfaces, action panels, and footer stack. Mobile order preserves problem or status first, supporting content second, the explicit boundary next, and the action last. Two-up evidence photography may remain while labels and replacement status are readable.
+ 
+diff --git a/README.md b/README.md
+index 7663f5d..d02f7ce 100644
+--- a/README.md
++++ b/README.md
+@@ -4,6 +4,15 @@ Quanzhou Xingxu Fan & Ventilation Supply 的独立英文 B2B 网站项目，第
+ 
+ 本仓库与既有网站完全隔离，不继承旧站代码、布局、文案或视觉系统。
+ 
++## 首次询价减负（2026-10-03，本地）
++
++- RFQ 默认只展示邮箱、WhatsApp、产品类别、预计数量、目的地和简要需求；邮箱与 WhatsApp 二选一。姓名、公司、客户类型与国家／地区改为可选，保留在“Add your name and company”展开区。
++- 型号、替换型号、用途、风量、压力、电源、功率、尺寸、材质、介质、交期、贸易条款和附言放在可选技术区。所有产品类别都可以补充，切换类别或收起区域保留已填内容；类别只调整技术区标题和引导，不丢弃参数。
++- 选择“Not sure — help me choose”不再要求重复填写用途。简要需求接受 10～4000 个字符，例如 `Workshop exhaust`；数量仍须为 1～1,000,000 的整数，目的地、有效回复渠道、隐私确认和验证码继续校验。
++- 浏览器与 Worker 共用 `parseRfqRequest`；可选字段填写后仍校验长度和有效值，错误会自动展开对应区域并定位字段。原有详细询价字段与请求格式兼容；邮件明确将缺省资料标为 `Not provided`，不虚构买家类型或公司。
++- 本地验证：Astro 检查 26 个文件零诊断并构建 14 页；95 项 RFQ 测试、13 项构建脚本测试、Worker 类型及 Wrangler 类型一致性检查通过。Edge 浏览器验证 320／390／768／1440px 下收起和展开共 8 个布局组合，以及 19 组功能场景，包括四类产品分别仅用邮箱／WhatsApp 完成简短询价、详细参数保留、预选、错误定位、重复提交和异常恢复。
++- 截图与浏览器脚本位于被忽略的 `.impeccable/review/rfq-first-inquiry-2026-10-03/`。浏览器验证码和 API 响应均为本地模拟，Worker 测试注入模拟服务；本次未推送、部署或发送真实询价，不代表真实收件验收。
++
+ ## 全站代码审查（2026-09-30，本地）
+ 
+ 本次检查覆盖全部自有页面、组件、共享数据、浏览器脚本、样式、RFQ 校验与 Worker、构建部署脚本、配置和依赖锁定文件。以下结果针对当前本地代码；不更新后文的历史线上验收结论，也不代表真实邮件收件或 Cloudflare 已部署。

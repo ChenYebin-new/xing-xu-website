@@ -36,6 +36,19 @@ function validPayload(overrides: Record<string, unknown> = {}) {
   };
 }
 
+function firstInquiry(overrides: Record<string, unknown> = {}) {
+  return {
+    email: "buyer@example.com",
+    productCategory: "selection-help",
+    quantity: "2",
+    destination: "Philippines, Manila",
+    requirementSummary: "Workshop exhaust",
+    privacyAccepted: true,
+    turnstileToken: "test-token",
+    ...overrides,
+  };
+}
+
 function requestFor(payload: unknown, origin = "https://example.com") {
   return new Request("https://example.com/api/rfq", {
     method: "POST",
@@ -89,10 +102,34 @@ describe("RFQ validation", () => {
     expect(parseRfqRequest(validPayload({ email: "", whatsapp: "+63 (900) 123-4567" })).ok).toBe(true);
   });
 
-  it("requires the application only when selection help is requested", () => {
-    const result = parseRfqRequest(validPayload({ productCategory: "selection-help", application: "" }));
+  it("accepts a first inquiry without a buyer profile or repeated application", () => {
+    const result = parseRfqRequest(firstInquiry());
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.submission).toMatchObject({
+      customerType: "", fullName: "", companyName: "", countryRegion: "", application: "",
+      quantity: 2, requirementSummary: "Workshop exhaust", sourcePage: "/request-a-quote/",
+    });
+  });
+
+  it.each([
+    ["productCategory", ""], ["quantity", ""], ["quantity", "0"], ["quantity", "1.5"],
+    ["destination", "  "], ["requirementSummary", "short"], ["requirementSummary", "          "],
+    ["privacyAccepted", false], ["turnstileToken", ""],
+  ])("still validates the essential field %s (%s)", (field, value) => {
+    const result = parseRfqRequest(firstInquiry({ [field as string]: value }));
     expect(result.ok).toBe(false);
-    if (!result.ok) expect(result.fieldErrors.application).toBe("Application is required.");
+    if (!result.ok) expect(result.fieldErrors).toHaveProperty(field as string);
+  });
+
+  it.each([
+    ["customerType", "unknown"], ["fullName", "x"], ["companyName", "x".repeat(141)],
+    ["countryRegion", "x".repeat(101)], ["airflow", "x".repeat(161)],
+    ["application", "x".repeat(241)], ["preferredContact", "unknown"],
+  ])("validates optional %s when provided", (field, value) => {
+    const result = parseRfqRequest(firstInquiry({ [field]: value }));
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.fieldErrors).toHaveProperty(field);
   });
 
   it("rejects an overlong Turnstile token and unsafe source path", () => {
@@ -106,6 +143,18 @@ describe("RFQ validation", () => {
 });
 
 describe("RFQ email formatting", () => {
+  it("labels omitted buyer details honestly and uses a readable subject", () => {
+    const parsed = parseRfqRequest(firstInquiry());
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) return;
+    const email = formatRfqEmail(parsed.value.submission, "2026-10-03T00:00:00.000Z", "first-inquiry");
+    expect(email.subject).toBe("[Website RFQ] selection-help — New inquiry");
+    expect(email.text).toContain("Company: Not provided");
+    expect(email.text).toContain("Customer type: Not provided");
+    expect(email.text).toContain("Summary: Workshop exhaust");
+    expect(email.replyTo).toBe("buyer@example.com");
+  });
+
   it("groups the submission and escapes user-provided HTML", () => {
     const parsed = parseRfqRequest(validPayload({ companyName: "A & B <Fans>" }));
     expect(parsed.ok).toBe(true);
@@ -119,6 +168,32 @@ describe("RFQ email formatting", () => {
 });
 
 describe("RFQ Worker boundary", () => {
+  it.each(["negative-pressure-fans", "axial-fans", "centrifugal-fans", "selection-help"])(
+    "delivers a first inquiry for %s with either reply channel",
+    async (productCategory) => {
+      for (const contact of [{ email: "buyer@example.com" }, { email: "", whatsapp: "+63 900 123 4567" }]) {
+        const setup = runtime();
+        const response = await handleRfqRequest(requestFor(firstInquiry({ productCategory, ...contact })), setup.runtime);
+        expect(response.status).toBe(201);
+        expect(setup.sent).toHaveLength(1);
+        expect(setup.sent[0].text).toContain("Summary: Workshop exhaust");
+        expect(setup.sent[0].text).toContain("Destination: Philippines, Manila");
+      }
+    },
+  );
+
+  it("retains optional technical and buyer details for a known category", async () => {
+    const setup = runtime();
+    const response = await handleRfqRequest(requestFor(validPayload({
+      productCategory: "axial-fans", airflow: "4,000 m3/h", electricalSupply: "380 V, 3 phase, 50 Hz",
+      application: "Workshop extraction", productModel: "Customer reference model",
+    })), setup.runtime);
+    expect(response.status).toBe(201);
+    expect(setup.sent[0].text).toContain("Airflow: 4,000 m3/h");
+    expect(setup.sent[0].text).toContain("Electrical supply: 380 V, 3 phase, 50 Hz");
+    expect(setup.sent[0].text).toContain("Company: Example Engineering");
+  });
+
   it.each(["allowedHostnames", "fromEmail", "toEmail", "turnstileSecret"] as const)(
     "returns a configuration error when the runtime omits %s",
     async (field) => {
