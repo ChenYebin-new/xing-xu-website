@@ -32,7 +32,10 @@ const navItems = [
   <a class="button button--compact header-quote" href="/request-a-quote/" aria-current={pathname === "/request-a-quote/" ? "page" : undefined}>Request a Quote</a>
 
   <details class="mobile-nav">
-    <summary aria-label="Open navigation"><Icon name="menu" size={24} /></summary>
+    <summary aria-label="Open navigation">
+      <span class="menu-open"><Icon name="menu" size={24} /></span>
+      <svg class="menu-close" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.65" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6" /></svg>
+    </summary>
     <nav aria-label="Mobile navigation">
       {
         navItems.map((item) => (
@@ -43,3 +46,29 @@ const navItems = [
     </nav>
   </details>
 </header>
+
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>(".mobile-nav");
+  const trigger = menu?.querySelector("summary");
+  if (menu && trigger) {
+    const closeMenu = (restoreFocus = false) => {
+      menu.open = false;
+      if (restoreFocus) trigger.focus();
+    };
+    menu.addEventListener("toggle", () => {
+      trigger.setAttribute("aria-label", menu.open ? "Close navigation" : "Open navigation");
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menu.open) closeMenu(true);
+    });
+    document.addEventListener("click", (event) => {
+      if (event.target instanceof Node && !menu.contains(event.target)) closeMenu();
+    });
+    document.addEventListener("focusin", (event) => {
+      if (event.target instanceof Node && !menu.contains(event.target)) closeMenu();
+    });
+    menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => closeMenu()));
+    const desktop = window.matchMedia("(min-width: 1021px)");
+    desktop.addEventListener("change", () => { if (desktop.matches) closeMenu(); });
+  }
+</script>

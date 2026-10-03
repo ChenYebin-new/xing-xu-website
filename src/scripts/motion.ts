@@ -5,7 +5,7 @@ function initMotion() {
   if (preference.matches || !("IntersectionObserver" in window) || !Element.prototype.animate) return;
 
   const compact = window.matchMedia("(max-width: 720px)").matches;
-  const easing = "cubic-bezier(0.22, 0.68, 0.36, 1)";
+  const easing = "cubic-bezier(0.16, 1, 0.3, 1)";
   const pending = new Map<HTMLElement, { entrance: Entrance; delay: number }>();
   const active = new Map<HTMLElement, Animation>();
 
@@ -15,7 +15,7 @@ function initMotion() {
       if (pending.has(element) || element.closest("form, [hidden]")) return;
       const index = groups.get(element.parentElement) ?? 0;
       groups.set(element.parentElement, index + 1);
-      pending.set(element, { entrance, delay: stagger ? Math.min(index * 100, 300) : 0 });
+      pending.set(element, { entrance, delay: stagger ? Math.min(index * 60, 180) : 0 });
       element.dataset.motion = entrance;
       element.dataset.motionState = "pending";
     });
@@ -23,9 +23,9 @@ function initMotion() {
 
   // The opening introduces the supplier, then presents the fan in its display bay.
   register(".hero__copy > *", "left", true);
-  register(".hero-product__frame img", "image");
+  register(".hero-product__frame img[data-gallery-image='overview']", "image");
   register(".hero-product figcaption, .evidence__heading, .evidence__note", "quiet");
-  register(".evidence-slot, .capabilities > article", "rise", true);
+  register(".evidence-slot, .capabilities > article", "quiet", true);
 
   register(".interior-hero > div, .partner-hero > div:first-child, .about-hero > div:first-child, .contact-hero > div:first-child, .product-detail-hero__copy", "left");
   register(".partner-hero__brief, .about-hero__statement, .contact-hero__notice, .interior-hero__aside", "right");
@@ -65,7 +65,7 @@ function initMotion() {
 
     if (preference.matches || document.hidden || element.contains(document.activeElement)) return;
     const card = element.matches(".product-card, .category-feature, .evidence-slot");
-    const distance = card ? (compact ? 36 : 64) : (compact ? 22 : 40);
+    const distance = card ? (compact ? 14 : 24) : (compact ? 10 : 18);
     const offset = item.entrance === "left" ? `${-distance}px 0`
       : item.entrance === "right" ? `${distance}px 0` : `0 ${distance}px`;
     const image = item.entrance === "image";
@@ -73,11 +73,11 @@ function initMotion() {
     const focal = element.matches(".hero-product__frame img");
 
     track(element, [
-      { opacity: 0, translate: quiet ? "0 0" : offset, scale: image || card ? (compact ? "0.98" : "0.96") : "1" },
+      { opacity: 0, translate: quiet ? "0 0" : offset, scale: image ? "0.99" : "1" },
       { opacity: 1, translate: "0 0", scale: "1" },
     ], {
-      duration: quiet ? 460 : focal ? (compact ? 850 : 1150) : compact ? 700 : 950,
-      delay: focal ? 160 : item.delay,
+      duration: quiet ? 280 : focal ? (compact ? 500 : 720) : compact ? 420 : 580,
+      delay: focal ? 60 : item.delay,
       easing,
       fill: "backwards",
     });
@@ -93,7 +93,7 @@ function initMotion() {
           { transform: `translateX(${frame.clientWidth * 0.12}px)`, opacity: 0.7, offset: 0.12 },
           { transform: `translateX(${frame.clientWidth * 0.88}px)`, opacity: 0.7, offset: 0.88 },
           { transform: end, opacity: 0 },
-        ], { duration: 1250, delay: 320, easing: "linear", fill: "backwards" });
+        ], { duration: 900, delay: 180, easing: "linear", fill: "backwards" });
       }
     }
   }

@@ -29,7 +29,7 @@ colors:
   product-image-bay: "#dcebed"
   caution-wash: "#eef2f4"
   ghost-blue: "#d4e5e9"
-  focus-cyan: "#00a1d4"
+  focus-cyan: "#0085b2"
   success-pale: "#b9f5d3"
   error-pale: "#ffd7cf"
 typography:
@@ -72,7 +72,7 @@ spacing:
   xl: "26px"
   page: "max(32px, calc((100vw - 1440px) / 2))"
   page-mobile: "18px"
-  section: "clamp(40px, 4vw, 64px)"
+  section: "clamp(48px, 5vw, 72px)"
   section-mobile: "32px"
 components:
   button-primary:
@@ -108,6 +108,14 @@ Interior pages extend that world without introducing a new composition language.
 This revision supersedes the earlier concept stamps, desaturated evidence placeholders, and simulated product drop shadows described below. Seven new ImageGen originals now supply all product and gallery photography areas. The homepage hero uses the green/red centrifugal fan direction from the user-provided references. The four former evidence bays are now a product construction gallery, with no generated storefront, warehouse, shipment or nameplate presented as business evidence.
 
 Complete machines retain their native 3:2 framing; detail galleries use natural color and neutral image bays. Following the user's final presentation choice, public AI-source captions are omitted and alt text describes the pictured equipment. The website does not label generated work as actual photographs. Verified model and business evidence requirements remain in force. Original assets, supplied reference photos, the approved 2A identity and the functional WhatsApp QR remain intact. Prompts and provenance are retained internally in `src/assets/product-imagery/README.md`.
+
+## Interface refinement — 2026-10-03
+
+The existing showroom direction is retained. The homepage now gives more width to the main product image and uses a lighter 700-weight display with a larger desktop scale. Flat detail thumbnails, fewer shadows and solid tonal fields separate primary equipment from supporting detail. Gallery links progressively enhance into in-place image selection, with a visible selected state, a polite caption announcement and a 44px overview control. Native image links remain available without JavaScript and for modified clicks. Image decoding completes before a swap, the last selection wins, and compact layouts bring an offscreen gallery back into view. All original image files and factual claims are preserved.
+
+The shared navigation includes a skip-to-content link and a native mobile disclosure with open/close icons, Escape dismissal, outside-click dismissal and focus return. Buyer tabs expose their responsive orientation and support the corresponding arrow keys plus Home/End. The focus color is now `#0085b2`, improving its contrast on pale surfaces while remaining visible on navy. A zero body minimum width avoids the 320px viewport plus scrollbar overflow. RFQ fields, validation and delivery logic are outside this visual publication scope.
+
+Validation artifacts are in the local `output/design-refinement-2026-10-03/`. Browser layout checks cover all 14 routes at 320, 390, 768, 1024, 1440 and 1920 pixels; screenshots and interaction checks cover the main buyer path. This workspace evidence includes separate unpublished RFQ edits; publication checks additionally use an isolated copy of the exact UI scope. These are local browser checks, not physical-device, live-delivery or award-certification evidence. Earlier surface-brief references to placeholder captions and an unimplemented RFQ describe older revisions and are not current implementation evidence.
 
 **Key Characteristics:**
 
@@ -153,7 +161,7 @@ Deep ink and blue-green organize warm and cool white fields; safety orange is th
 ### Hierarchy
 
 - **Interior Display:** Extra-bold condensed type for page H1s (`clamp(44px, 4.5vw, 64px)`, weight 800, line-height 1, tracking `-0.03em`). Titles use a wider 18-24ch measure to avoid excessive wrapping and reach a 64px desktop maximum. At the 720px mobile breakpoint, interior H1s use 44px; wording must remain readable without clipping.
-- **Homepage Display:** The trust opening retains its own condensed scale (`clamp(2.85rem, 3.5vw, 3.4rem)`, line-height 0.94), with related tablet and mobile scales from the approved preview. It does not inherit the shared interior H1.
+- **Homepage Display:** The trust opening uses `clamp(3.25rem, 4.4vw, 4.25rem)`, weight 700 and line-height 0.98, with compact tablet and mobile scales. It does not inherit the shared interior H1.
 - **Headline:** Extra-bold condensed type for compact interior section openings (`clamp(28px, 3vw, 40px)`, line-height 1.08). Boundary and final-action headings use related scales up to 44px, with smaller mobile variants. Homepage section openings retain their own scale up to 3.45rem.
 - **Title:** Bold condensed type for category and content-card names (`clamp(28px, 2.4vw, 34px)`, line-height approximately 1.05). Capability, evidence, and status labels use smaller role-specific sizes where the hierarchy calls for them.
 - **Utility Display:** Privacy subsection headings use a fixed 2rem size; the pale 404 route code is a deliberately oversized background-like display (`clamp(10rem, 18vw, 18rem)`, 9rem on mobile), not part of the content-heading scale. Product use-case band headings use `clamp(24px, 2vw, 28px)`, a 74ch maximum measure, and 1.2 leading so their supporting statement does not compete with the main section hierarchy.
@@ -168,7 +176,7 @@ Deep ink and blue-green organize warm and cool white fields; safety orange is th
 
 ## Layout
 
-The shared content measure is capped at 1440px. Desktop gutters use `max(32px, calc((100vw - 1440px) / 2))`, and mobile gutters are 18px. Header, section content, and footer align to that frame while section backgrounds continue across the viewport. Standard section spacing is 40-64px on desktop and 28-40px on mobile, with a 32px mobile default. Text-only tiles follow their content height rather than reserving empty space.
+The shared content measure is capped at 1440px. Desktop gutters use `max(32px, calc((100vw - 1440px) / 2))`, and mobile gutters are 18px. Header, section content, and footer align to that frame while section backgrounds continue across the viewport. Standard section spacing is 48-72px on desktop and 28-40px on mobile, with a 32px mobile default. Text-only tiles follow their content height rather than reserving empty space.
 
 The homepage retains its three-column trust opening, ruled capability band, three-card product grid, and buyer-path workspace paired with a dark RFQ preparation rail. The fan stays visually decisive and all four evidence slots remain visible. At 1180px the hero becomes two columns followed by a four-slot evidence row; at 900px it stacks identity, product, and evidence. At 720px evidence remains two columns. Product image rows are compact, and the buyer panel does not carry a fixed empty minimum height.
 
@@ -194,13 +202,13 @@ Corners are almost square: evidence and product containers use a 3px radius, whi
 
 ## Motion
 
-The showroom opening introduces the supplier in a measured left-to-right sequence, then settles the main fan into its image bay with one inspection sweep. This follows the visitor's reading order from business identity to equipment and supporting evidence. Interior two-column openings use opposing entrances; product lists and evidence photography arrive as local groups, with sibling delays increasing by 100ms and capped at 300ms. Supporting boundaries, policy text, contact QR imagery and submission status use a quiet fade.
+The showroom opening introduces the supplier in a measured left-to-right sequence, then settles the main fan into its image bay with one inspection sweep. This follows the visitor's reading order from business identity to equipment and supporting evidence. Interior two-column openings use opposing entrances; product lists arrive as local groups, with sibling delays increasing by 60ms and capped at 180ms. Detail thumbnails, capabilities, supporting boundaries, policy text, contact QR imagery and submission status use a quiet fade.
 
-`src/scripts/motion.ts` provides one shared, dependency-free Web Animations / IntersectionObserver layer across all 14 routes. Entrances play once near the viewport and never replay when scrolling back. Ordinary entrances run for 950ms on desktop and 700ms on mobile. Text and ordinary content groups move by 40px / 22px; `.product-card`, `.category-feature` and `.evidence-slot` move by 64px / 36px and settle from scale 0.96 / 0.98 to their original size. Quiet fades run for 460ms. The homepage's fan entrance runs for 1150ms on desktop and 850ms on mobile, with a 160ms delay; its single 1250ms inspection sweep starts after a 320ms delay. Presentation entrances use `cubic-bezier(0.22, 0.68, 0.36, 1)`; interaction transitions retain `cubic-bezier(0.16, 1, 0.3, 1)`, and the scan traverses the product bay at a constant speed.
+`src/scripts/motion.ts` provides one shared, dependency-free Web Animations / IntersectionObserver layer across all 14 routes. Entrances play once near the viewport and never replay when scrolling back. Ordinary entrances run for 580ms on desktop and 420ms on mobile. Text and ordinary content groups move by 18px / 10px; product and category cards move by 24px / 14px without scaling. Quiet fades run for 280ms. Images settle from scale 0.99; the homepage fan entrance runs for 720ms on desktop and 500ms on mobile, with a 60ms delay. Its single 900ms inspection sweep starts after a 180ms delay. Entrances and interactions use `cubic-bezier(0.16, 1, 0.3, 1)`; the scan runs at a constant speed. Gallery selection uses a 220ms fade after image decoding and follows reduced-motion preferences.
 
 Default HTML and CSS keep content visible. Animation styles apply only while a finite animation is running and leave no retained fill styles. Missing JavaScript or observer support preserves the complete static page. Keyboard focus, pointer activation, anchor targets, restored pages and printing bypass relevant entrances immediately. RFQ controls, errors, Turnstile, sticky containers and hidden buyer panels are excluded. Reduced-motion preferences skip entrances and scans and suppress hover displacement, while retaining 80ms color feedback; a preference change cancels running motion.
 
-Hover movement is limited to devices with a fine pointer and hover support: buttons lift by 1px, product and category cards lift by 8px over 260ms, and their images scale to 1.075 over 300ms. Arrows within product and category cards move by 6px; independent text-link arrows retain their 3px movement and 180ms timing. Button feedback retains its 200ms timing. Keyboard focus changes color and preserves the existing cyan outline without spatial movement. Image dimensions, QR proportions, native full-card links, content and responsive layout remain the incumbent visual truth.
+Hover movement is limited to devices with a fine pointer and hover support: buttons lift by 1px, product and category cards lift by 3px over 260ms, and their images scale to 1.025 over 300ms. Arrows move by 3px; independent text-link arrows retain their 180ms timing. Button feedback retains its 200ms timing. Keyboard focus changes color and uses the shared cyan outline without spatial movement. Image dimensions, QR proportions, native full-card links, content and responsive layout remain the incumbent visual truth.
 
 ## Components
 
@@ -213,7 +221,7 @@ Hover movement is limited to devices with a fine pointer and hover support: butt
 ### Site Header and Navigation
 
 - **Brand mark:** Use the approved `2A / Precision` angular X: deep-navy primary diagonal and lower-left segment, with one restrained orange upper-right segment. Keep the three pieces flat, sharply cut and separated by transparent space; do not add gradients, shadows, extra airflow lines or rounded terminals.
-- **Desktop:** A 66px-minimum three-part header places the compact horizontal mark-and-wordmark lockup at left, familiar B2B destinations in the center, and the quote action at right. The active destination is link blue with a short orange underline.
+- **Desktop:** A 78px-minimum three-part header places the compact horizontal mark-and-wordmark lockup at left, familiar B2B destinations in the center, and the quote action at right. The active destination is link blue with a short orange underline; other navigation links reveal a fine underline on hover or keyboard focus.
 - **Responsive:** At 1020px the desktop links collapse into a 44px menu control. At 720px the 62px header becomes sticky, hides the brand descriptor and header quote button, and keeps the compact brand and menu visible.
 - **Destination discipline:** Navigation exposes only working routes. The shared header currently leads to Products, For Distributors, About, Contact, and the dedicated RFQ route; the homepage buyer tabs expose all three partner guides.
 

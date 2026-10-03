@@ -33,9 +33,10 @@ const pageDescription =
         </div>
       </div>
 
-      <figure class="hero-product">
-        <div class="hero-product__frame">
+      <figure class="hero-product" id="fan-gallery" aria-label="Fan construction gallery">
+        <div class="hero-product__frame" id="product-view">
           <Image
+            data-gallery-image="overview"
             src={productCategories[2].productImage}
             alt={productCategories[2].productAlt}
             widths={[480, 720, 960]}
@@ -44,8 +45,24 @@ const pageDescription =
             loading="eager"
             fetchpriority="high"
           />
+          {productDetails.map((slot, index) => (
+            <Image
+              data-gallery-image={String(index)}
+              src={slot.image}
+              alt={slot.alt}
+              widths={[480, 720, 960]}
+              sizes="(max-width: 720px) 90vw, (max-width: 1180px) 52vw, 40vw"
+              format="webp"
+              loading="lazy"
+              hidden
+            />
+          ))}
           <span class="inspection-line" aria-hidden="true"></span>
         </div>
+        <figcaption class="hero-product__caption">
+          <span data-gallery-caption aria-live="polite" aria-atomic="true">Centrifugal fan · Overview</span>
+          <button type="button" data-gallery-reset hidden disabled>Back to overview <Icon name="arrow" size={16} /></button>
+        </figcaption>
       </figure>
 
       <aside class="evidence" id="evidence" aria-labelledby="evidence-title">
@@ -55,8 +72,8 @@ const pageDescription =
         </div>
         <div class="evidence__grid">
           {
-            productDetails.map((slot) => (
-              <article class="evidence-slot">
+            productDetails.map((slot, index) => (
+              <a class="evidence-slot" href={slot.image.src} data-gallery-select={String(index)} data-gallery-label={slot.label} aria-label={`View ${slot.label.toLowerCase()}`} aria-controls="product-view">
                 <div class="evidence-slot__visual">
                   <Image
                     src={slot.image}
@@ -69,7 +86,7 @@ const pageDescription =
                 </div>
                 <h3>{slot.label}</h3>
                 <p>{slot.detail}</p>
-              </article>
+              </a>
             ))
           }
         </div>
@@ -224,6 +241,8 @@ const pageDescription =
   </main>
 
   <script>
+    import "../scripts/product-gallery";
+
     const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-audience-tab]"));
     const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-audience-panel]"));
 
@@ -244,13 +263,21 @@ const pageDescription =
     tabs.forEach((tab, index) => {
       tab.addEventListener("click", () => activateAudience(tab.dataset.audienceTab ?? "distributor"));
       tab.addEventListener("keydown", (event) => {
-        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        const vertical = window.matchMedia("(max-width: 720px)").matches;
+        const previous = vertical ? "ArrowUp" : "ArrowLeft";
+        const next = vertical ? "ArrowDown" : "ArrowRight";
+        if (![previous, next, "Home", "End"].includes(event.key)) return;
         event.preventDefault();
-        const step = event.key === "ArrowRight" ? 1 : -1;
-        const nextIndex = (index + step + tabs.length) % tabs.length;
+        const step = event.key === next ? 1 : -1;
+        const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (index + step + tabs.length) % tabs.length;
         activateAudience(tabs[nextIndex].dataset.audienceTab ?? "distributor", true);
       });
     });
+
+    const tabLayout = window.matchMedia("(max-width: 720px)");
+    const updateTabOrientation = () => document.querySelector(".audience-tabs")?.setAttribute("aria-orientation", tabLayout.matches ? "vertical" : "horizontal");
+    updateTabOrientation();
+    tabLayout.addEventListener("change", updateTabOrientation);
 
     document.querySelectorAll<HTMLButtonElement>("[data-select-audience]").forEach((button) => {
       button.addEventListener("click", () => {
